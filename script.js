@@ -50,18 +50,23 @@ function hand() {
         if(rank.every(e => e >= 9) && suit.every(e => e == suit[0])){
             console.log("Royal Flush");
         // Straight Flush: the cards are in order by rank. So the difference between the max and min should always be 4 if all the cards are different in rank
-        } else if(suit.every(e => e == suit[0]) && Math.max.apply(Math, rank) - Math.min.apply(Math, rank) == 4) {
-            let result = [];
-            for(i=0; i<rank.length; i++){
-                if(rank[i] == rank[i+1]) {
-                    result.push("not different");
+        } else if(Math.max.apply(Math, rank) - Math.min.apply(Math, rank) == 4) {
+            if(suit.every(e => e == suit[0])){
+                let result = [];
+                for(i=0; i<rank.length; i++){
+                    if(rank[i] == rank[i+1]) {
+                        result.push("not different");
+                    } 
+                }  
+                if(result.length < 1) {
+                    console.log("Straight Flush");
+                } else {
+                    return false;
                 } 
-            }  
-            if(result.length < 1) {
-                console.log("Straight Flush");
             } else {
-                return false;
-            } 
+                console.log("Straight");
+            }
+            
             
         // five card of same suit  
         } else if(suit.every(e => e == suit[0])) {
@@ -71,14 +76,16 @@ function hand() {
         //Four cards of the same rank
         else if(rank.some(e=> e !== rank[0])) {
             for(let i=0; i<rank.length; i++) {
-                if(rank.filter(e => e !== rank[i]).length == 1) {
-                    return true;
+                if(rank.filter(e => e !== rank[i]).length == 1) {   
+                    return console.log("four");;
                 }
             }
-            console.log("four");
+            
         }
 }
 
+
+hand("2C", "3D", "4C", "5S","6C")
+
 hand("8C", "8D", "8C", "8S","13C")
 
-hand("2C", "3C", "4S", "5C","6H")
