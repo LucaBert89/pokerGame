@@ -67,8 +67,18 @@ function hand() {
         } else if(suit.every(e => e == suit[0])) {
             console.log("Five cards of the same suit");
         }
+
+        //Four cards of the same rank
+        else if(rank.some(e=> e !== rank[0])) {
+            for(let i=0; i<rank.length; i++) {
+                if(rank.filter(e => e !== rank[i]).length == 1) {
+                    return true;
+                }
+            }
+            console.log("four");
+        }
 }
 
-hand("8C", "10C", "11C", "12C","13C")
+hand("8C", "8D", "8C", "8S","13C")
 
 hand("2C", "3C", "4S", "5C","6H")
