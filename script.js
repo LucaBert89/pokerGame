@@ -57,7 +57,12 @@ function hand() {
             
         // Straight Flush: the cards are in order by rank. So the difference between the max and min should always be 4 if all the cards are different in rank
         } else if(Math.max.apply(Math, rank) - Math.min.apply(Math, rank) == 4) {
-            if(suit.every(e => e == suit[0])){
+            if(suit.every(e => e == suit[0]) && rank.filter(e=>e !== rank[0])){
+                console.log("Straight flush");
+            } else if (rank.filter(e=>e !== rank[0])) {
+                console.log("Straight");
+            } 
+                /*
                 let result = [];
                 for(i=0; i<rank.length; i++){
                     if(rank[i] == rank[i+1]) {
@@ -69,54 +74,58 @@ function hand() {
                 } else {
                     return false;
                 } 
-        // Straight
+
+        // Straight correggereeeee
             } else {
-                console.log("Straight");
+                for(i=0; i<rank.length; i++){
+                    if(rank[i] == rank[i+1]) {
+                        console.log("Straight");
+                    } 
+                }  
+              
             }
-            
+            */
             
         // five card of same suit  
         } else if(suit.every(e => e == suit[0])) {
             console.log("Five cards of the same suit");
         }
-
-        //Four cards of the same rank
-        else if(rank.some(e=> e !== rank[0])) {
-            for(let i=0; i<rank.length; i++) {
-                if(rank.filter(e => e !== rank[i]).length == 1) {   
-                    return console.log("four");;
-                } else if (rank.filter(e => e !== rank[i]).length == 2){
-                    let pairArray = rank.filter(e => e !== rank[i]);
-                    console.log(pairArray);
-                    for(let i=0; i<rank.length; i++) {
-                        if(pairArray[i] !== pairArray[i+1]) {
-                            return console.log("Three");
-                        } else {
-                            return console.log("Three + pair")
-                        }
-                    }
-                }
-            }
-            
-        }
-
-        else if (rank.filter(e => e == rank[0]).length == 3) {
-           console.log("ok");
-            /*
-            let pairArray = rank.filter(e => e !== rank[0]);
-            for(let i=0; i<rank.length; i++) {
-                if(pairArray[i] !== pairArray[i+1]) {
-                    console.log("Three");
-                } else {
-                    console.log("Three + pair")
-                }
-            }*/
-        }
+        
+       else if(rank.filter(e => e !== rank[0]).length == 3) {
+        let newArray = rank.filter(e => e !== rank[0]);
+    // two pair
+     if(newArray.filter(e => e !== newArray[0]).length == 1) {
+             console.log("two pair");
+    // pair
+         } else if(newArray.filter(e => e !== newArray[0]).length == 2) {
+             console.log("pair")
+    // three and pair
+         } else if(newArray.filter(e => e !== newArray[0]).length == 0) {
+             console.log("three and pair")
+         }
+      
+     } else if(rank.filter(e => e !== rank[0]).length == 2) {
+          let newArray = rank.filter(e => e !== rank[0]);
+         if(newArray.filter(e => e !== newArray[0]).length == 1) {
+    // three
+             console.log("three");
+         } else if(newArray.filter(e => e !== newArray[0]).length == 0) {
+    // three and pair
+             console.log("three and pair")
+         }
+    //Four cards of the same rank
+     } else if(rank.filter(e => e !== rank[0]).length == 1 || rank.filter(e => e == rank[0]).length == 4) {
+         console.log("four");
+     }
+     
+     
 }
 
 
 hand("9C", "JC", "QC", "KC","AC")
 
-hand("8C", "8D", "8C", "8S","13C")
+hand("7C", "8C", "9C", "JC","QC")
 
-hand("3C", "3   D", "2C", "2S","2C")
+hand("1C", "1D", "1C", "2S","2C")
+
+hand("2C", "1D", "1C", "1S","1C")
