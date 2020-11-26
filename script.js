@@ -112,6 +112,7 @@ function hand() {
 }
 
 
+// C = clubs ; H = hearts; S = spades; D = diamonds 
 
 hand("AC", "JC", "QC", "KC","10C")
 
