@@ -1,6 +1,6 @@
 # pokerGame
 
-# use console.log to see the results
+** use console.log to see the results **
 a poker game app: Given various poker hands as arguments, print what type of hand each argument is. I tried to solve this problem using filter and every array functions!
 
 The list of hands in ranking order are as follows:
