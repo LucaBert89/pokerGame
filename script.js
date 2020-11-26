@@ -5,15 +5,15 @@ function hand() {
     // separate rank from suit
         for(let i=0; i < 5; i++) {
             if(arguments[i].length >2) {
-                rank.push(arguments[i].slice(0,2));
-                suit.push(arguments[i].slice(2,3));
+                rank.push(arguments[i].slice(0,2).toUpperCase());
+                suit.push(arguments[i].slice(2,3).toUpperCase());
             } else {
-                rank.push(arguments[i].slice(0,1));
-                suit.push (arguments[i].slice(1,2));
+                rank.push(arguments[i].slice(0,1).toUpperCase());
+                suit.push (arguments[i].slice(1,2).toUpperCase());
             };
   
         
-        
+       
     // converting letter cards to number
             switch(rank[i]){
                 case "J":
@@ -38,8 +38,6 @@ function hand() {
             
         }
 
-
- 
         // sort the number inside the array
         rank.sort(function(a, b) {
             return a - b;
