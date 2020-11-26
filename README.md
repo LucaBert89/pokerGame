@@ -1,8 +1,7 @@
 # pokerGame
 
-a poker game app: give your game hand and return the name
 
-Given various poker hands as arguments, print what type of hand each argument is.
+a poker game app: Given various poker hands as arguments, print what type of hand each argument is. I tried to solve this problem using filter and every array functions!
 
 The list of hands in ranking order are as follows:
 
@@ -26,4 +25,4 @@ Pair	🂪🂺🂨🂷🃔	Two cards of the same rank
 
 High Card	🃎🃍🂧🂤🂳	No other hand applies
 
-I tried to solve this problem using filter and every array functions!
+
