@@ -105,7 +105,8 @@ function hand() {
      } else if(rank.filter(e => e !== rank[0]).length == 1 || rank.filter(e => e == rank[0]).length == 4) {
          console.log("four of a kind");
      } else {
-         console.log("No other hand applies")
+    // No other hands
+         console.log("High card")
      }
     
 }
@@ -129,3 +130,5 @@ hand("2C", "3H", "4C", "5D","6C")
 hand("2C", "2H", "2C", "KD","6C")
 
 hand("AC", "AH", "4C", "4D","6C")
+
+hand("AC", "2H", "3C", "4D","6C")
