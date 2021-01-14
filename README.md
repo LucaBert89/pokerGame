@@ -1,8 +1,11 @@
 # pokerGame
 
 **use console.log to see the results**
+DEPLOY LINK: https://csb-7q8cx.netlify.app/
 
-a poker game app: Given various poker hands as arguments, print what type of hand each argument is. I tried to solve this problem using filter and every array functions!
+CODE DEMO: https://codesandbox.io/s/thirsty-thompson-7q8cx?file=/script.js
+
+a poker game app: Given various poker hands as arguments, print what type of hand each argument is. I tried to solve this problem using **filter** and **every** array functions!
 
 The list of hands in ranking order are as follows:
 
