@@ -1,0 +1,25 @@
+.background {
+    background-color: brown;
+}
+
+.player {
+    display:flex;
+    justify-content: center;
+}
+
+.player__card {
+    width:10%;
+    height:200px;
+    margin:0 1rem;
+    border:2px solid yellow;
+}
+
+.one {
+    background-image: url("../images/clubs/10C.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
+.win-lose {
+    margin:15% 0;
+}
