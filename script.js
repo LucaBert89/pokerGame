@@ -1,3 +1,39 @@
+const playerCards = document.querySelectorAll(".player__card");
+const cardSuit = ["C", "D", "H", "S"];
+let randomCard = [];
+let i = 0;
+let card;
+
+// assignment of the cards: i looped through the card of the players and assign a random number and suit letter
+playerCards.forEach(function(element, index) {
+    // you can't have the same card for two times, so if the current card is already on the table you have to
+    // generate another card
+    if(!randomCard.includes(card)){ 
+        generateCard(element, index);
+    } else {
+        generateCard(element,index);
+    }
+    element.addEventListener("click", function() {
+        // rules of poker: you can't change the card more than two times
+        if(i < 2) {
+            element.style.backgroundImage = `url("./assets/images/${(Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)]}.jpg")`;   
+            i++;
+        } else {
+            return false;
+        }
+       
+    })
+});
+
+function generateCard(selectedCard, current) {
+    card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
+    randomCard.push(card);
+    cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+    selectedCard.style.backgroundImage = cardImage;
+}
+
+
+/*
 function hand() {
     let rank = [];
     let suit = [];
@@ -135,3 +171,5 @@ function hand() {
   hand("AC", "AH", "4C", "4D","6C")
   
   hand("AC", "2H", "3C", "4D","6C")
+
+  */

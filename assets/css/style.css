@@ -12,13 +12,10 @@
     height:200px;
     margin:0 1rem;
     border:2px solid yellow;
-}
-
-.one {
-    background-image: url("../images/clubs/10C.jpg");
     background-repeat: no-repeat;
     background-size:cover;
 }
+
 
 .win-lose {
     margin:15% 0;
