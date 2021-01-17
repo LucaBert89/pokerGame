@@ -1,38 +1,89 @@
-const playerCards = document.querySelectorAll(".player__card");
+const gameCards = document.querySelectorAll(".player__card");
+const playerActive = [...document.querySelector(".second").children];
+console.log(gameCards);
+const btnPlay = document.querySelector(".player-active__btn");
 const cardSuit = ["C", "D", "H", "S"];
 let randomCard = [];
+let playerCards = [];
+let cpuCards = [];
+
+let rank = [];
+let suit = [];
 let i = 0;
-let card;
 
 // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
-playerCards.forEach(function(element, index) {
-    // you can't have the same card for two times, so if the current card is already on the table you have to
-    // generate another card
-    if(!randomCard.includes(card)){ 
-        generateCard(element, index);
-    } else {
-        generateCard(element,index);
-    }
-    element.addEventListener("click", function() {
-        // rules of poker: you can't change the card more than two times
-        if(i < 2) {
-            element.style.backgroundImage = `url("./assets/images/${(Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)]}.jpg")`;   
-            i++;
-        } else {
-            return false;
-        }
-       
-    })
+
+gameCards.forEach(function(element, index) {
+        // you can't have the same card for two times, so if the current card is already on the table you have to
+        // generate another card
+        generateCard(element, index); 
+        // you can click only on your cards to change them. From 5 start active player cards
+        if(index >= 5) {
+            gameCards[index].addEventListener("click", function() {
+                // rules of poker: you can't change the card more than two times
+                if(i < 2) {
+                    replaceCard(index);
+                    element.style.backgroundImage = cardImage;
+                    i++;
+                } else {
+                    return false;
+                }  
+            })
+        } 
+
+        btnPlay.addEventListener("click", function() {
+            hand(randomCard, index);
+            players(randomCard, index);
+            
+        })     
 });
 
 function generateCard(selectedCard, current) {
     card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
-    randomCard.push(card);
-    cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
-    selectedCard.style.backgroundImage = cardImage;
+
+    if(!randomCard.includes(card)) {
+        randomCard.push(card);
+        cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+        selectedCard.style.backgroundImage = cardImage;
+    } else {
+        generateCard(selectedCard, current);
+    }  
+}
+
+// separate player cards from cpuCards
+function players(random, i) {
+    if(i >= 5) {
+        playerCards.push(random[i]);
+    } else {
+        cpuCards.push(random[i]);
+    }
 }
 
 
+function replaceCard(current) {
+    card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
+    if(randomCard.includes(card)) {
+        return replaceCard(current);
+    } else {
+        randomCard.splice(current,1,card);
+
+        cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+    }
+}
+
+
+function hand(random, selected) {  
+    rank.push(random[selected].slice(0,-1));
+    suit.push(random[selected][random[selected].length-1]);
+}
+
+
+
+
+
+
+
+ 
 /*
 function hand() {
     let rank = [];

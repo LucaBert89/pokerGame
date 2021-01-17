@@ -20,3 +20,11 @@
 .win-lose {
     margin:15% 0;
 }
+
+.player-active__btn {
+    background-color: blue;
+    padding:20px;
+    display:inline-block;
+    cursor:pointer;
+    color:#fff;
+}
