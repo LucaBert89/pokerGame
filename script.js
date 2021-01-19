@@ -1,6 +1,5 @@
 const gameCards = document.querySelectorAll(".player__card");
 const playerActive = [...document.querySelector(".second").children];
-console.log(gameCards);
 const btnPlay = document.querySelector(".player-active__btn");
 const cardSuit = ["C", "D", "H", "S"];
 let randomCard = [];
@@ -12,7 +11,7 @@ let suit = [];
 let i = 0;
 
 // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
-
+let e = true;
 gameCards.forEach(function(element, index) {
         // you can't have the same card for two times, so if the current card is already on the table you have to
         // generate another card
@@ -21,20 +20,25 @@ gameCards.forEach(function(element, index) {
         if(index >= 5) {
             gameCards[index].addEventListener("click", function() {
                 // rules of poker: you can't change the card more than two times
-                if(i < 2) {
+                //if(i < 2) {
                     replaceCard(index);
                     element.style.backgroundImage = cardImage;
+                    /*
                     i++;
                 } else {
                     return false;
                 }  
+                */
             })
         } 
 
         btnPlay.addEventListener("click", function() {
-            hand(randomCard, index);
-            players(randomCard, index);
+            if(e) {
+                players(randomCard, index);
+                e=false;
+            }
             
+
         })     
 });
 
@@ -51,12 +55,17 @@ function generateCard(selectedCard, current) {
 }
 
 // separate player cards from cpuCards
-function players(random, i) {
-    if(i >= 5) {
-        playerCards.push(random[i]);
-    } else {
-        cpuCards.push(random[i]);
-    }
+
+function players(random) {
+ 
+    
+        playerCards = random.slice(5,10);
+        cpuCards = random.slice(0,5);
+    
+    playerCards.forEach(function(element, index) {
+        hand(element, index); 
+    })
+    handCombination(rank);
 }
 
 
@@ -73,12 +82,50 @@ function replaceCard(current) {
 
 
 function hand(random, selected) {  
-    rank.push(random[selected].slice(0,-1));
-    suit.push(random[selected][random[selected].length-1]);
+        rank.push(random.slice(0,-1));
+        suit.push(random[random.length-1]);
+
 }
 
+function handCombination(rank) {
+    var  count = {}; 
+    rank.forEach(function(i) { count[i] = (count[i]||0) + 1;}); 
+    console.log(count);
+    
+    const values = Object.values(count)
+    
+    for (const key of values) {
+        findPair(key, values);
+        threeOrFull(key);
+}
 
+function findPair(howmany, array) {
+    //if there are 2 equal cards then it means that it could be a pair or a two pair.
+    if(howmany === 2) {
+        //if the array length is = 4 ex. ["2","1","1","1"] it means there is a pair
+        if(array.length === 4) {
+            console.log("pair");
+        /*if the array length is = 3 that you could have three equal cards and two different
+          ones or two pairs and another one like ex. ["2", "2", "1"] */
+        } else if(values.length === 3) {
+            // so if there aren't no 3 inside the array than it is a two pair for sure
+            if(howmany !== 3) {
+            console.log("twopair");
+            }
+        };
+    }
+}
 
+function threeOrFull(howmany) {
+    if(howmany === 4) {
+        console.log("full");
+    } else if(howmany === 3) {
+        if(howmany === 2) {
+            console.log("three and pair");
+        }
+    }
+    }
+}
 
 
 
