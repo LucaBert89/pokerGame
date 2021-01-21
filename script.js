@@ -65,7 +65,7 @@ function players(random) {
     playerCards.forEach(function(element, index) {
         hand(element, index); 
     })
-    handCombination(rank);
+    handCombination(rank, suit);
 }
 
 
@@ -87,7 +87,7 @@ function hand(random, selected) {
 
 }
 
-function handCombination(rank) {
+function handCombination(rank, suit) {
     var  count = {}; 
     rank.forEach(function(i) { count[i] = (count[i]||0) + 1;}); 
     console.log(count);
@@ -97,6 +97,9 @@ function handCombination(rank) {
     for (const key of values) {
         findPair(key, values);
         threeOrFull(key);
+    }
+
+straigth(rank, suit);
 }
 
 function findPair(howmany, array) {
@@ -118,12 +121,54 @@ function findPair(howmany, array) {
 
 function threeOrFull(howmany) {
     if(howmany === 4) {
-        console.log("full");
+        console.log("four of a kind");
     } else if(howmany === 3) {
         if(howmany === 2) {
             console.log("three and pair");
+        } else {
+            console.log("Three of a Kind");
         }
     }
+}
+
+function straigth(arrayRank, arraySuit) {
+
+    arrayRank.sort(function(a, b) {
+        return a - b;
+    });
+    let consecutiveArray = [];
+    let sameSuit = [];
+    arrayRank.forEach(function(element, index){
+        if(arrayRank[index+1] - element == 1) {
+            consecutiveArray.push(element);
+        }
+    });
+    if(consecutiveArray.length == 4) {
+            arraySuit.forEach(function(element, index){
+                if(element == arraySuit[index+1]){
+                    sameSuit.push(element);
+                }
+            })
+
+            if(sameSuit.length == 4) {
+                if(Math.min.apply(Math, consecutiveArray) === 10) {
+                    console.log("Royal Flush");
+                } else {
+                    console.log("straight flush");
+                }
+            } else {
+                console.log("Straight")
+            }
+    } else {
+        arraySuit.forEach(function(element, index){
+            if(element == arraySuit[index+1]){
+                sameSuit.push(element);
+            }
+        })
+
+        if(sameSuit.length == 4) {
+            console.log("Flush");
+        }
     }
 }
 
