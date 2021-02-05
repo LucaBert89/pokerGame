@@ -2,29 +2,92 @@
     background-color: brown;
 }
 
-.player {
+.players{
+    display: flex;
+    align-items: center;
+    position:relative;
+    height: 600px;
+}
+
+.cpu {
+    width: 100%;
+    position:absolute;
     display:flex;
     justify-content: center;
+    z-index:-1;
+}
+
+.player2 {  
+    top:0;
+}
+
+.player3 {
+    left:30%;
+    transform:rotate(-90deg);
+}
+
+.player4{
+    right:30%;
+    transform:rotate(90deg);
+}
+
+.active{
+    width:100%;
+    position:absolute;
+    display:flex;
+    justify-content: center;
+    bottom:0;
 }
 
 .player__card {
-    width:10%;
-    height:200px;
-    margin:0 1rem;
+    width:60px;
+    height:150px;
+    padding:0 1rem;
     border:2px solid yellow;
     background-repeat: no-repeat;
     background-size:cover;
-}
-
-
-.win-lose {
-    margin:15% 0;
 }
 
 .player-active__btn {
     background-color: blue;
     padding:20px;
     display:inline-block;
+    cursor:pointer;
+    color:#fff;
+}
+
+.generate{
+    background-color: blue;
+    padding:20px;
+    display:inline-block;
+    cursor:pointer;
+    color:#fff;
+}
+
+.open {
+    background-color: blue;
+    padding:20px;
+    display:inline-block;
+    cursor:pointer;
+    color:#fff;
+}
+
+.input-fish{
+    background-color: blue;
+    padding:20px;
+    display:none;
+    cursor:pointer;
+    color:#fff;
+}
+
+.total-fish {
+    color:#fff;
+    font-size:40px;
+}
+
+.input-fishes-btn{
+    background-color: blue;
+    padding:20px;
     cursor:pointer;
     color:#fff;
 }

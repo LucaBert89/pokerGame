@@ -1,6 +1,14 @@
-const btnPlay = document.querySelector(".player-active__btn");
+const btnOpen = document.querySelector(".player-active__btn");
+const generateBtn = document.querySelector(".generate");
+const btnPlay = document.querySelector(".input-fish");
+let cardsPlayer = document.querySelectorAll(".player__card");
+let playerCommand =document.querySelector(".player-active");
+
+
 const cardSuit = ["C", "D", "H", "S"];
 const body = document.querySelector("body");
+const playersContainer = document.querySelector(".players");
+let totalFish;
 let consecutiveArray = [];
 let randomCard = [];
 let playerCards = [];
@@ -26,25 +34,34 @@ let score = {
 
 // decide how many player you want to play against
 let playerNumbers = prompt("how many players?");
+let points = prompt("how many points?");
+
 
 // generate the players
 function generatePlayers(playerNumbers) {
     let player;
     let card;
+    let cpu = document.createElement("div");
+    cpu.classList.add("cpu-container");
 //max of the player is four: a class and a div will be generated for each player
     if(playerNumbers <= 4) {
         for(j=1; j <= playerNumbers; j++) {
             player = document.createElement("div");
 
-            player.classList.add(`player`);
             
+            playerCash(points, player);
             // to the user will be assigned the active class
             if(j==1) {
                 player.classList.add("active");
+                playersContainer.appendChild(player);
             } else {
-                player.classList.add(`${j}`);
+                player.classList.add(`player${j}`);
+                player.classList.add("cpu")
+                cpu.appendChild(player);
+                playersContainer.appendChild(cpu);
             }
-            body.appendChild(player);
+           
+            
             // five card class will be assigned to every person
             for(let x=1; x <= 5;x++) {
                 card = document.createElement("div");
@@ -59,10 +76,26 @@ function generatePlayers(playerNumbers) {
 
 generatePlayers(playerNumbers);
 
+function playerCash(fish, p) {
+    
+    totalFish = document.createElement("div");
+    totalFish.classList.add("total-fish");
+    totalFish.innerHTML = fish;
+    p.appendChild(totalFish);
+}
+
+
+
+
+generateBtn.addEventListener("click", cardGenerator);
+
 // CARD GENERATION
 function cardGenerator() {
     const gameCards = document.querySelectorAll(".player__card");
+    const player = document.querySelector(".active");
+    const activeCard = player.querySelectorAll(".player__card");
 
+   
     // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
     gameCards.forEach(function(element, index) {
 
@@ -70,31 +103,31 @@ function cardGenerator() {
         generateCard(element, index); 
         /*the first 5 cards are yours (index<5) so you can click only on your cards 
         if you want to change them*/
-        if(index < 5) {
-            gameCards[index].addEventListener("click", function() {
-                // rules of poker: you can't change more than 4 cards
-                //if(i < 4) {
-                    /*call the function replace card passing the index to replace your card
-                    with another*/
-                    replaceCard(index);
-                    element.style.backgroundImage = cardImage;
-                    /*
-                    i++;
-                } else {
-                    return false;
-                }  
-                */
-            })
-        }    
-});
-}
-cardGenerator();
+    });
+    activeCard.forEach(function(element, index) {
+        element.addEventListener("click", function() {
+            // rules of poker: you can't change more than 4 cards
+            //if(i < 4) {
+                /*call the function replace card passing the index to replace your card
+                with another*/
+                replaceCard(index, element);
+                
+                /*
+                i++;
+            } else {
+                return false;
+            }  
+            */
+        })
+    })
+          
+}    
+
 
 // calling generateCard function: selectedCard = the card div; current = index of card div
 function generateCard(selectedCard, current) {
-    console.log(randomCard);
 
-    /*card is a random number with a score between 0 and 13+1(14) 
+    /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
     card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
 
@@ -114,26 +147,30 @@ function generateCard(selectedCard, current) {
 
 
 /* here I pass the index of the card that I clicked among mine*/
-function replaceCard(current) {
-
-    /*card is a random number with a score between 0 and 13+1(14) 
+function replaceCard(current, e) {
+    /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
-    card = (Math.floor(Math.random()*14)+1) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
+    card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
     
     /*if the randomCard already includes the card selected ex. 2H, than return the function
     again to change the card until it's not among the already generated ones*/
     if(randomCard.includes(card)) {
-        return replaceCard(current);
+        return replaceCard(current, e);
     } else {
-        // if the randomCard is unique than replace the card clicked with the new card
+        console.log(randomCard, current, randomCard[current], card);
         randomCard.splice(current,1,card);
-        // the new card image will take the new generated random card
+        console.log(randomCard, current, randomCard[current], card);
         cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+        // if the randomCard is unique than replace the card clicked with the new card
+        // the new card image will take the new generated random card
+        
+        e.style.backgroundImage = cardImage;
     }
 }
 
-// click on play btn
-btnPlay.addEventListener("click", function() {
+
+// OPEN BTN
+btnOpen.addEventListener("click", function() {
     // here rank, suit and result'll empty and refill every time btnplay is clicked
         rank = [];
         suit = [];
@@ -153,8 +190,21 @@ btnPlay.addEventListener("click", function() {
         will be empty and refilled than cardGenerator generate new card for every one*/
         if(result.every(e => e === 0)) {
             console.log("no one can open");
+            rank = [];
+            suit = [];
+            result = [];
             randomCard = [];
             cardGenerator();
+            players(randomCard);
+            compare(result);
+        } else {
+            for(let i=0; i<playerNumbers; i++) {
+                document.querySelectorAll(".total-fish")[i].innerHTML = parseInt(totalFish.innerText) - 1;
+              
+            }
+            btnOpen.style.display = "none";
+            btnPlay.style.display = "block";
+           
         }
 }) 
 
@@ -180,7 +230,6 @@ function players(random) {
     , cardSplit, rank and suit arrays. 
     The goal is to divide the cards among the players, 5 per player with their rank and suit*/
         dealingCards(totalRanks,totalSuits,cardSplit,rank,suit);
-        console.log(totalSuits);
         handCombination(totalRanks,totalSuits); 
 }
     
@@ -214,7 +263,6 @@ function dealingCards(tr,ts,cs,r,s) {
            tr[i].push(ranks);
            ts[i].push(suits)
         }
-        console.log(tr, ts);
     };
 }
 
@@ -226,23 +274,27 @@ function handCombination(rank, suit) {
     let totalCount = [];
     let totalSuit = [];
     let values;
+    let cardNumber;
     // combination variable for functions
     let pairComb;
     let threefullComb;
     let straightComb;
-  
+    count = {};
+    countSuit = {};
     for(let i=0; i<playerNumbers; i++) {
         count = {};
         countSuit = {};
         //I called two functions to count: 1^rank of cards; 2^suit of cards 
         /*here I pass to the function the rank array ex. ["2","3","4","5", "6"], the count obj
+        
         i need to create an array of objects of the player's ranks; the i(players); totalCount that
         is empty but it's going to be the new array of objects with the count divided among players*/
         countValues(rank,count,i, totalCount);
-        
-        /*here the same as for the rank but for the suit*/
+
+        /*here the same I did for the rank but for the suit*/
         countValues(suit,countSuit,i, totalSuit);
 
+        //take the values of rank and suit: the values of the objects
         values = Object.values(totalCount[i]);
         suitvalues = Object.values(totalSuit[i]);
 
@@ -252,13 +304,27 @@ function handCombination(rank, suit) {
         if(pairComb == undefined && threefullComb == undefined && straightComb == undefined) {
            high = noOther(); 
         }
+
+           
     }
+            
+    playRound(cardNumber, totalCount, randomCard);
     
 }
 
-function countValues (v,c,index,total) {
-    
-    v[index].forEach(function(e) { 
+// COUNTVALUES: array=rank or suit array, c=count or countSuit, index=i, total suit or count array empty
+function countValues (array,c,index,total) {
+   /*example letter and number count
+   [
+    0: {C: 2, D: 1, H: 2}
+    1: {C: 1, H: 2, S: 1, D: 1}
+   ]
+   [
+    0: {3: 1, 5: 1, 6: 1, 9: 1, 12: 1}
+    1: {2: 1, 4: 1, 7: 2, 14: 1}
+   ]
+   */
+    array[index].forEach(function(e) { 
         c[e] = (c[e]||0) + 1;
     });
     total.push(c);
@@ -267,7 +333,6 @@ function countValues (v,c,index,total) {
 
 
 function findPair(howmany) {
-    console.log(howmany);
     //if there are 2 equal cards then it means that it could be a pair or a two pair.
     if(howmany.filter(e => e == 2).length === 1) {
         //if the array length is = 4 ex. ["2","1","1","1"] it means there is a pair
@@ -329,9 +394,8 @@ function noOther () {
 function compare(r) {
     if(r.filter(e => e > r[0]).length > 0) {
         console.log(r);
-        console.log(`you ${player.classList.contains(`player ${r[0]}`)} lose`)
         console.log("you lose")
-    } else if(r.filter(e => e < r[0]).length > 0){
+    } else if(r.every(e => e < r[0])){
         console.log(r);
         console.log("win");
     } else {
@@ -341,7 +405,125 @@ function compare(r) {
 }
 
 
- 
+
+function playRound(singleRank, total) {
+    const cpuContainer = document.querySelector(".cpu-container");
+    const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
+    let x=5;
+document.querySelector(".input-fish__btn").addEventListener("click", function(){
+    /*totalFish.innerHTML = parseInt(totalFish.innerHTML) - inputFish.value;
+    tableBet.innerHTML = inputFish.value;*/
+    let cpuCurrent = [];
+    let discardedCard= [];
+    let ranking = [];
+    let replaceIndex;  
+    
+
+    for(let j=5; j<randomCard.length; j+=5) {
+        cpuCurrent.push(randomCard.slice(j, j+5));  
+    }
+
+
+    for(let i=0;i<playerNumbers-1;i++) {
+        singleRank = Object.entries(total[i+1]);
+        ranking = [];
+        discardedCard = [];
+       
+        cpuPlayers[i].querySelectorAll(".player__card").forEach(function(e,index) {
+            ranking.push(cpuCurrent[i][index].slice(0,-1));
+        })
+        console.log(ranking);
+        if(result[i+1] === 1 || result[i+1] === 2 || result[i+1] === 0) {
+            cpuMove(singleRank, discardedCard, cpuPlayers,replaceIndex,i,ranking,x);
+        }
+
+        rank = [];
+        suit = [];
+        result = [];
+        players(randomCard);
+        compare(result);
+        x+=5;
+            let randomNumber = Math.floor(Math.random() * 11);
+        cpuPlayers[i].querySelectorAll(".total-fish").forEach(function(e) {
+            if(e > 0) {
+                if(result[i+1] === 0) {
+                    blufforNot(randomNumber);
+                }
+            }
+        })
+    }
+
+    
+
+})
+}
+        
+
+    function cpuMove(n, dCard, cpuP, newIndex, index,cardRank,x) { 
+        n.forEach(function(element) {
+            if(element[1] === 1) {
+                dCard.push(element[0]);
+            }   
+        })
+
+        let findNumber = /\d+/;
+
+        cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
+            console.log(e);
+            for(let j=0; j < dCard.length; j++) {   
+                if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
+                    newIndex = (cardRank.indexOf(dCard[j]))+x;
+                    console.log(cardRank.indexOf(dCard[j]), dCard[j], cardRank);
+                    replaceCard(newIndex, e);  
+                    break;
+                }
+            }
+        })
+    }
+
+    function blufforNot(randomMove) {
+        console.log(randomMove);
+        if(randomMove > 6) {
+            console.log("punto");
+        } else {
+            console.log("passo");
+        }
+    }
+        /* 
+        console.log(cpuPlayers[i].querySelectorAll(".player__card"));
+        array.push(cpuCards[i]);
+        ranking.push(array[x].slice(0,-1));
+        if(ranking.length === 5) {
+            x=0;
+            if(number[x][1] === 1) {
+                let index = ranking.indexOf(number[x][0]);
+                console.log(number[x]);
+                console.log(ranking);
+                console.log(array[i]);
+                console.log(index);
+                replaceCard(index, cpuCards[i]);
+            }
+        }
+       
+        x++;
+       
+        j++;
+        
+        console.log(j);
+    }*/
+      
+      /*
+      array.forEach(function(e,i){
+        ranking.push(e.slice(0,-1));
+      })
+      if(number[j][1] === 1) {
+        let index = ranking.indexOf(number[j][0]);
+        console.log(number[j]);
+        console.log(ranking);
+        console.log(index);
+        replaceCard(index, cpuCards[5]);
+    }
+      */
 /*
 function hand() {
     let rank = [];
