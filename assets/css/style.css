@@ -72,6 +72,14 @@
     color:#fff;
 }
 
+.next-turn {
+    background-color: blue;
+    padding:20px;
+    display:inline-block;
+    cursor:pointer;
+    color:#fff;
+}
+
 .input-fish{
     background-color: blue;
     padding:20px;
@@ -90,4 +98,28 @@
     padding:20px;
     cursor:pointer;
     color:#fff;
+}
+
+.in-game-fish {
+    position:absolute;
+   
+    display:block;
+    color:#fff;
+   font-size:50px;  
+}
+
+.fish1 {
+    top:-100px;
+}
+
+.fish2 {
+    top:200px;
+}
+
+.fish3 {
+    bottom:300px;
+}
+
+.fish4 {
+    bottom:400px;
 }

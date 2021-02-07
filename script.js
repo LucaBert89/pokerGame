@@ -3,7 +3,8 @@ const generateBtn = document.querySelector(".generate");
 const btnPlay = document.querySelector(".input-fish");
 let cardsPlayer = document.querySelectorAll(".player__card");
 let playerCommand =document.querySelector(".player-active");
-
+let nextTurn = document.querySelector(".next-turn");
+let option = document.querySelectorAll(".option-fish");
 
 const cardSuit = ["C", "D", "H", "S"];
 const body = document.querySelector("body");
@@ -40,6 +41,7 @@ let points = prompt("how many points?");
 // generate the players
 function generatePlayers(playerNumbers) {
     let player;
+    let fishBet;
     let card;
     let cpu = document.createElement("div");
     cpu.classList.add("cpu-container");
@@ -47,9 +49,9 @@ function generatePlayers(playerNumbers) {
     if(playerNumbers <= 4) {
         for(j=1; j <= playerNumbers; j++) {
             player = document.createElement("div");
-
+            fishBet = document.createElement("div");
             
-            playerCash(points, player);
+            playerCash(points, player, fishBet,j);
             // to the user will be assigned the active class
             if(j==1) {
                 player.classList.add("active");
@@ -76,29 +78,49 @@ function generatePlayers(playerNumbers) {
 
 generatePlayers(playerNumbers);
 
-function playerCash(fish, p) {
-    
+function playerCash(fish, p, bet,player) {
+    bet.classList.add("in-game-fish");
+    bet.classList.add(`fish${player}`)
     totalFish = document.createElement("div");
     totalFish.classList.add("total-fish");
     totalFish.innerHTML = fish;
+    p.appendChild(bet);
     p.appendChild(totalFish);
 }
 
-
+function fishSelector() {
+    let ingameFish = document.querySelectorAll(".in-game-fish");
+    let selectorFish = document.querySelector(".input-fish__selector");
+    let optionFish;
+  
+    for(let i=10; i < points; i+=10) {
+        if(selectorFish.children.length === 9) {
+            selectorFish.innerHTML = "";
+        };
+        optionFish = document.createElement("option");
+        optionFish.classList.add("option-fish")
+        optionFish.value = i;
+        optionFish.innerHTML = i;
+        selectorFish.appendChild(optionFish);
+    }
+    selectorFish.addEventListener("change", function(e){
+        ingameFish[0].innerText = e.target.value;
+    })
+}
 
 
 generateBtn.addEventListener("click", cardGenerator);
 
 // CARD GENERATION
 function cardGenerator() {
-    const gameCards = document.querySelectorAll(".player__card");
+    randomCard = [];
+    let gameCards = document.querySelectorAll(".player__card");
     const player = document.querySelector(".active");
     const activeCard = player.querySelectorAll(".player__card");
 
    
     // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
     gameCards.forEach(function(element, index) {
-
        //here I call the function passing the element (card class) and index;
         generateCard(element, index); 
         /*the first 5 cards are yours (index<5) so you can click only on your cards 
@@ -130,7 +152,6 @@ function generateCard(selectedCard, current) {
     /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
     card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
-
     /*you can't have the same card for two times, so if the current card is already on the table you have to
     generate another card
     
@@ -157,9 +178,7 @@ function replaceCard(current, e) {
     if(randomCard.includes(card)) {
         return replaceCard(current, e);
     } else {
-        console.log(randomCard, current, randomCard[current], card);
         randomCard.splice(current,1,card);
-        console.log(randomCard, current, randomCard[current], card);
         cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
         // if the randomCard is unique than replace the card clicked with the new card
         // the new card image will take the new generated random card
@@ -171,11 +190,13 @@ function replaceCard(current, e) {
 
 // OPEN BTN
 btnOpen.addEventListener("click", function() {
+    console.log(randomCard);
     // here rank, suit and result'll empty and refill every time btnplay is clicked
         rank = [];
         suit = [];
         result = [];
-
+    
+        fishSelector();
       // here function players is call passing randomCard, the array that contain all the cards
         players(randomCard);
         /* here the compare function is called passing result. Result are the scores based on
@@ -185,6 +206,7 @@ btnOpen.addEventListener("click", function() {
             1: 1  (pair)
         ]*/
         compare(result);
+       
         /*poker rule:
         if no one of the player have points on their hand, than no one can open, randomCard
         will be empty and refilled than cardGenerator generate new card for every one*/
@@ -193,7 +215,6 @@ btnOpen.addEventListener("click", function() {
             rank = [];
             suit = [];
             result = [];
-            randomCard = [];
             cardGenerator();
             players(randomCard);
             compare(result);
@@ -282,6 +303,7 @@ function handCombination(rank, suit) {
     count = {};
     countSuit = {};
     for(let i=0; i<playerNumbers; i++) {
+        
         count = {};
         countSuit = {};
         //I called two functions to count: 1^rank of cards; 2^suit of cards 
@@ -307,9 +329,8 @@ function handCombination(rank, suit) {
 
            
     }
-            
-    playRound(cardNumber, totalCount, randomCard);
-    
+            console.log(randomCard);
+    playRound(cardNumber, totalCount);
 }
 
 // COUNTVALUES: array=rank or suit array, c=count or countSuit, index=i, total suit or count array empty
@@ -409,21 +430,20 @@ function compare(r) {
 function playRound(singleRank, total) {
     const cpuContainer = document.querySelector(".cpu-container");
     const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
-    let x=5;
+    let ingameFish = document.querySelectorAll(".in-game-fish");
 document.querySelector(".input-fish__btn").addEventListener("click", function(){
+    let x=5;
     /*totalFish.innerHTML = parseInt(totalFish.innerHTML) - inputFish.value;
     tableBet.innerHTML = inputFish.value;*/
     let cpuCurrent = [];
     let discardedCard= [];
     let ranking = [];
+    singleRank = [];
     let replaceIndex;  
     
-
     for(let j=5; j<randomCard.length; j+=5) {
         cpuCurrent.push(randomCard.slice(j, j+5));  
     }
-
-
     for(let i=0;i<playerNumbers-1;i++) {
         singleRank = Object.entries(total[i+1]);
         ranking = [];
@@ -432,7 +452,7 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
         cpuPlayers[i].querySelectorAll(".player__card").forEach(function(e,index) {
             ranking.push(cpuCurrent[i][index].slice(0,-1));
         })
-        console.log(ranking);
+
         if(result[i+1] === 1 || result[i+1] === 2 || result[i+1] === 0) {
             cpuMove(singleRank, discardedCard, cpuPlayers,replaceIndex,i,ranking,x);
         }
@@ -443,37 +463,70 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
         players(randomCard);
         compare(result);
         x+=5;
-            let randomNumber = Math.floor(Math.random() * 11);
-        cpuPlayers[i].querySelectorAll(".total-fish").forEach(function(e) {
-            if(e > 0) {
-                if(result[i+1] === 0) {
-                    blufforNot(randomNumber);
-                }
-            }
-        })
     }
-
     
 
+    for(let i=0; i<playerNumbers-1; i++) {
+       
+        let randomNumber = Math.floor(Math.random() * 11);
+        let cpuFish = cpuPlayers[i].querySelector(".total-fish");
+        console.log(cpuFish);
+        console.log(ingameFish[i]);
+            if(cpuFish.innerText > 0) {
+                if(cpuFish.innerText >= ingameFish[i].innerText) {
+                    if(result[i+1] === 0) {
+                        blufforNot(randomNumber, ingameFish[i+1], ingameFish[i], cpuFish);
+                        
+                    } else if(result[i+1] >= 1 && result[i+1] <= 3 ) {
+                        console.log(ingameFish[i+1].innerText);
+                        if(ingameFish[i].innerText <= (parseInt(cpuFish.innerText) * 2/5)) {
+                            ingameFish[i+1].innerText = parseInt(ingameFish[i].innerText);
+                            cpuFish.innerText -= parseInt(ingameFish[i+1].innerText); 
+                        } else {
+                            ingameFish[i+1].innerText = 0;
+                        }
+                        
+                    } else if(result[i] >= 4 && result[i] <= 6 ) {
+                        if(ingameFish[i-1].innerText <= (parseInt(cpuFish.innerText) * 3/5)) {
+                            ingameFish[i].innerText = parseInt(ingameFish[i-1].innerText);
+                            cpuFish.innerText -= parseInt(ingameFish[i].innerText); 
+                        } else {
+                            ingameFish[i].innerText = 0;
+                        }
+                    } else if(result[i] >= 7 ) {
+                        ingameFish[i].innerText = parseInt(cpuFish.innerText);
+                        cpuFish.innerText -= parseInt(ingameFish[i].innerText); 
+                    }
+                }
+                
+            }
+        
+    }
+    
+
+    
+    console.log(randomCard);
 })
 }
         
 
     function cpuMove(n, dCard, cpuP, newIndex, index,cardRank,x) { 
+        dCard = [];
         n.forEach(function(element) {
             if(element[1] === 1) {
                 dCard.push(element[0]);
             }   
         })
-
+        console.log(dCard);
+        console.log(newIndex);
         let findNumber = /\d+/;
 
         cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
-            console.log(e);
-            for(let j=0; j < dCard.length; j++) {   
+            for(let j=0; j < dCard.length; j++) { 
+                console.log(e.style.backgroundImage.match(findNumber)); 
                 if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
                     newIndex = (cardRank.indexOf(dCard[j]))+x;
-                    console.log(cardRank.indexOf(dCard[j]), dCard[j], cardRank);
+                    console.log(newIndex, cardRank); 
                     replaceCard(newIndex, e);  
                     break;
                 }
@@ -481,14 +534,38 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
         })
     }
 
-    function blufforNot(randomMove) {
-        console.log(randomMove);
-        if(randomMove > 6) {
-            console.log("punto");
+    function blufforNot(randomMove ,currentFish, betPrev, totalFish) {
+        console.log(currentFish, betPrev);
+       /* console.log(randomMove,currentFish, betPrev);
+        if(randomMove > 6) {*/
+            console.log("bluff");
+            let bluff = parseInt(betPrev.innerText) + Math.round(parseInt(totalFish.innerText) * 1/5);
+            currentFish.innerText = bluff;
+            totalFish.innerText -= bluff;
+            /*
         } else {
             console.log("passo");
-        }
+        }*/
     }
+
+  
+nextTurn.addEventListener("click",function() {
+    let ingameFish = document.querySelectorAll(".in-game-fish");
+    rank = [];
+    suit = [];
+    result = [];
+    totalCount = [];
+    totalSuit = []; 
+    cardGenerator();
+    console.log(randomCard);
+    players(randomCard);
+    compare(result);
+    for(i =0; i<playerNumbers; i++) {
+        ingameFish[i].innerText = "";
+    }
+    btnOpen.style.display = "inline-block";
+})
+ 
         /* 
         console.log(cpuPlayers[i].querySelectorAll(".player__card"));
         array.push(cpuCards[i]);
