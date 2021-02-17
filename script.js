@@ -9,7 +9,7 @@ let option = document.querySelectorAll(".option-fish");
 const cardSuit = ["C", "D", "H", "S"];
 const body = document.querySelector("body");
 const playersContainer = document.querySelector(".players");
-let totalFish;
+
 let consecutiveArray = [];
 let randomCard = [];
 let playerCards = [];
@@ -41,6 +41,7 @@ let points = prompt("how many points?");
 // generate the players
 function generatePlayers(playerNumbers) {
     let player;
+    let totalCash;
     let fishBet;
     let card;
     let cpu = document.createElement("div");
@@ -51,7 +52,7 @@ function generatePlayers(playerNumbers) {
             player = document.createElement("div");
             fishBet = document.createElement("div");
             
-            playerCash(points, player, fishBet,j);
+            playerCash(player, fishBet,j, totalCash);
             // to the user will be assigned the active class
             if(j==1) {
                 player.classList.add("active");
@@ -78,23 +79,22 @@ function generatePlayers(playerNumbers) {
 
 generatePlayers(playerNumbers);
 
-function playerCash(fish, p, bet,player) {
+function playerCash(p, bet,player, cash) {
     bet.classList.add("in-game-fish");
     bet.classList.add(`fish${player}`)
-    totalFish = document.createElement("div");
-    totalFish.classList.add("total-fish");
-    totalFish.innerHTML = fish;
+    cash = document.createElement("div");
+    cash.classList.add("total-fish");
+    cash.innerHTML = points;
     p.appendChild(bet);
-    p.appendChild(totalFish);
+    p.appendChild(cash);
 }
 
-function fishSelector() {
-    let ingameFish = document.querySelectorAll(".in-game-fish");
+function fishSelector(ingame) {
+    
     let selectorFish = document.querySelector(".input-fish__selector");
     let optionFish;
-  
-    for(let i=10; i < points; i+=10) {
-        if(selectorFish.children.length === 9) {
+    for(let i=0; i < points; i+=10) {
+        if(selectorFish.children.length === 10) {
             selectorFish.innerHTML = "";
         };
         optionFish = document.createElement("option");
@@ -104,7 +104,7 @@ function fishSelector() {
         selectorFish.appendChild(optionFish);
     }
     selectorFish.addEventListener("change", function(e){
-        ingameFish[0].innerText = e.target.value;
+        ingame[0].textContent = e.target.value;
     })
 }
 
@@ -189,24 +189,27 @@ function replaceCard(current, e) {
 
 
 // OPEN BTN
+let ingameFish = document.querySelectorAll(".in-game-fish");
+let totalFish = document.querySelectorAll(".total-fish");
 btnOpen.addEventListener("click", function() {
-    console.log(randomCard);
+    
+
     // here rank, suit and result'll empty and refill every time btnplay is clicked
         rank = [];
         suit = [];
-        result = [];
-    
-        fishSelector();
+        result = [];    
+        fishSelector(ingameFish);
       // here function players is call passing randomCard, the array that contain all the cards
         players(randomCard);
+      
         /* here the compare function is called passing result. Result are the scores based on
         the card combinations, displayed like this:
         [
             0: 9  (royal flush)
             1: 1  (pair)
         ]*/
-        compare(result);
-       
+
+        
         /*poker rule:
         if no one of the player have points on their hand, than no one can open, randomCard
         will be empty and refilled than cardGenerator generate new card for every one*/
@@ -216,23 +219,23 @@ btnOpen.addEventListener("click", function() {
             suit = [];
             result = [];
             cardGenerator();
-            players(randomCard);
-            compare(result);
+            
+            
         } else {
             for(let i=0; i<playerNumbers; i++) {
-                document.querySelectorAll(".total-fish")[i].innerHTML = parseInt(totalFish.innerText) - 1;
-              
+                totalFish[i].innerHTML = totalFish[i].innerHTML - 10;
             }
             btnOpen.style.display = "none";
             btnPlay.style.display = "block";
            
         }
+      
+        compare(result);
 }) 
 
 /* PLAYER FUNCTION: to separate rank and suit and use them to display combinations
 random = randomCard (the array that contains all the cards of the game*/
 function players(random) {
-    
     /*for each card of the game call the hand function passing the single card and index
     to separate the rank and the suit*/
     random.forEach(function(element, index) {   
@@ -288,14 +291,16 @@ function dealingCards(tr,ts,cs,r,s) {
 }
 
 /* HAND COMBINATION: rank array and suit array*/
+let totalCount;
+let cardNumber;
 function handCombination(rank, suit) {
     //variables for counting the elements: useful for pair or threes or others
     let count = {};
     let countSuit = {};
-    let totalCount = [];
+    totalCount = [];
     let totalSuit = [];
     let values;
-    let cardNumber;
+    
     // combination variable for functions
     let pairComb;
     let threefullComb;
@@ -329,8 +334,8 @@ function handCombination(rank, suit) {
 
            
     }
-            console.log(randomCard);
-    playRound(cardNumber, totalCount);
+    console.log("ok");
+
 }
 
 // COUNTVALUES: array=rank or suit array, c=count or countSuit, index=i, total suit or count array empty
@@ -427,25 +432,29 @@ function compare(r) {
 
 
 
-function playRound(singleRank, total) {
+document.querySelector(".input-fish__btn").addEventListener("click", function(){
     const cpuContainer = document.querySelector(".cpu-container");
     const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
-    let ingameFish = document.querySelectorAll(".in-game-fish");
-document.querySelector(".input-fish__btn").addEventListener("click", function(){
+    let totalF;
+    console.log("mi ripeto");
+    console.log(cardNumber);
+    console.log(totalCount);
+    totalF = document.querySelectorAll(".total-fish").innerHTML;
+
     let x=5;
     /*totalFish.innerHTML = parseInt(totalFish.innerHTML) - inputFish.value;
     tableBet.innerHTML = inputFish.value;*/
     let cpuCurrent = [];
     let discardedCard= [];
     let ranking = [];
-    singleRank = [];
+    cardNumber = [];
     let replaceIndex;  
     
     for(let j=5; j<randomCard.length; j+=5) {
         cpuCurrent.push(randomCard.slice(j, j+5));  
     }
     for(let i=0;i<playerNumbers-1;i++) {
-        singleRank = Object.entries(total[i+1]);
+        cardNumber = Object.entries(totalCount[i+1]);
         ranking = [];
         discardedCard = [];
        
@@ -454,61 +463,81 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
         })
 
         if(result[i+1] === 1 || result[i+1] === 2 || result[i+1] === 0) {
-            cpuMove(singleRank, discardedCard, cpuPlayers,replaceIndex,i,ranking,x);
+            cpuMove(cardNumber, discardedCard, cpuPlayers,replaceIndex,i,ranking,x);
         }
 
-        rank = [];
-        suit = [];
-        result = [];
-        players(randomCard);
-        compare(result);
+       
         x+=5;
     }
+    rank = [];
+    suit = [];
+    result = [];
+    players(randomCard);
+    compare(result);
     
-
-    for(let i=0; i<playerNumbers-1; i++) {
-       
+    for(let i=1; i<playerNumbers; i++) {
+        console.log(ingameFish[i-1]);
         let randomNumber = Math.floor(Math.random() * 11);
-        let cpuFish = cpuPlayers[i].querySelector(".total-fish");
-        console.log(cpuFish);
-        console.log(ingameFish[i]);
-            if(cpuFish.innerText > 0) {
-                if(cpuFish.innerText >= ingameFish[i].innerText) {
-                    if(result[i+1] === 0) {
-                        blufforNot(randomNumber, ingameFish[i+1], ingameFish[i], cpuFish);
-                        
-                    } else if(result[i+1] >= 1 && result[i+1] <= 3 ) {
-                        console.log(ingameFish[i+1].innerText);
-                        if(ingameFish[i].innerText <= (parseInt(cpuFish.innerText) * 2/5)) {
-                            ingameFish[i+1].innerText = parseInt(ingameFish[i].innerText);
-                            cpuFish.innerText -= parseInt(ingameFish[i+1].innerText); 
-                        } else {
-                            ingameFish[i+1].innerText = 0;
-                        }
-                        
-                    } else if(result[i] >= 4 && result[i] <= 6 ) {
-                        if(ingameFish[i-1].innerText <= (parseInt(cpuFish.innerText) * 3/5)) {
-                            ingameFish[i].innerText = parseInt(ingameFish[i-1].innerText);
-                            cpuFish.innerText -= parseInt(ingameFish[i].innerText); 
-                        } else {
-                            ingameFish[i].innerText = 0;
-                        }
-                    } else if(result[i] >= 7 ) {
-                        ingameFish[i].innerText = parseInt(cpuFish.innerText);
-                        cpuFish.innerText -= parseInt(ingameFish[i].innerText); 
+        let addedNumber;
+        if(ingameFish[i-1].textContent > 0) {
+            console.log("qui");
+            if(totalFish[i].textContent >= ingameFish[i-1].textContent) {
+                if(result[i] === 0) {
+                    blufforNot(randomNumber, ingameFish[i], ingameFish[i-1], totalFish[i]);
+                } else if(result[i] >= 1 && result[i] <= 3 ) {
+                    if(ingameFish[i-1].textContent <= (totalFish[i].textContent * 2/5)) {
+                        ingameFish[i].textContent = ingameFish[i-1].textContent;
+                        //ingameFish[i+1].textContent = 20;
+                        console.log(">1 e <3");
+                        totalFish[i].textContent -= ingameFish[i].textContent;  
+                } else {
+                        console.log("ok");
+                        ingameFish[i].textContent = 0;
                     }
                 }
-                
+                    
+                else if(result[i] >= 4 && result[i] <= 6 ) {
+                    if(ingameFish[i-1].textContent <= (totalF[i].textContent) * 3/5) {
+                        ingameFish[i].textContent = ingameFish[i-1].textContent;
+                        totalFish[i].textContent -= ingameFish[i].textContent; 
+                    } else {
+                        ingameFish[i].textContent = 0;
+                    }
+                } else if(result[i] >= 7 ) {
+                    ingameFish[i].textContent = totalFish[i].textContent;
+                    totalFish[i].textContent -= ingameFish[i].textContent; 
+                }
             }
-        
-    }
+        } else if(totalFish[i].textContent >= 0 && ingameFish[i-1].textContent == 0) {
+            console.log("ok");
+            
+            if(result[i] === 0) {
+                addedNumber = totalFish[i].textContent * 2/10;
+                ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
+            } else if(result[i] >= 1 && result[i] <= 3 ) {
+                addedNumber = totalFish[i].textContent * 1/10;
+                ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
+            } else if(result[i] >= 4 && result[i] <= 6 ) {
+                addedNumber = totalFish[i].textContent * 4/10;
+                ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
+            } else if(result[i] >= 7) {
+                addedNumber = totalFish[i].textContent * 7/10;
+                ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
+            } 
+        }
+                    
+    }                          
+       //     }
+       
     
-
     
-    console.log(randomCard);
 })
-}
-        
+
+
+
+
+
+
 
     function cpuMove(n, dCard, cpuP, newIndex, index,cardRank,x) { 
         dCard = [];
@@ -517,16 +546,12 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
                 dCard.push(element[0]);
             }   
         })
-        console.log(dCard);
-        console.log(newIndex);
         let findNumber = /\d+/;
 
         cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
             for(let j=0; j < dCard.length; j++) { 
-                console.log(e.style.backgroundImage.match(findNumber)); 
                 if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
                     newIndex = (cardRank.indexOf(dCard[j]))+x;
-                    console.log(newIndex, cardRank); 
                     replaceCard(newIndex, e);  
                     break;
                 }
@@ -534,37 +559,34 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
         })
     }
 
-    function blufforNot(randomMove ,currentFish, betPrev, totalFish) {
-        console.log(currentFish, betPrev);
+    function blufforNot(randomMove ,currentFish, betPrev, total) {
        /* console.log(randomMove,currentFish, betPrev);
         if(randomMove > 6) {*/
             console.log("bluff");
-            let bluff = parseInt(betPrev.innerText) + Math.round(parseInt(totalFish.innerText) * 1/5);
-            currentFish.innerText = bluff;
-            totalFish.innerText -= bluff;
+            let bluff = parseInt(betPrev.textContent) + Math.round(parseInt(total.textContent) * 1/10);
+            console.log(bluff);
+            currentFish.textContent = Math.round(bluff / 10) * 10;;
+            total.textContent -= currentFish.textContent;
             /*
         } else {
             console.log("passo");
         }*/
     }
 
-  
-nextTurn.addEventListener("click",function() {
-    let ingameFish = document.querySelectorAll(".in-game-fish");
-    rank = [];
-    suit = [];
-    result = [];
-    totalCount = [];
-    totalSuit = []; 
-    cardGenerator();
-    console.log(randomCard);
-    players(randomCard);
-    compare(result);
-    for(i =0; i<playerNumbers; i++) {
-        ingameFish[i].innerText = "";
-    }
-    btnOpen.style.display = "inline-block";
-})
+
+    nextTurn.addEventListener("click",function() {
+        rank = [];
+        suit = [];
+        result = [];
+        totalCount = [];
+        totalSuit = []; 
+        for(let i =0; i<playerNumbers; i++) {
+            ingameFish[i].innerHTML = "";
+        }
+        cardGenerator();
+        btnOpen.style.display = "inline-block";
+    })
+
  
         /* 
         console.log(cpuPlayers[i].querySelectorAll(".player__card"));
