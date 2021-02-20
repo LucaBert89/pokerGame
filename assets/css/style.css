@@ -17,21 +17,21 @@
     z-index:-1;
 }
 
-.player2 {  
+.player1 {  
     top:0;
 }
 
-.player3 {
+.player2 {
     left:30%;
     transform:rotate(-90deg);
 }
 
-.player4{
+.player3{
     right:30%;
     transform:rotate(90deg);
 }
 
-.active{
+.player0{
     width:100%;
     position:absolute;
     display:flex;
@@ -80,6 +80,15 @@
     color:#fff;
 }
 
+.stay, .leave, .show {
+    background-color: blue;
+    padding:20px;
+    display:inline-block;
+    cursor:pointer;
+    color:#fff;
+    display:none;
+}
+
 .input-fish{
     background-color: blue;
     padding:20px;
@@ -108,18 +117,18 @@
    font-size:50px;  
 }
 
-.fish1 {
+.fish0 {
     top:-100px;
 }
 
-.fish2 {
+.fish1 {
     top:200px;
+}
+
+.fish2 {
+    top:-200px;
 }
 
 .fish3 {
     bottom:300px;
-}
-
-.fish4 {
-    bottom:400px;
 }

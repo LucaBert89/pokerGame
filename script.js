@@ -1,6 +1,10 @@
 const btnOpen = document.querySelector(".player-active__btn");
 const generateBtn = document.querySelector(".generate");
 const btnPlay = document.querySelector(".input-fish");
+const btnStay = document.querySelector(".stay");
+const btnLeave = document.querySelector(".leave");
+const btnShow = document.querySelector(".show");
+
 let cardsPlayer = document.querySelectorAll(".player__card");
 let playerCommand =document.querySelector(".player-active");
 let nextTurn = document.querySelector(".next-turn");
@@ -48,14 +52,14 @@ function generatePlayers(playerNumbers) {
     cpu.classList.add("cpu-container");
 //max of the player is four: a class and a div will be generated for each player
     if(playerNumbers <= 4) {
-        for(j=1; j <= playerNumbers; j++) {
+        for(j=0; j <= playerNumbers-1; j++) {
             player = document.createElement("div");
             fishBet = document.createElement("div");
             
             playerCash(player, fishBet,j, totalCash);
             // to the user will be assigned the active class
-            if(j==1) {
-                player.classList.add("active");
+            if(j==0) {
+                player.classList.add(`player${j}`);
                 playersContainer.appendChild(player);
             } else {
                 player.classList.add(`player${j}`);
@@ -93,8 +97,10 @@ function fishSelector(ingame) {
     
     let selectorFish = document.querySelector(".input-fish__selector");
     let optionFish;
-    for(let i=0; i < points; i+=10) {
-        if(selectorFish.children.length === 10) {
+    for(let i=0; i < totalFish[0].textContent; i+=10) {
+        console.log(selectorFish.children.length);
+        console.log(totalFish[0].textContent/10);
+        if(selectorFish.children.length === totalFish[0].textContent/10 +1) {
             selectorFish.innerHTML = "";
         };
         optionFish = document.createElement("option");
@@ -104,8 +110,11 @@ function fishSelector(ingame) {
         selectorFish.appendChild(optionFish);
     }
     selectorFish.addEventListener("change", function(e){
-        ingame[0].textContent = e.target.value;
+        ingame[0].textContent = 10;
+        ingame[0].textContent = parseInt(ingame[0].textContent) + parseInt(e.target.value);
     })
+
+   
 }
 
 
@@ -115,7 +124,7 @@ generateBtn.addEventListener("click", cardGenerator);
 function cardGenerator() {
     randomCard = [];
     let gameCards = document.querySelectorAll(".player__card");
-    const player = document.querySelector(".active");
+    const player = document.querySelector(".player0");
     const activeCard = player.querySelectorAll(".player__card");
 
    
@@ -192,15 +201,44 @@ function replaceCard(current, e) {
 let ingameFish = document.querySelectorAll(".in-game-fish");
 let totalFish = document.querySelectorAll(".total-fish");
 btnOpen.addEventListener("click", function() {
-    
-
-    // here rank, suit and result'll empty and refill every time btnplay is clicked
+     // here rank, suit and result'll empty and refill every time btnplay is clicked
+     rank = [];
+     suit = [];
+     result = [];    
+     fishSelector(ingameFish);
+   // here function players is call passing randomCard, the array that contain all the cards
+     players(randomCard);
+     
+    if(result.every(e => e === 0)) {
+        console.log("no one can open");
         rank = [];
         suit = [];
-        result = [];    
-        fishSelector(ingameFish);
-      // here function players is call passing randomCard, the array that contain all the cards
-        players(randomCard);
+        result = [];
+        cardGenerator();
+        
+        
+    } else {
+        let j = 0;
+        for(let i=0; i<playerNumbers; i++) {
+            if(totalFish[i].textContent > 0) {
+                totalFish[i].textContent = totalFish[i].textContent - 10;
+                ingameFish[i].textContent = 10;
+            } else if(totalFish[i].textContent == 0 && i > 0) {
+                j++;
+                console.log(j);
+                console.log(document.querySelector(`.player${i}`));
+                document.querySelector(`.player${i}`).remove();
+                console.log(`player${i} lose`);
+                delete result[i];
+            }
+        }
+        playerNumbers -= j;
+        btnOpen.style.display = "none";
+        btnPlay.style.display = "block";
+       
+    }
+
+   
       
         /* here the compare function is called passing result. Result are the scores based on
         the card combinations, displayed like this:
@@ -213,28 +251,16 @@ btnOpen.addEventListener("click", function() {
         /*poker rule:
         if no one of the player have points on their hand, than no one can open, randomCard
         will be empty and refilled than cardGenerator generate new card for every one*/
-        if(result.every(e => e === 0)) {
-            console.log("no one can open");
-            rank = [];
-            suit = [];
-            result = [];
-            cardGenerator();
-            
-            
-        } else {
-            for(let i=0; i<playerNumbers; i++) {
-                totalFish[i].innerHTML = totalFish[i].innerHTML - 10;
-            }
-            btnOpen.style.display = "none";
-            btnPlay.style.display = "block";
-           
-        }
-      
+       
+
+        
+        console.log(result[0]);
         compare(result);
 }) 
 
 /* PLAYER FUNCTION: to separate rank and suit and use them to display combinations
 random = randomCard (the array that contains all the cards of the game*/
+    let totalRanks;
 function players(random) {
     /*for each card of the game call the hand function passing the single card and index
     to separate the rank and the suit*/
@@ -242,7 +268,7 @@ function players(random) {
     hand(element, index); 
     })
     // here the totalRanks and totalSuits are emptyed and refilled every time btn is clicked
-    const totalRanks= [];
+    totalRanks= [];
     const totalSuits = [];
     
     /* cardSplit is used to deal the card to the players rounding with ceil in combination
@@ -293,6 +319,7 @@ function dealingCards(tr,ts,cs,r,s) {
 /* HAND COMBINATION: rank array and suit array*/
 let totalCount;
 let cardNumber;
+let key;
 function handCombination(rank, suit) {
     //variables for counting the elements: useful for pair or threes or others
     let count = {};
@@ -324,8 +351,8 @@ function handCombination(rank, suit) {
         //take the values of rank and suit: the values of the objects
         values = Object.values(totalCount[i]);
         suitvalues = Object.values(totalSuit[i]);
-
-        pairComb = findPair(values);
+        key = Object.keys(totalCount[i]);
+        pairComb = findPair(values, key);
         threefullComb = threeOrFull(values);
         straightComb = straigth(rank[i], suitvalues);
         if(pairComb == undefined && threefullComb == undefined && straightComb == undefined) {
@@ -358,10 +385,15 @@ function countValues (array,c,index,total) {
 
 
 
-function findPair(howmany) {
+function findPair(howmany, k) {
+    console.log(howmany);
     //if there are 2 equal cards then it means that it could be a pair or a two pair.
-    if(howmany.filter(e => e == 2).length === 1) {
+    if(howmany.filter(e => e == 2).length === 1 && howmany.filter(e => e !== 2).length > 1) {
         //if the array length is = 4 ex. ["2","1","1","1"] it means there is a pair
+            console.log(howmany);
+            howmany.forEach(function(e,index) {
+                if(e == 2) console.log(k[index]);
+            }); 
             return result.push(score["pair"]);
         /*if the array length is = 3 you could have three equal cards and two different
           ones or two pairs and another one like ex. ["2", "2", "1"] */
@@ -430,12 +462,12 @@ function compare(r) {
     }
 }
 
-
-
+let ontablefish;
+let randomNumber = Math.floor(Math.random() * 11);
 document.querySelector(".input-fish__btn").addEventListener("click", function(){
     const cpuContainer = document.querySelector(".cpu-container");
     const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
-    let totalF;
+    totalFish[0].textContent -= ingameFish[0].textContent;
     console.log("mi ripeto");
     console.log(cardNumber);
     console.log(totalCount);
@@ -477,62 +509,260 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
     
     for(let i=1; i<playerNumbers; i++) {
         console.log(ingameFish[i-1]);
-        let randomNumber = Math.floor(Math.random() * 11);
+        
         let addedNumber;
-        if(ingameFish[i-1].textContent > 0) {
+        if(ingameFish[i-1].textContent > 10) {
             console.log("qui");
             if(totalFish[i].textContent >= ingameFish[i-1].textContent) {
                 if(result[i] === 0) {
-                    blufforNot(randomNumber, ingameFish[i], ingameFish[i-1], totalFish[i]);
+                    blufforNot(randomNumber, ingameFish[i], ingameFish[i-1].textContent, totalFish[i]);
                 } else if(result[i] >= 1 && result[i] <= 3 ) {
-                    if(ingameFish[i-1].textContent <= (totalFish[i].textContent * 2/5)) {
-                        ingameFish[i].textContent = ingameFish[i-1].textContent;
+                    addedNumber = totalFish[i].textContent * 2/10;
+                    if((totalFish[i].textContent * 2/5) >= ingameFish[i-1].textContent) {
+                        ingameFish[i].textContent = parseInt(ingameFish[i-1].textContent) + Math.round(addedNumber / 10) * 10;
                         //ingameFish[i+1].textContent = 20;
                         console.log(">1 e <3");
                         totalFish[i].textContent -= ingameFish[i].textContent;  
                 } else {
                         console.log("ok");
-                        ingameFish[i].textContent = 0;
+                        ingameFish[i].textContent = 10;
                     }
                 }
                     
                 else if(result[i] >= 4 && result[i] <= 6 ) {
-                    if(ingameFish[i-1].textContent <= (totalF[i].textContent) * 3/5) {
+                    if((totalFish[i].textContent) * 3/5 >= ingameFish[i-1].textContent) {
                         ingameFish[i].textContent = ingameFish[i-1].textContent;
                         totalFish[i].textContent -= ingameFish[i].textContent; 
                     } else {
-                        ingameFish[i].textContent = 0;
+                        ingameFish[i].textContent = 10;
                     }
                 } else if(result[i] >= 7 ) {
                     ingameFish[i].textContent = totalFish[i].textContent;
                     totalFish[i].textContent -= ingameFish[i].textContent; 
                 }
             }
-        } else if(totalFish[i].textContent >= 0 && ingameFish[i-1].textContent == 0) {
-            console.log("ok");
-            
-            if(result[i] === 0) {
-                addedNumber = totalFish[i].textContent * 2/10;
-                ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
-            } else if(result[i] >= 1 && result[i] <= 3 ) {
-                addedNumber = totalFish[i].textContent * 1/10;
-                ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
-            } else if(result[i] >= 4 && result[i] <= 6 ) {
-                addedNumber = totalFish[i].textContent * 4/10;
-                ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
-            } else if(result[i] >= 7) {
-                addedNumber = totalFish[i].textContent * 7/10;
-                ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
-            } 
+        } else if(ingameFish[i-1].textContent == 10 ) {
+            if(totalFish[i].textContent > 0) {
+                console.log("ok");
+                
+                if(result[i] === 0) {
+                    addedNumber = totalFish[i].textContent * 2/10;
+                    ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
+                } else if(result[i] >= 1 && result[i] <= 3 ) {
+                    addedNumber = totalFish[i].textContent * 1/10;
+                    ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
+                } else if(result[i] >= 4 && result[i] <= 6 ) {
+                    addedNumber = totalFish[i].textContent * 4/10;
+                    ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
+                } else if(result[i] >= 7) {
+                    addedNumber = totalFish[i].textContent * 7/10;
+                    ingameFish[i].textContent = Math.round(addedNumber / 10) * 10;
+                } 
+            } else if (totalFish[i].textContent == 0) {
+                continue;
+            }
+        }           
+    }    
+  
+    ontablefish = [...ingameFish].map(e => e.textContent);
+   
+    if(ingameFish[0].textContent < Math.max(...ontablefish)) {
+        if(ingameFish[0].textContent != 0) {
+            btnStay.style.display = "inline-block";
+            btnLeave.style.display = "inline-block";
+        } else {
+            btnShow.style.display = "inline-block";
         }
-                    
-    }                          
+    }
        //     }
-       
-    
     
 })
+let previous;
+btnStay.addEventListener("click", function() {
+    previous = ingameFish[0].textContent;
+    ingameFish[0].textContent = Math.max(...ontablefish);
+    totalFish[0].textContent = ingameFish[0].textContent - previous;
+    for(let i=1; i<playerNumbers; i++) {
+        previous = ingameFish[i].textContent;
+        if(totalFish[i].textContent >= (Math.max(...ontablefish) - previous)) {
+            if(result[i] === 0) {
+                if(ingameFish[i].textContent == 10) {
+                    continue;
+                } else {
+                    ingameFish[i].textContent = Math.max(...ontablefish);
+                    totalFish[i].textContent = ingameFish[i].textContent - previous;
+                }
+                //blufforNot(randomNumber, ingameFish[i], Math.max(...ontablefish), totalFish[i]);
+            } else if(result[i] >= 1 && result[i] <= 3 ) {
+                if((totalFish[i].textContent * 2/5) >= Math.max(...ontablefish)) {
+                    ingameFish[i].textContent = Math.max(...ontablefish);
+                    //ingameFish[i+1].textContent = 20;
+                    console.log(">1 e <3"); 
+                    totalFish[i].textContent = ingameFish[i].textContent - previous;  
+            } else {
+                    console.log("ok");
+                    continue;
+                }
+            }
+                
+            else if(result[i] >= 4 && result[i] <= 6 ) {
+                if((totalFish[i].textContent) * 3/5 >= Math.max(...ontablefish)) {
+                    ingameFish[i].textContent = Math.max(...ontablefish);
+                    totalFish[i].textContent = ingameFish[i].textContent - previous; 
+                } else {
+                    continue;
+                }
+            } else if(result[i] >= 7 ) {
+                ingameFish[i].textContent = Math.max(...ontablefish);
+                totalFish[i].textContent = ingameFish[i].textContent - previous;  
+            }
+        } else {
+            continue;
+        }
+        } 
 
+        /*
+            here playersIn are the players that match the max bet of fish on the table
+            here is returned the index of the players that play the max and accept the bet 
+            ex.[0, undefined, 2, undefined] the players in the game are the number 0 and 2
+        */
+        let playersIn = [...ingameFish].map((e,index) =>{
+            if(e.textContent == Math.max(...ontablefish)) return index;
+        }).filter(e => e != undefined);
+    //here i took out the undefined values that don't match the max
+
+//CHOOSING THE WINNER
+        let winnerPlayer= [];
+        let winner;
+        let ingameScores = [];
+        //Loop through every playersIn (players that accept the bet), 
+         
+        playersIn.forEach(function(e) {
+        /*push every player inside the ingameScores function with the score as value.
+          ex. below only the player1 and the third bet, the player1 has a score of 
+          two (double pair) the player3 has a couple (score 1)
+          {
+              1:2
+          }
+          {
+              3:1
+          }
+        */
+                ingameScores.push({[e]:result[e]});
+        })
+    // compare the scores of the players in the game looping through the ingameScores array
+        let compareScores = [];
+        ingameScores.forEach(function(e,index) {
+            //push the scores inside the compareScores array
+            /*
+                ex. e = {0:1}
+                playersIn = [0,1,2]
+                e[playersIn[index]] = e[0] = 1 (score)
+            */ 
+            compareScores.push(e[playersIn[index]]);
+        })
+        /*the winner is max value you found into compareScores array
+        ex. [
+            {0, 2, 3}
+        ]
+        winner is 3
+        */
+        winner = Math.max(...compareScores);
+        console.log(winner);
+    // FIND THE CORRESPONDING KEY (PLAYER NUMBER).
+        /*we found the max score that won the game, but whose player is it?
+        TWO CASES:
+        1. more than a winner: 2 or more players with the same score;
+        2. one winner;
+        */  
+        let keyPlayers = [];
+        
+        let totalCardSum = [];
+/*1. More than a winner
+        if the scores that are equal to winner are more than 1 we have multiple players with
+        the same score and we've to found a different method to declare the winner
+        Here among the players with the same score, the one which sum of the rank of the
+        cards is higher win.
+*/
+        if(compareScores.filter(e => e === winner).length > 1) {
+            ingameScores.forEach(function(e,index){
+            /* look into ingameScores array to find the keys (players number) that have the same score 
+                push inside keyPlayers array.
+                ex of keyPlayers if there are three players that stay in the bet:
+                [
+                    0: "0" (this is the player number that has the same score as the max)
+                    1: "1"
+                    2: "3"
+                ]
+            */
+            keyPlayers.push( Object.keys(ingameScores[index]).find(e => ingameScores[index][e] === winner));
+            })
+            let totalScore = [];
+            let maxScore;
+            /*
+            Among the players with the same
+            for each player still in the game(excluding undefined players that don't have the max score)
+            loop and sum the rank of his cards
+            */ 
+            keyPlayers.forEach(function(e) {
+                let sum = 0;
+                if(e !== undefined) {
+                    /*here I found the totalRanks of the players that bet the max
+                      and sum every cards.
+                    */
+                    totalRanks[e].forEach(function(element) {
+                        console.log(element);
+                        sum = sum + parseInt(element);
+                    }) 
+                /*
+                     Here I pushed them inside totalCardsum array as object with the relative
+                     player number    
+                     ex.
+                     [
+                         {0:55}
+                         {3: 72}
+                     ]
+                */
+                totalCardSum.push({[e]:sum});
+                totalScore.push(sum);
+                // the maxScore is the higher sum of card ranks
+                maxScore = Math.max(...totalScore);
+                }
+            })
+            totalCardSum.forEach(function(e, index) {
+                /*
+                 here I try to find the keys (player number) which value match the max Score
+                 previous ex.
+                 {3: 72}    3 is the result
+                 */
+                if(Object.keys(totalCardSum[index]).find(e => totalCardSum[index][e] === maxScore) !== undefined) {
+                    winner = Object.keys(totalCardSum[index]).find(e => totalCardSum[index][e] === maxScore);
+                }
+            })
+       
+            //Here i pass the fishes that are in the game to the WINNER
+            ingameFish.forEach(e => {
+                totalFish[winner].textContent = parseInt(totalFish[winner].textContent) + parseInt(e.textContent);
+                e.innerHTML = "";
+            })
+        } else {
+            ingameScores.forEach(function(e,index) {
+                if(Object.keys(ingameScores[index]).find(e => ingameScores[index][e] === winner) !== undefined) {
+                    winner = Object.keys(ingameScores[index]).find(e => ingameScores[index][e] === winner);
+                }
+            })
+            ingameFish.forEach(e => {
+                totalFish[winner].textContent = parseInt(totalFish[winner].textContent) + parseInt(e.textContent);
+                e.innerHTML = "";
+            })
+        }
+        console.log(result);
+        console.log(ingameScores);
+        console.log(playersIn);
+        console.log(winnerPlayer);
+    
+   
+})
 
 
 
@@ -563,7 +793,7 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
        /* console.log(randomMove,currentFish, betPrev);
         if(randomMove > 6) {*/
             console.log("bluff");
-            let bluff = parseInt(betPrev.textContent) + Math.round(parseInt(total.textContent) * 1/10);
+            let bluff = parseInt(betPrev) + Math.round(parseInt(total.textContent) * 1/10);
             console.log(bluff);
             currentFish.textContent = Math.round(bluff / 10) * 10;;
             total.textContent -= currentFish.textContent;
@@ -574,6 +804,7 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
     }
 
 
+
     nextTurn.addEventListener("click",function() {
         rank = [];
         suit = [];
@@ -581,7 +812,7 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
         totalCount = [];
         totalSuit = []; 
         for(let i =0; i<playerNumbers; i++) {
-            ingameFish[i].innerHTML = "";
+            ingameFish[i].textContent = "";
         }
         cardGenerator();
         btnOpen.style.display = "inline-block";
