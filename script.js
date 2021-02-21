@@ -97,12 +97,10 @@ function fishSelector(ingame) {
     
     let selectorFish = document.querySelector(".input-fish__selector");
     let optionFish;
+    if(selectorFish.children.length >0) {
+        selectorFish.innerHTML = "";
+    };
     for(let i=0; i < totalFish[0].textContent; i+=10) {
-        console.log(selectorFish.children.length);
-        console.log(totalFish[0].textContent/10);
-        if(selectorFish.children.length === totalFish[0].textContent/10 +1) {
-            selectorFish.innerHTML = "";
-        };
         optionFish = document.createElement("option");
         optionFish.classList.add("option-fish")
         optionFish.value = i;
@@ -136,13 +134,16 @@ function cardGenerator() {
         if you want to change them*/
     });
     activeCard.forEach(function(element, index) {
-        element.addEventListener("click", function() {
+        let control = true;
+        element.addEventListener("click", function(e) {
             // rules of poker: you can't change more than 4 cards
             //if(i < 4) {
                 /*call the function replace card passing the index to replace your card
                 with another*/
-                replaceCard(index, element);
-                
+                if(control) {
+                    replaceCard(index, element);
+                    control = false;
+                }
                 /*
                 i++;
             } else {
@@ -150,7 +151,7 @@ function cardGenerator() {
             }  
             */
         })
-    })
+    });
           
 }    
 
@@ -167,8 +168,14 @@ function generateCard(selectedCard, current) {
     here if the card isn't already in the array, add the card and assign the jpg path*/
     if(!randomCard.includes(card)) {
         randomCard.push(card);
-        cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
-        selectedCard.style.backgroundImage = cardImage;
+       // if(current < 5) {
+            cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+            selectedCard.style.backgroundImage = cardImage;
+        /*} else {
+            cardImage = randomCard[current];
+            selectedCard.textContent = cardImage;
+        }*/
+    
     } else {
         //if the card is already in the array call the function again to change the card
         generateCard(selectedCard, current);
@@ -215,21 +222,23 @@ btnOpen.addEventListener("click", function() {
         suit = [];
         result = [];
         cardGenerator();
-        
-        
+
     } else {
         let j = 0;
         for(let i=0; i<playerNumbers; i++) {
             if(totalFish[i].textContent > 0) {
                 totalFish[i].textContent = totalFish[i].textContent - 10;
                 ingameFish[i].textContent = 10;
-            } else if(totalFish[i].textContent == 0 && i > 0) {
-                j++;
-                console.log(j);
-                console.log(document.querySelector(`.player${i}`));
-                document.querySelector(`.player${i}`).remove();
-                console.log(`player${i} lose`);
-                delete result[i];
+            } else if(totalFish[i].textContent == 0) {
+                if(i>0) {
+                    j++;
+                    document.querySelector(`.player${i}`).remove();
+                    console.log(`player${i} lose`);
+                    delete result[i];
+                } else {
+                    console.log("you lose");
+                }
+            
             }
         }
         playerNumbers -= j;
@@ -251,11 +260,6 @@ btnOpen.addEventListener("click", function() {
         /*poker rule:
         if no one of the player have points on their hand, than no one can open, randomCard
         will be empty and refilled than cardGenerator generate new card for every one*/
-       
-
-        
-        console.log(result[0]);
-        compare(result);
 }) 
 
 /* PLAYER FUNCTION: to separate rank and suit and use them to display combinations
@@ -361,7 +365,6 @@ function handCombination(rank, suit) {
 
            
     }
-    console.log("ok");
 
 }
 
@@ -385,15 +388,10 @@ function countValues (array,c,index,total) {
 
 
 
-function findPair(howmany, k) {
-    console.log(howmany);
+function findPair(howmany) {
     //if there are 2 equal cards then it means that it could be a pair or a two pair.
     if(howmany.filter(e => e == 2).length === 1 && howmany.filter(e => e !== 2).length > 1) {
         //if the array length is = 4 ex. ["2","1","1","1"] it means there is a pair
-            console.log(howmany);
-            howmany.forEach(function(e,index) {
-                if(e == 2) console.log(k[index]);
-            }); 
             return result.push(score["pair"]);
         /*if the array length is = 3 you could have three equal cards and two different
           ones or two pairs and another one like ex. ["2", "2", "1"] */
@@ -449,7 +447,7 @@ function noOther () {
     return result.push(score["highCard"]);
 }
 
-function compare(r) {
+/*function compare(r) {
     if(r.filter(e => e > r[0]).length > 0) {
         console.log(r);
         console.log("you lose")
@@ -460,22 +458,18 @@ function compare(r) {
         console.log(r);
         console.log("pair");
     }
-}
+}*/
 
 let ontablefish;
 let randomNumber = Math.floor(Math.random() * 11);
 document.querySelector(".input-fish__btn").addEventListener("click", function(){
     const cpuContainer = document.querySelector(".cpu-container");
     const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
-    totalFish[0].textContent -= ingameFish[0].textContent;
-    console.log("mi ripeto");
-    console.log(cardNumber);
-    console.log(totalCount);
-    totalF = document.querySelectorAll(".total-fish").innerHTML;
+    // + 10 is the open fish that I don't want to be counted two times
+    totalFish[0].textContent = (parseInt(totalFish[0].textContent) - parseInt(ingameFish[0].textContent))+10;
 
     let x=5;
-    /*totalFish.innerHTML = parseInt(totalFish.innerHTML) - inputFish.value;
-    tableBet.innerHTML = inputFish.value;*/
+
     let cpuCurrent = [];
     let discardedCard= [];
     let ranking = [];
@@ -505,43 +499,50 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
     suit = [];
     result = [];
     players(randomCard);
-    compare(result);
-    
+    ontablefish = [...ingameFish].map(e => e.textContent);
+    let riskValue;
     for(let i=1; i<playerNumbers; i++) {
-        console.log(ingameFish[i-1]);
-        
         let addedNumber;
-        if(ingameFish[i-1].textContent > 10) {
-            console.log("qui");
-            if(totalFish[i].textContent >= ingameFish[i-1].textContent) {
+        //if(parseInt(ingameFish[i-1].textContent) > 10) {
+
+            if(totalFish[i].textContent >= Math.max(...ontablefish)) {
                 if(result[i] === 0) {
-                    blufforNot(randomNumber, ingameFish[i], ingameFish[i-1].textContent, totalFish[i]);
+                    console.log("result = 0");
+                    blufforNot(randomNumber, ingameFish[i], Math.max(...ontablefish), totalFish[i], i);
                 } else if(result[i] >= 1 && result[i] <= 3 ) {
+                    console.log("result = 1 a 3");
                     addedNumber = totalFish[i].textContent * 2/10;
-                    if((totalFish[i].textContent * 2/5) >= ingameFish[i-1].textContent) {
+                    riskValue = totalFish[i].textContent * 2/5;
+                    if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
                         ingameFish[i].textContent = parseInt(ingameFish[i-1].textContent) + Math.round(addedNumber / 10) * 10;
+                        ontablefish[i] = ingameFish[i].textContent;
                         //ingameFish[i+1].textContent = 20;
-                        console.log(">1 e <3");
-                        totalFish[i].textContent -= ingameFish[i].textContent;  
-                } else {
-                        console.log("ok");
+                        totalFish[i].textContent = parseInt(totalFish[i].textContent) - parseInt(ingameFish[i].textContent) + 10;  
+                    } else {
+                        console.log("non scommetto sono tra 1 e 3");
                         ingameFish[i].textContent = 10;
                     }
-                }
-                    
-                else if(result[i] >= 4 && result[i] <= 6 ) {
-                    if((totalFish[i].textContent) * 3/5 >= ingameFish[i-1].textContent) {
+                } else if(result[i] >= 4 && result[i] <= 6 ) {
+                    console.log("result = 4 a 6");
+                    riskValue = totalFish[i].textContent * 3/5;
+                    if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
                         ingameFish[i].textContent = ingameFish[i-1].textContent;
-                        totalFish[i].textContent -= ingameFish[i].textContent; 
+                        ontablefish[i] = ingameFish[i].textContent;
+                        totalFish[i].textContent = parseInt(totalFish[i].textContent) - parseInt(ingameFish[i].textContent) +10;  
                     } else {
+                        console.log("non scommetto sono tra 4 e 6");
                         ingameFish[i].textContent = 10;
                     }
                 } else if(result[i] >= 7 ) {
+                    console.log("result = + di 7");
                     ingameFish[i].textContent = totalFish[i].textContent;
-                    totalFish[i].textContent -= ingameFish[i].textContent; 
+                    ontablefish[i] = ingameFish[i].textContent;
+                    totalFish[i].textContent = parseInt(totalFish[i].textContent) - parseInt(ingameFish[i].textContent) +10;   
                 }
+            } else {
+                continue;
             }
-        } else if(ingameFish[i-1].textContent == 10 ) {
+        /*} else if(ingameFish[i-1].textContent == 10 ) {
             if(totalFish[i].textContent > 0) {
                 console.log("ok");
                 
@@ -561,13 +562,14 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
             } else if (totalFish[i].textContent == 0) {
                 continue;
             }
-        }           
+        }
+        */           
     }    
   
     ontablefish = [...ingameFish].map(e => e.textContent);
    
     if(ingameFish[0].textContent < Math.max(...ontablefish)) {
-        if(ingameFish[0].textContent != 0) {
+        if(ingameFish[0].textContent != 10) {
             btnStay.style.display = "inline-block";
             btnLeave.style.display = "inline-block";
         } else {
@@ -577,49 +579,100 @@ document.querySelector(".input-fish__btn").addEventListener("click", function(){
        //     }
     
 })
+
+
 let previous;
+let difference;
 btnStay.addEventListener("click", function() {
+    ingameFish[0].removeAttribute("id");
     previous = ingameFish[0].textContent;
-    ingameFish[0].textContent = Math.max(...ontablefish);
-    totalFish[0].textContent = ingameFish[0].textContent - previous;
-    for(let i=1; i<playerNumbers; i++) {
-        previous = ingameFish[i].textContent;
-        if(totalFish[i].textContent >= (Math.max(...ontablefish) - previous)) {
-            if(result[i] === 0) {
-                if(ingameFish[i].textContent == 10) {
-                    continue;
-                } else {
-                    ingameFish[i].textContent = Math.max(...ontablefish);
-                    totalFish[i].textContent = ingameFish[i].textContent - previous;
-                }
-                //blufforNot(randomNumber, ingameFish[i], Math.max(...ontablefish), totalFish[i]);
-            } else if(result[i] >= 1 && result[i] <= 3 ) {
-                if((totalFish[i].textContent * 2/5) >= Math.max(...ontablefish)) {
-                    ingameFish[i].textContent = Math.max(...ontablefish);
-                    //ingameFish[i+1].textContent = 20;
-                    console.log(">1 e <3"); 
-                    totalFish[i].textContent = ingameFish[i].textContent - previous;  
-            } else {
-                    console.log("ok");
-                    continue;
-                }
-            }
-                
-            else if(result[i] >= 4 && result[i] <= 6 ) {
-                if((totalFish[i].textContent) * 3/5 >= Math.max(...ontablefish)) {
-                    ingameFish[i].textContent = Math.max(...ontablefish);
-                    totalFish[i].textContent = ingameFish[i].textContent - previous; 
-                } else {
-                    continue;
-                }
-            } else if(result[i] >= 7 ) {
-                ingameFish[i].textContent = Math.max(...ontablefish);
-                totalFish[i].textContent = ingameFish[i].textContent - previous;  
-            }
-        } else {
-            continue;
-        }
-        } 
+    difference = Math.max(...ontablefish) - previous;
+    if(totalFish[0].textContent >= difference){
+        ingameFish[0].textContent = parseInt(ingameFish[0].textContent) + difference;
+        totalFish[0].textContent = parseInt(totalFish[0].textContent) - difference;
+    } else {
+        ingameFish[0].setAttribute("id","stayIn");
+        ingameFish[0].textContent = totalFish[0].textContent;
+        totalFish[0].textContent = parseInt(totalFish[0].textContent) - parseInt(totalFish[0].textContent);
+    }
+
+
+    cpuSecondRound();
+
+    /*
+        here playersIn are the players that match the max bet of fish on the table
+        here is returned the index of the players that play the max and accept the bet 
+        ex.[0, undefined, 2, undefined] the players in the game are the number 0 and 2
+    */
+    let playersIn = [...ingameFish].map((e,index) =>{
+        if(e.textContent == Math.max(...ontablefish) || e.id == "stayIn") return index;
+    }).filter(e => e != undefined);
+    console.log(playersIn);
+//here i took out the undefined values that don't match the max
+
+//CHOOSING THE WINNER
+    let winner;
+    let ingameScores = [];
+    //Loop through every playersIn (players that accept the bet), 
+    playersIn.forEach(function(e) {
+    /*push every player inside the ingameScores function with the score as value.
+      ex. below only the player1 and the third bet, the player1 has a score of 
+      two (double pair) the player3 has a couple (score 1)
+      {
+          1:2
+      }
+      {
+          3:1
+      }
+    */
+            ingameScores.push({[e]:result[e]});
+    })
+// compare the scores of the players in the game looping through the ingameScores array
+    let compareScores = [];
+    console.log(compareScores);
+    ingameScores.forEach(function(e,index) {
+        //push the scores inside the compareScores array
+        /*
+            ex. e = {0:1}
+            playersIn = [0,1,2]
+            e[playersIn[index]] = e[0] = 1 (score)
+        */ 
+        compareScores.push(e[playersIn[index]]);
+    })
+    /*the winner is max value you found into compareScores array
+    ex. [
+        {0, 2, 3}
+    ]
+    winner is 3
+    */
+    winner = Math.max(...compareScores);
+    console.log(winner);
+// FIND THE CORRESPONDING KEY (PLAYER NUMBER).
+    /*we found the max score that won the game, but whose player is it?
+    TWO CASES:
+    1. more than a winner: 2 or more players with the same score;
+    2. one winner;
+    */  
+    let keyPlayers = [];
+    console.log(keyPlayers);
+    let totalCardSum = [];
+    console.log(totalCardSum);
+/*1. More than a winner
+    if the scores that are equal to winner are more than 1 we have multiple players with
+    the same score and we've to found a different method to declare the winner
+    Here among the players with the same score, the one which sum of the rank of the
+    cards is higher win.
+*/
+  findtheWinner(keyPlayers, totalCardSum, winner, ingameScores, compareScores)
+    console.log(result);
+    console.log(ingameScores);
+    console.log(playersIn);
+    console.log(winner);
+   
+})
+
+btnShow.addEventListener("click", function() {
+    cpuSecondRound();
 
         /*
             here playersIn are the players that match the max bet of fish on the table
@@ -627,16 +680,15 @@ btnStay.addEventListener("click", function() {
             ex.[0, undefined, 2, undefined] the players in the game are the number 0 and 2
         */
         let playersIn = [...ingameFish].map((e,index) =>{
-            if(e.textContent == Math.max(...ontablefish)) return index;
+            if(e.textContent == Math.max(...ontablefish) || e.id == "stayIn") return index;
         }).filter(e => e != undefined);
+        console.log(playersIn);
     //here i took out the undefined values that don't match the max
 
 //CHOOSING THE WINNER
-        let winnerPlayer= [];
         let winner;
         let ingameScores = [];
         //Loop through every playersIn (players that accept the bet), 
-         
         playersIn.forEach(function(e) {
         /*push every player inside the ingameScores function with the score as value.
           ex. below only the player1 and the third bet, the player1 has a score of 
@@ -652,6 +704,7 @@ btnStay.addEventListener("click", function() {
         })
     // compare the scores of the players in the game looping through the ingameScores array
         let compareScores = [];
+        console.log(compareScores);
         ingameScores.forEach(function(e,index) {
             //push the scores inside the compareScores array
             /*
@@ -676,96 +729,95 @@ btnStay.addEventListener("click", function() {
         2. one winner;
         */  
         let keyPlayers = [];
-        
+        console.log(keyPlayers);
         let totalCardSum = [];
+        console.log(totalCardSum);
 /*1. More than a winner
         if the scores that are equal to winner are more than 1 we have multiple players with
         the same score and we've to found a different method to declare the winner
         Here among the players with the same score, the one which sum of the rank of the
         cards is higher win.
 */
-        if(compareScores.filter(e => e === winner).length > 1) {
-            ingameScores.forEach(function(e,index){
-            /* look into ingameScores array to find the keys (players number) that have the same score 
-                push inside keyPlayers array.
-                ex of keyPlayers if there are three players that stay in the bet:
-                [
-                    0: "0" (this is the player number that has the same score as the max)
-                    1: "1"
-                    2: "3"
-                ]
-            */
-            keyPlayers.push( Object.keys(ingameScores[index]).find(e => ingameScores[index][e] === winner));
-            })
-            let totalScore = [];
-            let maxScore;
-            /*
-            Among the players with the same
-            for each player still in the game(excluding undefined players that don't have the max score)
-            loop and sum the rank of his cards
-            */ 
-            keyPlayers.forEach(function(e) {
-                let sum = 0;
-                if(e !== undefined) {
-                    /*here I found the totalRanks of the players that bet the max
-                      and sum every cards.
-                    */
-                    totalRanks[e].forEach(function(element) {
-                        console.log(element);
-                        sum = sum + parseInt(element);
-                    }) 
-                /*
-                     Here I pushed them inside totalCardsum array as object with the relative
-                     player number    
-                     ex.
-                     [
-                         {0:55}
-                         {3: 72}
-                     ]
-                */
-                totalCardSum.push({[e]:sum});
-                totalScore.push(sum);
-                // the maxScore is the higher sum of card ranks
-                maxScore = Math.max(...totalScore);
-                }
-            })
-            totalCardSum.forEach(function(e, index) {
-                /*
-                 here I try to find the keys (player number) which value match the max Score
-                 previous ex.
-                 {3: 72}    3 is the result
-                 */
-                if(Object.keys(totalCardSum[index]).find(e => totalCardSum[index][e] === maxScore) !== undefined) {
-                    winner = Object.keys(totalCardSum[index]).find(e => totalCardSum[index][e] === maxScore);
-                }
-            })
-       
-            //Here i pass the fishes that are in the game to the WINNER
-            ingameFish.forEach(e => {
-                totalFish[winner].textContent = parseInt(totalFish[winner].textContent) + parseInt(e.textContent);
-                e.innerHTML = "";
-            })
-        } else {
-            ingameScores.forEach(function(e,index) {
-                if(Object.keys(ingameScores[index]).find(e => ingameScores[index][e] === winner) !== undefined) {
-                    winner = Object.keys(ingameScores[index]).find(e => ingameScores[index][e] === winner);
-                }
-            })
-            ingameFish.forEach(e => {
-                totalFish[winner].textContent = parseInt(totalFish[winner].textContent) + parseInt(e.textContent);
-                e.innerHTML = "";
-            })
-        }
+      findtheWinner(keyPlayers, totalCardSum, winner, ingameScores, compareScores)
         console.log(result);
         console.log(ingameScores);
         console.log(playersIn);
-        console.log(winnerPlayer);
-    
-   
+        console.log(winner);
 })
 
+btnLeave.addEventListener("click", function() {
+    cpuSecondRound();
 
+        /*
+            here playersIn are the players that match the max bet of fish on the table
+            here is returned the index of the players that play the max and accept the bet 
+            ex.[0, undefined, 2, undefined] the players in the game are the number 0 and 2
+        */
+        let playersIn = [...ingameFish].map((e,index) =>{
+            if(e.textContent == Math.max(...ontablefish) || e.id == "stayIn") return index;
+        }).filter(e => e != undefined);
+        console.log(playersIn);
+    //here i took out the undefined values that don't match the max
 
+//CHOOSING THE WINNER
+        let winner;
+        let ingameScores = [];
+        //Loop through every playersIn (players that accept the bet), 
+        playersIn.forEach(function(e) {
+        /*push every player inside the ingameScores function with the score as value.
+          ex. below only the player1 and the third bet, the player1 has a score of 
+          two (double pair) the player3 has a couple (score 1)
+          {
+              1:2
+          }
+          {
+              3:1
+          }
+        */
+                ingameScores.push({[e]:result[e]});
+        })
+    // compare the scores of the players in the game looping through the ingameScores array
+        let compareScores = [];
+        console.log(compareScores);
+        ingameScores.forEach(function(e,index) {
+            //push the scores inside the compareScores array
+            /*
+                ex. e = {0:1}
+                playersIn = [0,1,2]
+                e[playersIn[index]] = e[0] = 1 (score)
+            */ 
+            compareScores.push(e[playersIn[index]]);
+        })
+        /*the winner is max value you found into compareScores array
+        ex. [
+            {0, 2, 3}
+        ]
+        winner is 3
+        */
+        winner = Math.max(...compareScores);
+        console.log(winner);
+    // FIND THE CORRESPONDING KEY (PLAYER NUMBER).
+        /*we found the max score that won the game, but whose player is it?
+        TWO CASES:
+        1. more than a winner: 2 or more players with the same score;
+        2. one winner;
+        */  
+        let keyPlayers = [];
+        console.log(keyPlayers);
+        let totalCardSum = [];
+        console.log(totalCardSum);
+/*1. More than a winner
+        if the scores that are equal to winner are more than 1 we have multiple players with
+        the same score and we've to found a different method to declare the winner
+        Here among the players with the same score, the one which sum of the rank of the
+        cards is higher win.
+*/
+      findtheWinner(keyPlayers, totalCardSum, winner, ingameScores, compareScores)
+        console.log(result);
+        console.log(ingameScores);
+        console.log(playersIn);
+        console.log(winner);
+})
 
 
 
@@ -789,18 +841,163 @@ btnStay.addEventListener("click", function() {
         })
     }
 
-    function blufforNot(randomMove ,currentFish, betPrev, total) {
-       /* console.log(randomMove,currentFish, betPrev);
-        if(randomMove > 6) {*/
-            console.log("bluff");
-            let bluff = parseInt(betPrev) + Math.round(parseInt(total.textContent) * 1/10);
-            console.log(bluff);
-            currentFish.textContent = Math.round(bluff / 10) * 10;;
-            total.textContent -= currentFish.textContent;
+    function cpuSecondRound() {
+        for(let i=1; i<playerNumbers; i++) {
+            previous = ingameFish[i].textContent;
+            ingameFish[i].removeAttribute("id");
+            let riskValue;
+            if(totalFish[i].textContent >= (Math.max(...ontablefish) - previous)) {
+                if(result[i] === 0) {
+                    if(ingameFish[i].textContent == 10) {
+                        continue;
+                    } else {
+                        ingameFish[i].textContent = Math.max(...ontablefish);
+                        difference = parseInt(ingameFish[i].textContent) - previous;
+                        totalFish[i].textContent = parseInt(totalFish[i].textContent) - difference;
+                    }
+                    //blufforNot(randomNumber, ingameFish[i], Math.max(...ontablefish), totalFish[i]);
+                } else if(result[i] >= 1 && result[i] <= 3 ) {
+                    riskValue = totalFish[i].textContent * 2/5;
+                    if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
+                        ingameFish[i].textContent = Math.max(...ontablefish);
+                        //ingameFish[i+1].textContent = 20;
+                        difference = ingameFish[i].textContent - previous;
+                        totalFish[i].textContent = parseInt(totalFish[i].textContent) - difference;  
+                } else {
+                        console.log("ok");
+                        continue;
+                    }
+                }
+                    
+                else if(result[i] >= 4 && result[i] <= 6 ) {
+                    riskValue = totalFish[i].textContent * 3/5;
+                    if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
+                        ingameFish[i].textContent = Math.max(...ontablefish);
+                        difference = ingameFish[i].textContent - previous;
+                        totalFish[i].textContent = parseInt(totalFish[i].textContent) - difference; 
+                    } else {
+                        continue;
+                    }
+                } else if(result[i] >= 7 ) {
+                    ingameFish[i].textContent = Math.max(...ontablefish);
+                    difference = ingameFish[i].textContent - previous;
+                        totalFish[i].textContent = parseInt(totalFish[i].textContent) - difference;  
+                }
+            } else {
+        /*here is the case when the player has not enough fish to bet again and match the max
+        bet that is on the table. 
+        
+        In this case I added an ID to highlight that he's in the game
+        despite he hasn't enough money. This "id" let me to consider the player score for comparation
+        inside findthewinner function
+        */
+                ingameFish[i].setAttribute("id", "stayIn");
+                ingameFish[i].textContent = parseInt(ingameFish[i].textContent) + parseInt(totalFish[i].textContent);
+                totalFish[i].textContent = parseInt(totalFish[i].textContent) - parseInt(totalFish[i].textContent);
+            }
+        } 
+    }
+
+    function findtheWinner(playerNumber, sumcardRanks, winner, scoreIn, compare) {
+        if(compare.filter(e => e === winner).length > 1) {
+            scoreIn.forEach(function(e,index){
+            /* look into ingameScores array to find the keys (players number) that have the same score 
+                push inside keyPlayers array.
+                ex of keyPlayers if there are three players that stay in the bet:
+                [
+                    0: "0" (this is the player number that has the same score as the max)
+                    1: "1"
+                    2: "3"
+                ]
+            */
+           playerNumber.push( Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner));
+            })
+            let totalScore = [];
+            console.log(totalScore);
+            let maxScore;
             /*
+            Among the players with the same
+            for each player still in the game(excluding undefined players that don't have the max score)
+            loop and sum the rank of his cards
+            */ 
+           playerNumber.forEach(function(e) {
+                let sum = 0;
+                if(e !== undefined) {
+                    /*here I found the totalRanks of the players that bet the max
+                      and sum every cards.
+                    */
+                    totalRanks[e].forEach(function(element) {
+                        console.log(element);
+                        sum = sum + parseInt(element);
+                    }) 
+                /*
+                     Here I pushed them inside totalCardsum array as object with the relative
+                     player number    
+                     ex.
+                     [
+                         {0:55}
+                         {3: 72}
+                     ]
+                */
+                sumcardRanks.push({[e]:sum});
+                totalScore.push(sum);
+                // the maxScore is the higher sum of card ranks
+                maxScore = Math.max(...totalScore);
+                console.log(totalScore);
+                console.log(sumcardRanks);
+               
+                }
+            })
+            /*CASE: SUM OF CARDS HAVE EQUAL RANKS AMONG PLAYERS
+            if there are two players with the same score and same cards rank sum*/
+            let sameSum = [];
+            if((totalScore.filter(e => e === maxScore).length > 1)) {
+                sumcardRanks.forEach(function(e, index) {
+                    // push the player number with the same total ranks inside the array sameSum
+                    sameSum.push(Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore));     
+                })
+                //Flip a coin..
+                winner = sameSum[Math.round(Math.random())];
+            } else { 
+                sumcardRanks.forEach(function(e, index) {
+                    /*
+                    here I try to find the keys (player number) which value match the max Score
+                    previous ex.
+                    {3: 72}    3 is the result
+                    */
+                    if(Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore) !== undefined) {
+                        winner = Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore);
+                    }
+                })
+        
+                //Here i pass the fishes that are in the game to the WINNER
+                ingameFish.forEach(e => {
+                    totalFish[winner].textContent = parseInt(totalFish[winner].textContent) + parseInt(e.textContent);
+                    //e.innerHTML = "";
+                })
+            }
         } else {
-            console.log("passo");
-        }*/
+            scoreIn.forEach(function(e,index) {
+                if(Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner) !== undefined) {
+                    winner = Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner);
+                }
+            })
+            ingameFish.forEach(e => {
+                totalFish[winner].textContent = parseInt(totalFish[winner].textContent) + parseInt(e.textContent);
+                //e.innerHTML = "";
+            })
+        }
+    }
+
+    function blufforNot(randomMove ,currentFish, betPrev, total, index) {
+        if(randomMove > 6) {
+            let bluff = parseInt(betPrev) + Math.round(parseInt(total.textContent) * 1/10);
+            currentFish.textContent = Math.round(bluff / 10) * 10;
+            ontablefish[index] = currentFish.textContent;
+            total.textContent -= currentFish.textContent;
+        } else {
+            currentFish.textContent = 10;
+        }
     }
 
 
