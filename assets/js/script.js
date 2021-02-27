@@ -82,14 +82,14 @@ function playerCash(p, bet,player, cash) {
     p.appendChild(cash);
 }
 
-function fishSelector(ingame) {
+function fishSelector(ingame, total) {
     
     let selectorFish = document.querySelector(".input-fish__selector");
     let optionFish;
     if(selectorFish.children.length >0) {
         selectorFish.innerHTML = "";
     };
-    for(let i=0; i < totalFish[0].textContent; i+=10) {
+    for(let i=0; i < total[0].textContent; i+=10) {
         optionFish = document.createElement("option");
         optionFish.classList.add("option-fish")
         optionFish.value = i;
@@ -194,9 +194,10 @@ function replaceCard(current, e) {
 
 
 // OPEN BTN
-let ingameFish = document.querySelectorAll(".in-game-fish");
-let totalFish = document.querySelectorAll(".total-fish");
+
 btnOpen.addEventListener("click", function() {
+    let ingame = document.querySelectorAll(".in-game-fish");
+    let total = document.querySelectorAll(".total-fish");   
     let rank;
     let suit;
     let result;
@@ -204,7 +205,7 @@ btnOpen.addEventListener("click", function() {
      rank = [];
      suit = [];
      result = [];    
-     fishSelector(ingameFish);
+     fishSelector(ingame, total);
    // here function players is call passing randomCard, the array that contain all the cards
      players(randomCard, rank, suit, result);
      
@@ -217,9 +218,9 @@ btnOpen.addEventListener("click", function() {
 
     } else {
         for(let i=0; i<playerNumbers; i++) {
-            if(totalFish[i].textContent > 0) {
-                totalFish[i].textContent = totalFish[i].textContent - 10;
-                ingameFish[i].textContent = 10;
+            if(total[i].textContent > 0) {
+                total[i].textContent = total[i].textContent - 10;
+                ingame[i].textContent = 10;
             } 
         btnOpen.style.display = "none";
         btnPlay.style.display = "block";
@@ -227,7 +228,7 @@ btnOpen.addEventListener("click", function() {
         }
     }
 
-    playAndResponse(result);
+    playAndResponse(result, ingame, total);
       
         /* here the compare function is called passing result. Result are the scores based on
         the card combinations, displayed like this:
@@ -429,7 +430,7 @@ function noOther (result) {
 
 
 
-function playAndResponse(result) {
+function playAndResponse(result, ingame, total) {
     let ontablefish;
     console.log(ontablefish);
     const btnStay = document.querySelector(".stay");
@@ -443,7 +444,7 @@ function playAndResponse(result) {
         const cpuContainer = document.querySelector(".cpu-container");
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
         // + 10 is the open fish that I don't want to be counted two times
-        totalFish[0].textContent = (parseInt(totalFish[0].textContent) - parseInt(ingameFish[0].textContent))+10;
+        total[0].textContent = (parseInt(total[0].textContent) - parseInt(ingame[0].textContent))+10;
         
         ontablefish = [];
         let x=5;
@@ -477,61 +478,61 @@ function playAndResponse(result) {
         suit = [];
         result = [];
         players(randomCard, rank, suit, result);
-        console.log(ingameFish);
-        ontablefish = [...ingameFish].map(e => e.textContent);
+        console.log(ingame);
+        ontablefish = [...ingame].map(e => e.textContent);
         let riskValue;
         console.log(Math.max(...ontablefish));
         for(let i=1; i<playerNumbers; i++) {
             
             let addedNumber;
-            //if(parseInt(ingameFish[i-1].textContent) > 10) {
+            //if(parseInt(ingame[i-1].textContent) > 10) {
     
-                if(totalFish[i].textContent >= Math.max(...ontablefish)) {
+                if(total[i].textContent >= Math.max(...ontablefish)) {
                     if(result[i] === 0) {
                         console.log("result = 0");
-                        blufforNot(randomNumber, ingameFish[i], Math.max(...ontablefish), totalFish[i], i);
+                        blufforNot(randomNumber, ingame[i], Math.max(...ontablefish), total[i], i);
                     } else if(result[i] >= 1 && result[i] <= 3 ) {
                         
                         console.log("result = 1 a 3");
-                        addedNumber = parseInt(totalFish[i].textContent) * 2/10;
+                        addedNumber = parseInt(total[i].textContent) * 2/10;
                         console.log(addedNumber);
-                        riskValue = parseInt(totalFish[i].textContent) * 2/5;
+                        riskValue = parseInt(total[i].textContent) * 2/5;
                         if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                            ingameFish[i].textContent = Math.max(...ontablefish) + Math.round(addedNumber / 10) * 10;
-                            ontablefish[i] = parseInt(ingameFish[i].textContent);
-                            //ingameFish[i+1].textContent = 20;
-                            totalFish[i].textContent = parseInt(totalFish[i].textContent) - parseInt(ingameFish[i].textContent) + 10;  
+                            ingame[i].textContent = Math.max(...ontablefish) + Math.round(addedNumber / 10) * 10;
+                            ontablefish[i] = parseInt(ingame[i].textContent);
+                            //ingame[i+1].textContent = 20;
+                            total[i].textContent = parseInt(total[i].textContent) - parseInt(ingame[i].textContent) + 10;  
                         } else {
                             console.log("non scommetto sono tra 1 e 3");
-                            ingameFish[i].textContent = "10";
-                            ontablefish[i] =  ingameFish[i].textContent = 10;
+                            ingame[i].textContent = "10";
+                            ontablefish[i] =  ingame[i].textContent = 10;
                         }
                     } else if(result[i] >= 4 && result[i] <= 6 ) {
                         console.log("result = 4 a 6");
-                        riskValue = totalFish[i].textContent * 3/5;
+                        riskValue = total[i].textContent * 3/5;
                         if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                            ingameFish[i].textContent = Math.max(...ontablefish);
-                            ontablefish[i] = ingameFish[i].textContent;
-                            totalFish[i].textContent = parseInt(totalFish[i].textContent) - parseInt(ingameFish[i].textContent) +10;  
+                            ingame[i].textContent = Math.max(...ontablefish);
+                            ontablefish[i] = ingame[i].textContent;
+                            total[i].textContent = parseInt(total[i].textContent) - parseInt(ingame[i].textContent) +10;  
                         } else {
                             console.log("non scommetto sono tra 4 e 6");
-                            ingameFish[i].textContent = 10;
+                            ingame[i].textContent = 10;
                         }
                     } else if(result[i] >= 7 ) {
                         console.log("result = + di 7");
-                        ingameFish[i].textContent = totalFish[i].textContent;
-                        ontablefish[i] = ingameFish[i].textContent;
-                        totalFish[i].textContent = parseInt(totalFish[i].textContent) - parseInt(ingameFish[i].textContent) +10;   
+                        ingame[i].textContent = total[i].textContent;
+                        ontablefish[i] = ingame[i].textContent;
+                        total[i].textContent = parseInt(total[i].textContent) - parseInt(ingame[i].textContent) +10;   
                     }
                 } else {
                     continue;
                 }
         }    
       
-        ontablefish = [...ingameFish].map(e => e.textContent);
+        ontablefish = [...ingame].map(e => e.textContent);
         console.log(ontablefish);
-        if(ingameFish[0].textContent < Math.max(...ontablefish)) {
-            if(ingameFish[0].textContent != 10) {
+        if(ingame[0].textContent < Math.max(...ontablefish)) {
+            if(ingame[0].textContent != 10) {
                 btnStay.style.display = "inline-block";
                 btnLeave.style.display = "inline-block";
             } else {
@@ -553,16 +554,16 @@ function playAndResponse(result) {
         let previous;
         let difference; 
         if(e.target.className === "stay") {
-            ingameFish[0].removeAttribute("id");
-            previous = ingameFish[0].textContent;
+            ingame[0].removeAttribute("id");
+            previous = ingame[0].textContent;
             difference = Math.max(...ontablefish) - previous;
-            if(totalFish[0].textContent >= difference){
-                ingameFish[0].textContent = parseInt(ingameFish[0].textContent) + difference;
-                totalFish[0].textContent = parseInt(totalFish[0].textContent) - difference;
+            if(total[0].textContent >= difference){
+                ingame[0].textContent = parseInt(ingame[0].textContent) + difference;
+                total[0].textContent = parseInt(total[0].textContent) - difference;
             } else {
-                ingameFish[0].setAttribute("id","stayIn");
-                ingameFish[0].textContent = totalFish[0].textContent;
-                totalFish[0].textContent = parseInt(totalFish[0].textContent) - parseInt(totalFish[0].textContent);
+                ingame[0].setAttribute("id","stayIn");
+                ingame[0].textContent = total[0].textContent;
+                total[0].textContent = parseInt(total[0].textContent) - parseInt(total[0].textContent);
             }
         }
         cpuSecondRound(previous, difference);
@@ -572,7 +573,7 @@ function playAndResponse(result) {
             here is returned the index of the players that play the max and accept the bet 
             ex.[0, undefined, 2, undefined] the players in the game are the number 0 and 2
         */
-        let playersIn = [...ingameFish].map((e,index) =>{
+        let playersIn = [...ingame].map((e,index) =>{
             if(e.textContent == Math.max(...ontablefish) || e.id == "stayIn") return index;
         }).filter(e => e != undefined);
         console.log(playersIn);
@@ -662,26 +663,26 @@ function playAndResponse(result) {
     
         function cpuSecondRound(previous,difference) {
             for(let i=1; i<playerNumbers; i++) {
-                previous = ingameFish[i].textContent;
-                ingameFish[i].removeAttribute("id");
+                previous = ingame[i].textContent;
+                ingame[i].removeAttribute("id");
                 let riskValue;
-                if(totalFish[i].textContent >= (Math.max(...ontablefish) - previous)) {
+                if(total[i].textContent >= (Math.max(...ontablefish) - previous)) {
                     if(result[i] === 0) {
-                        if(ingameFish[i].textContent == 10) {
+                        if(ingame[i].textContent == 10) {
                             continue;
                         } else {
-                            ingameFish[i].textContent = Math.max(...ontablefish);
-                            difference = parseInt(ingameFish[i].textContent) - previous;
-                            totalFish[i].textContent = parseInt(totalFish[i].textContent) - difference;
+                            ingame[i].textContent = Math.max(...ontablefish);
+                            difference = parseInt(ingame[i].textContent) - previous;
+                            total[i].textContent = parseInt(total[i].textContent) - difference;
                         }
-                        //blufforNot(randomNumber, ingameFish[i], Math.max(...ontablefish), totalFish[i]);
+                        //blufforNot(randomNumber, ingame[i], Math.max(...ontablefish), total[i]);
                     } else if(result[i] >= 1 && result[i] <= 3 ) {
-                        riskValue = totalFish[i].textContent * 2/5;
+                        riskValue = total[i].textContent * 2/5;
                         if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                            ingameFish[i].textContent = Math.max(...ontablefish);
-                            //ingameFish[i+1].textContent = 20;
-                            difference = ingameFish[i].textContent - previous;
-                            totalFish[i].textContent = parseInt(totalFish[i].textContent) - difference;  
+                            ingame[i].textContent = Math.max(...ontablefish);
+                            //ingame[i+1].textContent = 20;
+                            difference = ingame[i].textContent - previous;
+                            total[i].textContent = parseInt(total[i].textContent) - difference;  
                     } else {
                             console.log("ok");
                             continue;
@@ -689,18 +690,18 @@ function playAndResponse(result) {
                     }
                         
                     else if(result[i] >= 4 && result[i] <= 6 ) {
-                        riskValue = totalFish[i].textContent * 3/5;
+                        riskValue = total[i].textContent * 3/5;
                         if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                            ingameFish[i].textContent = Math.max(...ontablefish);
-                            difference = ingameFish[i].textContent - previous;
-                            totalFish[i].textContent = parseInt(totalFish[i].textContent) - difference; 
+                            ingame[i].textContent = Math.max(...ontablefish);
+                            difference = ingame[i].textContent - previous;
+                            total[i].textContent = parseInt(total[i].textContent) - difference; 
                         } else {
                             continue;
                         }
                     } else if(result[i] >= 7 ) {
-                        ingameFish[i].textContent = Math.max(...ontablefish);
-                        difference = ingameFish[i].textContent - previous;
-                            totalFish[i].textContent = parseInt(totalFish[i].textContent) - difference;  
+                        ingame[i].textContent = Math.max(...ontablefish);
+                        difference = ingame[i].textContent - previous;
+                            total[i].textContent = parseInt(total[i].textContent) - difference;  
                     }
                 } else {
             /*here is the case when the player has not enough fish to bet again and match the max
@@ -710,9 +711,9 @@ function playAndResponse(result) {
             despite he hasn't enough money. This "id" let me to consider the player score for comparation
             inside findthewinner function
             */
-                    ingameFish[i].setAttribute("id", "stayIn");
-                    ingameFish[i].textContent = parseInt(ingameFish[i].textContent) + parseInt(totalFish[i].textContent);
-                    totalFish[i].textContent = parseInt(totalFish[i].textContent) - parseInt(totalFish[i].textContent);
+                    ingame[i].setAttribute("id", "stayIn");
+                    ingame[i].textContent = parseInt(ingame[i].textContent) + parseInt(total[i].textContent);
+                    total[i].textContent = parseInt(total[i].textContent) - parseInt(total[i].textContent);
                 }
             } 
         }
@@ -790,8 +791,8 @@ function playAndResponse(result) {
                     })
             
                     //Here i pass the fishes that are in the game to the WINNER
-                    ingameFish.forEach(e => {
-                        totalFish[winner].textContent = parseInt(totalFish[winner].textContent) + parseInt(e.textContent);
+                    ingame.forEach(e => {
+                        total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
                         //e.innerHTML = "";
                     })
                 }
@@ -801,8 +802,8 @@ function playAndResponse(result) {
                         winner = Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner);
                     }
                 })
-                ingameFish.forEach(e => {
-                    totalFish[winner].textContent = parseInt(totalFish[winner].textContent) + parseInt(e.textContent);
+                ingame.forEach(e => {
+                    total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
                     //e.innerHTML = "";
                 })
             }
@@ -833,9 +834,9 @@ function playAndResponse(result) {
 
             let j = 0;
             for(let i =0; i<playerNumbers; i++) {
-                ingameFish[i].textContent = "";
+                ingame[i].textContent = "";
             
-                if(totalFish[i].textContent == 0) {
+                if(total[i].textContent == 0) {
                     if(i>0) {
                         j++;
                         document.querySelector(`.player${i}`).remove();
@@ -848,7 +849,7 @@ function playAndResponse(result) {
             
             }
         playerNumbers -= j;
-        ingameFish = document.querySelectorAll(".in-game-fish");
-        totalFish = document.querySelectorAll(".total-fish");
+        ingame = document.querySelectorAll(".in-game-fish");
+        total = document.querySelectorAll(".total-fish");
         })
 }
