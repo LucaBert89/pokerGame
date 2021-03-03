@@ -8,11 +8,10 @@ import {modifyPlayers} from "./index.js";
 
 
 function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard) {
-    totalObjectSuit = [];
     let cardNumber;
     const nextTurn = document.querySelector(".next-turn");
     let ontablefish;
-
+ 
     const btnStay = document.querySelector(".stay");
     const btnLeave = document.querySelector(".leave");
     const btnShow = document.querySelector(".show");
@@ -25,7 +24,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
         // + 10 is the open fish that I don't want to be counted two times
         total[0].textContent = (parseInt(total[0].textContent) - parseInt(ingame[0].textContent))+10;
-      
+
         ontablefish = [];
         let x=5;
     
@@ -64,12 +63,12 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         rank = [];
         suit = [];
         result = [];
-  
+        totalObjectRanks = [];
+        totalObjectSuit = [];
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit);   
 
         ontablefish = [...ingame].map(e => e.textContent);
-        console.log(Math.max(...ontablefish));
-        console.log(ontablefish);
+
         let riskValue;
         for(let i=1; i<playerNumbers; i++) {
 
@@ -93,8 +92,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                             total[i].textContent = parseInt(total[i].textContent) - parseInt(ingame[i].textContent) + 10;  
                         } else {
                             console.log("non scommetto sono tra 1 e 3");
-                            ingame[i].textContent = "10";
-                            ontablefish[i] =  ingame[i].textContent = 10;
+                            continue;
                         }
                     } else if(result[i] >= 4 && result[i] <= 6 ) {
                         console.log("result = 4 a 6");

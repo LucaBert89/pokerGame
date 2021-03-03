@@ -23,6 +23,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
     let suitValues;
     let currentRankCount = {};
     let currentSuitCount = {};
+   
     let values;
     let high;
     // combination variable for functions
@@ -44,7 +45,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
 
         /*here the same I did for the rank but for the suit*/
         countValues(playerS,currentSuitCount,i, totalObjectSuit);
-
+        console.log(totalObjectRanks);
         //take the values of rank and suit: the values of the objects
         values = Object.values(totalObjectRanks[i]);
         suitValues = Object.values(totalObjectSuit[i]);
