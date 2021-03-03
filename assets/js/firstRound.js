@@ -1,21 +1,23 @@
 import {playAndResponse} from "./cpuMoves.js";
 import {handCombination} from "./combinations.js";
-let randomCard = [];
+
 import {playerNumbers} from "./index.js";
 
-const btnPlay = document.querySelector(".input-fish");
+
 let card;
 let cardImage;
-const cardSuit = ["C", "D", "H", "S"];
-export const generateBtn = document.querySelector(".generate");
+let randomCard = [];
 
-export const btnOpen = document.querySelector(".player-active__btn");
+const btnPlay = document.querySelector(".input-fish");
+const cardSuit = ["C", "D", "H", "S"];
+const generateBtn = document.querySelector(".generate");
+const btnOpen = document.querySelector(".player-active__btn");
 
 
 
 generateBtn.addEventListener("click", cardGenerator);
 
-export function cardGenerator() {
+function cardGenerator() {
     randomCard = [];
     let gameCards = document.querySelectorAll(".player__card");
     const player = document.querySelector(".player0");
@@ -102,7 +104,7 @@ function generateCard(selectedCard, current) {
 
 
 /* here I pass the index of the card that I clicked among mine*/
-export function replaceCard(current, e) {
+function replaceCard(current, e) {
     /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
     card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
@@ -180,7 +182,7 @@ btnOpen.addEventListener("click", function() {
 
 /* PLAYER FUNCTION: to separate rank and suit and use them to display combinations
 random = randomCard (the array that contains all the cards of the game*/
-export function players(random, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit) {
+function players(random, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit) {
     /*for each card of the game call the hand function passing the single card and index
     to separate the rank and the suit*/
 
@@ -200,8 +202,6 @@ export function players(random, rank, suit, result, playerRanksArray, playerSuit
     The goal is to divide the cards among the players, 5 per player with their rank and suit*/
         dealingCards(playerRanksArray,playerSuitsArray,cardSplit,rank,suit);
         handCombination(playerRanksArray,playerSuitsArray, result, totalObjectRanks,totalObjectSuit); 
-    console.log(playerRanksArray);
-    console.log(randomCard);
 }
     
 // FUNCTION HAND: random = randomCard (all card of the game)
@@ -238,4 +238,4 @@ function dealingCards(tr,ts,cs,r,s) {
 }
 
 
- 
+export {players, replaceCard, generateBtn,btnOpen, cardGenerator }

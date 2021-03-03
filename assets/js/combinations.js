@@ -14,7 +14,10 @@ let score = {
 }
 
 
-export function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectSuit) {
+
+
+/* HAND COMBINATION: rank array and suit array*/
+function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectSuit) {
     let key;
     //variables for counting the elements: useful for pair or threes or others
     let suitValues;
@@ -58,7 +61,7 @@ export function handCombination(playerR, playerS, result, totalObjectRanks,total
 }
 
 // COUNTVALUES: array=rank or suit array, c=count or countSuit, index=i, total suit or count array empty
-export function countValues (array,c,index,total) {
+function countValues (array,c,index,total) {
     /*example letter and number count
     [
      0: {C: 2, D: 1, H: 2}
@@ -135,3 +138,4 @@ function noOther (result) {
     return result.push(score["highCard"]);
 }
 
+export {countValues, handCombination}

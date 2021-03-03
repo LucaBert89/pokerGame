@@ -1,11 +1,10 @@
 import {btnOpen} from "./firstRound.js"
 // decide how many player you want to play against
-export let playerNumbers = prompt("how many players?");
-export function modifyPlayers (value, index) {
+
+let playerNumbers = prompt("how many players?");
+function modifyPlayers (value, index) {
     value -= index;
 }
-
-
 let points = prompt("how many points?");
 
 
@@ -62,14 +61,11 @@ function playerCash(p, bet,player, cash) {
 }
 
 
+export {playerNumbers, modifyPlayers}
 
 
 
 
-// CARD GENERATION
-
-
-/* HAND COMBINATION: rank array and suit array*/
 
 
 

@@ -1,6 +1,5 @@
 import {players} from "./firstRound.js";
 import {replaceCard} from "./firstRound.js"
-
 import {playerNumbers} from "./index.js";
 import {cardGenerator} from "./firstRound.js";
 import {btnOpen} from "./firstRound.js"
@@ -17,7 +16,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
     const btnStay = document.querySelector(".stay");
     const btnLeave = document.querySelector(".leave");
     const btnShow = document.querySelector(".show");
-
+ 
     
     let randomNumber = Math.floor(Math.random() * 11);
 
@@ -26,7 +25,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
         // + 10 is the open fish that I don't want to be counted two times
         total[0].textContent = (parseInt(total[0].textContent) - parseInt(ingame[0].textContent))+10;
-        
+      
         ontablefish = [];
         let x=5;
     
@@ -36,12 +35,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         cardNumber = [];
         let replaceIndex;  
         playerRanksArray = [];
-        
-        console.log(playerRanksArray);
-
-        
-        console.log(playerRanksArray);
-        console.log(randomCard);
+    
 
         for(let j=5; j<randomCard.length; j+=5) {
             cpuCurrent.push(randomCard.slice(j, j+5));  
@@ -74,9 +68,11 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit);   
 
         ontablefish = [...ingame].map(e => e.textContent);
+        console.log(Math.max(...ontablefish));
+        console.log(ontablefish);
         let riskValue;
         for(let i=1; i<playerNumbers; i++) {
-            
+
             let addedNumber;
             //if(parseInt(ingame[i-1].textContent) > 10) {
     
