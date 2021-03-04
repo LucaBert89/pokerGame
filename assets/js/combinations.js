@@ -18,6 +18,7 @@ let score = {
 
 /* HAND COMBINATION: rank array and suit array*/
 function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectSuit) {
+   
     let key;
     //variables for counting the elements: useful for pair or threes or others
     let suitValues;
@@ -30,7 +31,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
     let pairComb;
     let threefullComb;
     let straightComb;
-
+    console.log(playerR);
     currentRankCount = {};
     currentSuitCount = {};
     for(let i=0; i<playerNumbers; i++) {
@@ -45,7 +46,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
 
         /*here the same I did for the rank but for the suit*/
         countValues(playerS,currentSuitCount,i, totalObjectSuit);
-        console.log(totalObjectRanks);
+        
         //take the values of rank and suit: the values of the objects
         values = Object.values(totalObjectRanks[i]);
         suitValues = Object.values(totalObjectSuit[i]);
@@ -59,6 +60,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
 
            
     }
+    console.log(result);
 }
 
 // COUNTVALUES: array=rank or suit array, c=count or countSuit, index=i, total suit or count array empty

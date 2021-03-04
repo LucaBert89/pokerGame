@@ -8,7 +8,7 @@ let card;
 let cardImage;
 let randomCard = [];
 
-const btnPlay = document.querySelector(".input-fish");
+
 const cardSuit = ["C", "D", "H", "S"];
 const generateBtn = document.querySelector(".generate");
 const btnOpen = document.querySelector(".player-active__btn");
@@ -127,6 +127,7 @@ function replaceCard(current, e) {
 // OPEN BTN
 
 btnOpen.addEventListener("click", function() {
+    const btnPlay = document.querySelector(".input-fish");
     let totalObjectRanks = [];
     let totalObjectSuit = [];
     let ingame = document.querySelectorAll(".in-game-fish");
