@@ -72,7 +72,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
             
         
             if(result[i] === 1 || result[i] === 2 || result[i] === 0) {
-                cpuMove(cardNumber, discardedCard, replaceIndex,i, ranking,x, cpuPlayers);
+                cpuMove(cardNumber, discardedCard, replaceIndex,i, ranking,x, cpuPlayers,randomCard);
             }
             
            
@@ -84,7 +84,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         result = [];
         totalObjectRanks = [];
         totalObjectSuit = [];
-   
+        console.log(randomCard);
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit);   
         console.log(playerRanksArray);
         ontablefish = [...ingame].map(e => e.textContent);
@@ -247,7 +247,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
     }
     
     
-        function cpuMove(n, dCard, newIndex, index, cardRank,x, cpuP) { 
+        function cpuMove(n, dCard, newIndex, index, cardRank,x, cpuP, randomC) { 
             
             dCard = [];
             n.forEach(function(element) {
@@ -258,26 +258,27 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                     }   
                 })
             })
-           
+              
+            console.log(dCard);
             let findNumber = /\d+/;
     
             cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
                 for(let j=0; j < dCard.length; j++) { 
                     if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
                         newIndex = (cardRank.indexOf(dCard[j]))+x;
-                        replaceCard(newIndex, e);  
+                        replaceCard(newIndex, e, randomC);  
                         break;
                     }
                 }
             })
         }
-    
+        console.log(randomCard);  
         function cpuSecondRound(previous,difference, ingame,total) {
             for(let i=1; i<playerNumbers; i++) {
                 previous = ingame[i].textContent;
                 ingame[i].removeAttribute("id");
                 let riskValue;
-                if(ingame[i].textContent !== 10) {
+                if(ingame[i].textContent != 10) {
                     if(total[i].textContent >= (Math.max(...ontablefish) - previous)) {
                         if(result[i] === 0) {
                                 ingame[i].textContent = Math.max(...ontablefish);

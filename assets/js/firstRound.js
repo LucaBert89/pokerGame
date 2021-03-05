@@ -104,7 +104,8 @@ function generateCard(selectedCard, current) {
 
 
 /* here I pass the index of the card that I clicked among mine*/
-function replaceCard(current, e) {
+function replaceCard(current, e, randomCard) {
+    console.log(randomCard);
     /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
     card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
@@ -112,7 +113,7 @@ function replaceCard(current, e) {
     /*if the randomCard already includes the card selected ex. 2H, than return the function
     again to change the card until it's not among the already generated ones*/
     if(randomCard.includes(card)) {
-        return replaceCard(current, e);
+        return replaceCard(current, e, randomCard);
     } else {
         randomCard.splice(current,1,card);
         cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
