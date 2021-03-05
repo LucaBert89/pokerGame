@@ -105,7 +105,6 @@ function generateCard(selectedCard, current) {
 
 /* here I pass the index of the card that I clicked among mine*/
 function replaceCard(current, e, randomCard) {
-    console.log(randomCard);
     /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
     card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];

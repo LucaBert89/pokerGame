@@ -58,11 +58,9 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
             ["10", 1]
             ["12", 2]
         */
-        for(let i=1;i<playerNumbers;i++) {
-            cardNumber.push(Object.entries(totalObjectRanks[i]));
-        }
 
         for(let i=0;i<playerNumbers-1;i++) {
+            cardNumber = Object.entries(totalObjectRanks[i+1]);
             ranking = [];
             discardedCard = [];
            
@@ -84,9 +82,9 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         result = [];
         totalObjectRanks = [];
         totalObjectSuit = [];
-        console.log(randomCard);
+      
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit);   
-        console.log(playerRanksArray);
+       
         ontablefish = [...ingame].map(e => e.textContent);
 
         let riskValue;
@@ -105,7 +103,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                     if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
                         ingame[i].textContent = Math.max(...ontablefish) + Math.round(addedNumber / 10) * 10;
                         cpuResponse(ontablefish,ingame,total,i )
-                        console.log(ontablefish);
+                 
                     } else {
                         console.log("non scommetto sono tra 1 e 3");
                         continue;
@@ -130,7 +128,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                 continue;
             }
         }    
-        console.log(ontablefish);
+
         ontablefish = [...ingame].map(e => e.textContent);
         
     
@@ -148,7 +146,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
 
     function cpuResponse(ontablefish, ingame, total,i) {
         ontablefish[i] = ingame[i].textContent;
-        console.log(ontablefish);
+
         total[i].textContent = parseInt(total[i].textContent) - parseInt(ingame[i].textContent) +10;   
     }
 
@@ -250,16 +248,12 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         function cpuMove(n, dCard, newIndex, index, cardRank,x, cpuP, randomC) { 
             
             dCard = [];
-            n.forEach(function(element) {
-         
-                element.forEach(e => {
-                    if(e[1] === 1) {
-                        dCard.push(e[0]);
-                    }   
-                })
+            n.forEach(function(e) {
+                if(e[1] === 1) {
+                    dCard.push(e[0]);
+                }   
             })
-              
-            console.log(dCard);
+  
             let findNumber = /\d+/;
     
             cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
@@ -272,7 +266,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                 }
             })
         }
-        console.log(randomCard);  
+         
         function cpuSecondRound(previous,difference, ingame,total) {
             for(let i=1; i<playerNumbers; i++) {
                 previous = ingame[i].textContent;
