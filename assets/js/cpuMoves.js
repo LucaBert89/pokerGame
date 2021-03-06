@@ -16,6 +16,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
     
     let ontablefish;
     let randomNumber = Math.floor(Math.random() * 11);
+    console.log(total[0].textContent);
 
     btnBet.addEventListener("click", insertFish);
 
@@ -24,10 +25,11 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         const cpuContainer = document.querySelector(".cpu-container");
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
         let cardNumber = [];
-        
-        
+        total = document.querySelectorAll(".total-fish");
+        console.log(total[0].textContent);
+        console.log((parseInt(ingame[0].textContent) -10));
         //here I subtract the fish selected from the total available. + 10 is the open fish that I don't want to be counted two times
-        total[0].textContent = (parseInt(total[0].textContent) - parseInt(ingame[0].textContent))+10;
+        total[0].textContent = parseInt(total[0].textContent) - (parseInt(ingame[0].textContent) - 10);
         
         let cpuCurrent = [];
         let discardedCard= [];
@@ -84,13 +86,13 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         totalObjectSuit = [];
       
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit);   
-       
+        console.log(playerRanksArray, totalObjectRanks, totalObjectSuit);
         ontablefish = [...ingame].map(e => e.textContent);
 
-        let riskValue;
-        let addedNumber;
+        console.log(ontablefish);
         for(let i=1; i<playerNumbers; i++) {
-            
+            let riskValue;
+            let addedNumber;
             if(total[i].textContent >= Math.max(...ontablefish)) {
                 if(result[i] === 0) {
                     console.log("result = 0");
@@ -100,6 +102,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                     console.log("result = 1 a 3");
                     addedNumber = parseInt(total[i].textContent) * 2/10;
                     riskValue = parseInt(total[i].textContent) * 2/5;
+                    console.log(addedNumber);
                     if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
                         ingame[i].textContent = Math.max(...ontablefish) + Math.round(addedNumber / 10) * 10;
                         cpuResponse(ontablefish,ingame,total,i )
@@ -121,7 +124,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                     }
                 } else if(result[i] >= 7 ) {
                     console.log("result = + di 7");
-                    ingame[i].textContent = total[i].textContent;
+                    ingame[i].textContent = parseInt(total[i].textContent)+ parseInt(ingame[i].textContent);
                     cpuResponse(ontablefish,ingame,total,i )
                 }
             } else {
@@ -130,7 +133,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         }    
 
         ontablefish = [...ingame].map(e => e.textContent);
-        
+        console.log(ontablefish);
     
         if(ingame[0].textContent < Math.max(...ontablefish)) {
             if(ingame[0].textContent != 10) {
@@ -164,13 +167,13 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         if(e.target.className === "stay") {
             ingame[0].removeAttribute("id");
             previous = ingame[0].textContent;
-            difference = Math.max(...ontablefish) - previous;
+            difference = Math.max(...ontablefish) - parseInt(previous);
             if(total[0].textContent >= difference){
                 ingame[0].textContent = parseInt(ingame[0].textContent) + difference;
                 total[0].textContent = parseInt(total[0].textContent) - difference;
             } else {
                 ingame[0].setAttribute("id","stayIn");
-                ingame[0].textContent = total[0].textContent;
+                ingame[0].textContent = parseInt(total[0].textContent) + parseInt(ingame[0].textContent);
                 total[0].textContent = parseInt(total[0].textContent) - parseInt(total[0].textContent);
             }
         }
@@ -222,6 +225,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         ]
         winner is 3
         */
+       console.log(compareScores);
         winner = Math.max(...compareScores);
     
     // FIND THE CORRESPONDING KEY (PLAYER NUMBER).
@@ -287,11 +291,11 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                                 //ingame[i+1].textContent = 20;
                                 difference = parseInt(ingame[i].textContent) - previous;
                                 total[i].textContent = parseInt(total[i].textContent) - difference;  
-                        } else {
-                                console.log("ok");
-                                continue;
+                            } else {
+                                    console.log("ok");
+                                    continue;
+                                }
                             }
-                        }
                             
                         else if(result[i] >= 4 && result[i] <= 6 ) {
                             riskValue = total[i].textContent * 3/5;
@@ -328,6 +332,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         function findtheWinner(winner, scoreIn, compare, playerRanksArray) {
             let playerNumber = [];
             let sumcardRanks = [];
+            console.log(compare)
             if(compare.filter(e => e === winner).length > 1) {
                 scoreIn.forEach(function(e,index){
                 /* look into ingameScores array to find the keys (players number) that have the same score 
@@ -348,7 +353,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                 for each player still in the game(excluding undefined players that don't have the max score)
                 loop and sum the rank of his cards
                 */ 
-      
+               console.log(playerNumber);
                playerNumber.forEach(function(e) {
                     let sum = 0;
                     if(e !== undefined) {
@@ -376,6 +381,8 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                    
                     }
                 })
+                console.log(sumcardRanks);
+                console.log(maxScore);
                 /*CASE: SUM OF CARDS HAVE EQUAL RANKS AMONG PLAYERS
                 if there are two players with the same score and same cards rank sum*/
                 let sameSum = [];
@@ -385,7 +392,9 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                         sameSum.push(Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore));     
                     })
                     //Flip a coin..
+                   
                     winner = sameSum[Math.round(Math.random())];
+                    console.log(winner);
                 } else { 
                     sumcardRanks.forEach(function(e, index) {
                         /*
@@ -418,8 +427,11 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         }
     
         function blufforNot(randomMove ,currentFish, betPrev, total, ontablefish, index) {
-            if(randomMove > 6) {
-                let bluff = parseInt(betPrev) + Math.round(parseInt(total[index].textContent) * 1/10);
+            if(randomMove > 1) {
+                console.log(betPrev);
+                let bluff;
+                bluff = parseInt(betPrev) + Math.round(parseInt(total[index].textContent) * 1/10);
+                console.log(bluff);
                 currentFish[index].textContent = Math.round(bluff / 10) * 10;
                 ontablefish[index] = currentFish[index].textContent;
                 total[index].textContent = parseInt(total[index].textContent) - parseInt(currentFish[index].textContent);
@@ -434,6 +446,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
             rank = [];
             suit = [];
             result = [];
+           
             cardGenerator();
             btnOpen.style.display = "inline-block";
 

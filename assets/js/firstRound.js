@@ -1,6 +1,6 @@
 import {playAndResponse} from "./cpuMoves.js";
 import {handCombination} from "./combinations.js";
-
+import {modifyPlayers} from "./index.js";
 import {playerNumbers} from "./index.js";
 
 
@@ -141,7 +141,8 @@ btnOpen.addEventListener("click", function() {
      rank = [];
      suit = [];
      result = [];  
-     
+     console.log(ingame[0].textContent)
+     console.log(total[0].textContent);
      fishSelector(ingame, total);
    // here function players is call passing randomCard, the array that contain all the cards
      players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit);
@@ -156,7 +157,7 @@ btnOpen.addEventListener("click", function() {
     } else {
         for(let i=0; i<playerNumbers; i++) {
             if(total[i].textContent > 0) {
-                total[i].textContent = total[i].textContent - 10;
+                total[i].textContent = parseInt(total[i].textContent) - 10;
                 ingame[i].textContent = 10;
             } 
         btnOpen.style.display = "none";
@@ -165,7 +166,7 @@ btnOpen.addEventListener("click", function() {
         }
     }
 
-    
+    console.log(total[0].textContent);
     playAndResponse(result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard);
       
         /* here the compare function is called passing result. Result are the scores based on
