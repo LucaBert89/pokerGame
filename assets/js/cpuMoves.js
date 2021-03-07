@@ -1,33 +1,30 @@
 import {players} from "./firstRound.js";
 import {replaceCard} from "./firstRound.js"
-import {playerNumbers} from "./index.js";
 import {cardGenerator} from "./firstRound.js";
 import {btnOpen} from "./firstRound.js"
-import {modifyPlayers} from "./index.js";
 
 
 
-function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard) {
+function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers) {
     const nextTurn = document.querySelector(".next-turn");
     const btnStay = document.querySelector(".stay");
     const btnLeave = document.querySelector(".leave");
     const btnShow = document.querySelector(".show");
     const btnBet = document.querySelector(".input-fish__btn")
-    
     let ontablefish;
     let randomNumber = Math.floor(Math.random() * 11);
-    console.log(total[0].textContent);
 
     btnBet.addEventListener("click", insertFish);
 
     // HERE IS THE FIRST MOVE: the player select the fish he wants to play
     function insertFish(){
+        btnBet.removeEventListener('click', insertFish);
+
         const cpuContainer = document.querySelector(".cpu-container");
-        const cpuPlayers = cpuContainer.querySelectorAll(".cpu");
+        const cpuPlayers = cpuContainer.querySelectorAll(".cpu");   
         let cardNumber = [];
         total = document.querySelectorAll(".total-fish");
-        console.log(total[0].textContent);
-        console.log((parseInt(ingame[0].textContent) -10));
+
         //here I subtract the fish selected from the total available. + 10 is the open fish that I don't want to be counted two times
         total[0].textContent = parseInt(total[0].textContent) - (parseInt(ingame[0].textContent) - 10);
         
@@ -86,7 +83,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         totalObjectSuit = [];
       
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit);   
-        console.log(playerRanksArray, totalObjectRanks, totalObjectSuit);
+
         ontablefish = [...ingame].map(e => e.textContent);
 
         console.log(ontablefish);
@@ -161,6 +158,9 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
     btnShow.addEventListener("click", playersChoices);
     
     function playersChoices(e) {
+        btnStay.removeEventListener("click", playersChoices);
+        btnLeave.removeEventListener("click", playersChoices);
+        btnShow.removeEventListener("click", playersChoices);
 
         let previous;
         let difference; 
@@ -405,8 +405,9 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                         if(Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore) !== undefined) {
                             winner = Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore);
                         }
+                        console.log(winner);
                     })
-            
+                    console.log(winner);
                     //Here i pass the fishes that are in the game to the WINNER
                     ingame.forEach(e => {
                         total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
@@ -419,6 +420,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                         winner = Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner);
                     }
                 })
+                console.log(winner);
                 ingame.forEach(e => {
                     total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
                     //e.innerHTML = "";
@@ -442,36 +444,26 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
     
     
     
-        nextTurn.addEventListener("click",function() {
+        nextTurn.addEventListener("click",next)
+        
+        
+        function next() {
+            nextTurn.removeEventListener("click",next)
             rank = [];
             suit = [];
             result = [];
            
             cardGenerator();
-            btnOpen.style.display = "inline-block";
-
-            let j = 0;
             for(let i =0; i<playerNumbers; i++) {
                 ingame[i].textContent = "";
-            
-                if(total[i].textContent == 0) {
-                    if(i>0) {
-                        j++;
-                        document.querySelector(`.player${i}`).remove();
-                        console.log(`player${i} lose`);
-                        delete result[i];
-                    } else  {
-                        console.log("you lose");
-                    }
-                }
-            
             }
-        modifyPlayers(playerNumbers, j);
-        ingame = document.querySelectorAll(".in-game-fish");
-        total = document.querySelectorAll(".total-fish");
+
+            btnOpen.style.display = "inline-block";
+            ingame = document.querySelectorAll(".in-game-fish");
+            total = document.querySelectorAll(".total-fish");
         
-        })
+        }
 
 }
 
-export {playAndResponse}
+export {playAndResponse};

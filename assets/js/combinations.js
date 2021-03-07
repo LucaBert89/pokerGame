@@ -1,4 +1,5 @@
 import {playerNumbers} from "./index.js";
+import {modifyPlayers} from "./index.js";
 
 let score = {
     "highCard":0,
@@ -24,7 +25,6 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
     let suitValues;
     let currentRankCount = {};
     let currentSuitCount = {};
-   
     let values;
     let high;
     // combination variable for functions
@@ -32,11 +32,11 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
     let threefullComb;
     let straightComb;
     console.log(playerR);
-    currentRankCount = {};
-    currentSuitCount = {};
+
     for(let i=0; i<playerNumbers; i++) {
         currentRankCount = {};
         currentSuitCount= {};
+        
         //I called two functions to count: 1^rank of cards; 2^suit of cards 
         /*here I pass to the function the rank array ex. ["2","3","4","5", "6"], the count obj
         
@@ -46,7 +46,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
 
         /*here the same I did for the rank but for the suit*/
         countValues(playerS,currentSuitCount,i, totalObjectSuit);
-        
+        console.log(currentRankCount);
         //take the values of rank and suit: the values of the objects
         values = Object.values(totalObjectRanks[i]);
         suitValues = Object.values(totalObjectSuit[i]);

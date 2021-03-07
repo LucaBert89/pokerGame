@@ -1,9 +1,12 @@
 import {btnOpen} from "./firstRound.js"
+
+
 // decide how many player you want to play against
 
 let playerNumbers = prompt("how many players?");
 function modifyPlayers (value, index) {
-    value -= index;
+    value = value - index;
+    return value;
 }
 let points = prompt("how many points?");
 

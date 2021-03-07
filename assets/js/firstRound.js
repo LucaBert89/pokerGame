@@ -1,8 +1,7 @@
 import {playAndResponse} from "./cpuMoves.js";
 import {handCombination} from "./combinations.js";
-import {modifyPlayers} from "./index.js";
 import {playerNumbers} from "./index.js";
-
+import {modifyPlayers} from "./index.js";
 
 let card;
 let cardImage;
@@ -137,6 +136,7 @@ btnOpen.addEventListener("click", function() {
     let rank;
     let suit;
     let result;
+    let j = 0;
      // here rank, suit and result'll empty and refill every time btnplay is clicked
      rank = [];
      suit = [];
@@ -153,21 +153,33 @@ btnOpen.addEventListener("click", function() {
         suit = [];
         result = [];
         cardGenerator();
-
+        
     } else {
         for(let i=0; i<playerNumbers; i++) {
-            if(total[i].textContent > 0) {
+            if(total[i].textContent > 0) { 
                 total[i].textContent = parseInt(total[i].textContent) - 10;
                 ingame[i].textContent = 10;
-            } 
+            } else {
+                if(i>0) {
+                    j++;
+                    document.querySelector(`.player${i}`).remove();
+                    console.log(`player${i} lose`);
+                    delete result[i];
+                } else  {
+                    console.log("you lose");
+                }
+            }
+        }
+        console.log(playerNumbers, j);
+        modifyPlayers(playerNumbers, j);
+        console.log(modifyPlayers(playerNumbers, j));
+        console.log(playerNumbers);
         btnOpen.style.display = "none";
         btnPlay.style.display = "block";
-       
-        }
     }
 
     console.log(total[0].textContent);
-    playAndResponse(result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard);
+    playAndResponse(result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
       
         /* here the compare function is called passing result. Result are the scores based on
         the card combinations, displayed like this:
