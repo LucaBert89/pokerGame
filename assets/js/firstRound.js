@@ -7,7 +7,7 @@ random = randomCard (the array that contains all the cards of the game*/
 function players(random, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers) {
     /*for each card of the game call the hand function passing the single card and index
     to separate the rank and the suit*/
-    console.log(playerRanksArray);
+    console.log(random);
     console.log(playerSuitsArray);
     random.forEach(function(element, index) {   
     hand(element, rank, suit); 

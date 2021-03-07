@@ -9,6 +9,7 @@ let randomCard = [];
 let playerNumbers = prompt("how many players?");
 let points = prompt("how many points?");
 
+let initialNumber = playerNumbers;
 
 // generate the players
 function generatePlayers(playerNumbers) {
@@ -79,7 +80,7 @@ function cardGenerator() {
     let gameCards = document.querySelectorAll(".player__card");
     const player = document.querySelector(".player0");
     const activeCard = player.querySelectorAll(".player__card");
-
+    console.log(gameCards);
    
     // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
     gameCards.forEach(function(element, index) {
@@ -213,29 +214,42 @@ btnOpen.addEventListener("click", function() {
         cardGenerator();
         
     } else {
-        for(let i=0; i<playerNumbers; i++) {
-            if(total[i].textContent > 0) { 
-                total[i].textContent = parseInt(total[i].textContent) - 10;
-                ingame[i].textContent = 10;
-            } else {
-                if(i>0) {
-                    j++;
-                    document.querySelector(`.player${i}`).remove();
-                    console.log(`player${i} lose`);
-                    delete result[i];
-                } else  {
-                    console.log("you lose");
+        for(let i=0; i<initialNumber; i++) {
+            if(total[i] !== undefined) {
+                if(total[i].textContent > 0) { 
+                    total[i].textContent = parseInt(total[i].textContent) - 10;
+                    ingame[i].textContent = 10;
+                } else {
+                    if(i>0) {
+                        j++;
+                        if( document.querySelector(`.player${i}`) !== undefined) {
+                            document.querySelector(`.player${i}`).remove();
+                            console.log(`player${i} lose`);
+                            delete result[i];
+                        }
+                    } else  {
+                        console.log("you lose");
+                    }
+                    cardGenerator();
+                    /*document.querySelectorAll(".cpu").forEach(function(e, index) {
+                        e.className = `player${index+1} cpu`;
+                    })*/
                 }
-                /*document.querySelectorAll(".cpu").forEach(function(e, index) {
-                    e.className = `player${index+1} cpu`;
-                })*/
             }
+            
         }
+        ingame = document.querySelectorAll(".in-game-fish");
+        total = document.querySelectorAll(".total-fish"); 
         playerNumbers-=j;
         btnOpen.style.display = "none";
         btnPlay.style.display = "block";
+        
     }
+    rank = [];
+    suit = [];
+    result = [];
     fishSelector(ingame, total);
+    console.log(playerNumbers);
    // here function players is call passing randomCard, the array that contain all the cards
     players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
     
