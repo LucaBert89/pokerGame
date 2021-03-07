@@ -1,7 +1,7 @@
 import {players} from "./firstRound.js";
-import {replaceCard} from "./firstRound.js"
-import {cardGenerator} from "./firstRound.js";
-import {btnOpen} from "./firstRound.js"
+import {replaceCard} from "./index.js"
+import {cardGenerator} from "./index.js";
+import {btnOpen} from "./index.js"
 
 
 
@@ -82,7 +82,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         totalObjectRanks = [];
         totalObjectSuit = [];
       
-        players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit);   
+        players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);   
 
         ontablefish = [...ingame].map(e => e.textContent);
 

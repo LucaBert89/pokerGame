@@ -1,5 +1,3 @@
-import {playerNumbers} from "./index.js";
-import {modifyPlayers} from "./index.js";
 
 let score = {
     "highCard":0,
@@ -18,7 +16,7 @@ let score = {
 
 
 /* HAND COMBINATION: rank array and suit array*/
-function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectSuit) {
+function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectSuit, playerNumbers) {
    
     let key;
     //variables for counting the elements: useful for pair or threes or others
