@@ -19,7 +19,6 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
     // HERE IS THE FIRST MOVE: the player select the fish he wants to play
     function insertFish(){
         btnBet.removeEventListener('click', insertFish);
-
         const cpuContainer = document.querySelector(".cpu-container");
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu");   
         let cardNumber = [];
@@ -429,7 +428,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         }
     
         function blufforNot(randomMove ,currentFish, betPrev, total, ontablefish, index) {
-            if(randomMove > 1) {
+            if(randomMove > 5) {
                 console.log(betPrev);
                 let bluff;
                 bluff = parseInt(betPrev) + Math.round(parseInt(total[index].textContent) * 1/10);

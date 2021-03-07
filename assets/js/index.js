@@ -1,10 +1,16 @@
 import {players} from "./firstRound.js";
 import {playAndResponse} from "./cpuMoves.js";
+
+
+const cardSuit = ["C", "D", "H", "S"];
+const generateBtn = document.querySelector(".generate");
+const btnOpen = document.querySelector(".player-active__btn");
+
 let card;
 let cardImage;
 let randomCard = [];
 
-// decide how many player you want to play against
+// decide how many player you want to play against and points
 
 let playerNumbers = prompt("how many players?");
 let points = prompt("how many points?");
@@ -66,21 +72,12 @@ function playerCash(p, bet,player, cash) {
 
 
 
-
-const cardSuit = ["C", "D", "H", "S"];
-const generateBtn = document.querySelector(".generate");
-const btnOpen = document.querySelector(".player-active__btn");
-
-
-
 generateBtn.addEventListener("click", cardGenerator);
 
 function cardGenerator() {
     randomCard = [];
+    
     let gameCards = document.querySelectorAll(".player__card");
-    const player = document.querySelector(".player0");
-    const activeCard = player.querySelectorAll(".player__card");
-    console.log(gameCards);
    
     // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
     gameCards.forEach(function(element, index) {
@@ -89,26 +86,7 @@ function cardGenerator() {
         /*the first 5 cards are yours (index<5) so you can click only on your cards 
         if you want to change them*/
     });
-    activeCard.forEach(function(element, index) {
-        let control = true;
-        element.addEventListener("click", function(e) {
-            // rules of poker: you can't change more than 4 cards
-            //if(i < 4) {
-                /*call the function replace card passing the index to replace your card
-                with another*/
-                if(control) {
-                    replaceCard(index, element);
-                    control = false;
-                }
-                /*
-                i++;
-            } else {
-                return false;
-            }  
-            */
-        })
-    });
-          
+ 
 }   
 
 
@@ -162,7 +140,7 @@ function generateCard(selectedCard, current) {
 
 
 /* here I pass the index of the card that I clicked among mine*/
-function replaceCard(current, e, randomCard) {
+function replaceCard(current, e) {
     /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
     card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
@@ -186,6 +164,10 @@ function replaceCard(current, e, randomCard) {
 
 btnOpen.addEventListener("click", function() {
     const btnPlay = document.querySelector(".input-fish");
+    const player = document.querySelector(".player0");
+    const activeCard = player.querySelectorAll(".player__card");
+
+    
     let totalObjectRanks = [];
     let totalObjectSuit = [];
     let ingame = document.querySelectorAll(".in-game-fish");
@@ -238,11 +220,35 @@ btnOpen.addEventListener("click", function() {
             }
             
         }
+        // CHANGE YOUR CARD IF YOU NEED TO
+        activeCard.forEach(function(element, index) {
+        // setted a control variable to check if the card has already been changed
+            let control = true;
+            element.addEventListener("click", changeCard);
+        // you've five second to change your cards
+            setTimeout(function(){ 
+                element.removeEventListener("click", changeCard);
+            }, 5000);
+    
+            function changeCard () {
+                    /*call the function replace card passing the index to replace your card
+                    with another and this (element selected)*/
+                    if(control) {
+                        replaceCard(index, this);
+                        // control switched to false and you can't change that card again
+                        control = false;
+                    }
+            }
+        });
         ingame = document.querySelectorAll(".in-game-fish");
         total = document.querySelectorAll(".total-fish"); 
         playerNumbers-=j;
         btnOpen.style.display = "none";
-        btnPlay.style.display = "block";
+        // bet appear after 5 seconds, time allowed to change your cards
+        setTimeout(function(){ 
+            btnPlay.style.display = "block";
+        }, 5000);
+        
         
     }
     rank = [];

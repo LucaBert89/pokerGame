@@ -7,13 +7,8 @@ random = randomCard (the array that contains all the cards of the game*/
 function players(random, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers) {
     /*for each card of the game call the hand function passing the single card and index
     to separate the rank and the suit*/
-    console.log(random);
-    console.log(playerSuitsArray);
-    random.forEach(function(element, index) {   
-    hand(element, rank, suit); 
-    })
+    random.forEach(element => {hand(element, rank, suit);})
     // here the playerRanksArray and playerSuitsArray are emptyed and refilled every time btn is clicked
-
 
     /* cardSplit is used to deal the card to the players rounding with ceil in combination
     with dealingCards function.
@@ -29,7 +24,7 @@ function players(random, rank, suit, result, playerRanksArray, playerSuitsArray,
     
 // FUNCTION HAND: random = randomCard (all card of the game)
 function hand(random, rank, suit) {
-    //separate rank and suit into separate array
+    //separate rank and suit into separate arrays
         rank.push(random.slice(0,-1));
         suit.push(random[random.length-1]);
     }
