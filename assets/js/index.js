@@ -5,7 +5,7 @@ import {playAndResponse} from "./cpuMoves.js";
 const cardSuit = ["C", "D", "H", "S"];
 const generateBtn = document.querySelector(".generate");
 const btnOpen = document.querySelector(".player-active__btn");
-
+const btnPlay = document.querySelector(".input-fish");
 let card;
 let cardImage;
 let randomCard = [];
@@ -26,6 +26,7 @@ function generatePlayers(playerNumbers) {
     let card;
     let cpu = document.createElement("div");
     cpu.classList.add("cpu-container");
+    
 //max of the player is four: a class and a div will be generated for each player
     if(playerNumbers <= 4) {
         for(let j=0; j <= playerNumbers-1; j++) {
@@ -148,7 +149,7 @@ function replaceCard(current, e) {
     /*if the randomCard already includes the card selected ex. 2H, than return the function
     again to change the card until it's not among the already generated ones*/
     if(randomCard.includes(card)) {
-        return replaceCard(current, e, randomCard);
+        return replaceCard(current, e);
     } else {
         randomCard.splice(current,1,card);
         cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
@@ -163,7 +164,7 @@ function replaceCard(current, e) {
 // OPEN BTN
 
 btnOpen.addEventListener("click", function() {
-    const btnPlay = document.querySelector(".input-fish");
+    
     const player = document.querySelector(".player0");
     const activeCard = player.querySelectorAll(".player__card");
 
@@ -223,7 +224,8 @@ btnOpen.addEventListener("click", function() {
         // CHANGE YOUR CARD IF YOU NEED TO
         activeCard.forEach(function(element, index) {
         // setted a control variable to check if the card has already been changed
-            let control = true;
+            //let control = true;
+            element.classList.add("clickable");
             element.addEventListener("click", changeCard);
         // you've five second to change your cards
             setTimeout(function(){ 
@@ -233,10 +235,10 @@ btnOpen.addEventListener("click", function() {
             function changeCard () {
                     /*call the function replace card passing the index to replace your card
                     with another and this (element selected)*/
-                    if(control) {
+                    if(element.className ==="player__card clickable") {
                         replaceCard(index, this);
                         // control switched to false and you can't change that card again
-                        control = false;
+                        element.classList.remove("clickable");
                     }
             }
         });
@@ -244,6 +246,7 @@ btnOpen.addEventListener("click", function() {
         total = document.querySelectorAll(".total-fish"); 
         playerNumbers-=j;
         btnOpen.style.display = "none";
+
         // bet appear after 5 seconds, time allowed to change your cards
         setTimeout(function(){ 
             btnPlay.style.display = "block";
@@ -259,7 +262,7 @@ btnOpen.addEventListener("click", function() {
    // here function players is call passing randomCard, the array that contain all the cards
     players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
     
-    playAndResponse(result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
+    playAndResponse(activeCard, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
       
         /* here the compare function is called passing result. Result are the scores based on
         the card combinations, displayed like this:
@@ -276,7 +279,7 @@ btnOpen.addEventListener("click", function() {
 
 
 
-export {replaceCard, generateBtn,btnOpen, cardGenerator}
+export {replaceCard, generateBtn,btnOpen, cardGenerator, btnPlay}
 
 
 

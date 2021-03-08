@@ -1,11 +1,8 @@
 import {players} from "./firstRound.js";
-import {replaceCard} from "./index.js"
-import {cardGenerator} from "./index.js";
-import {btnOpen} from "./index.js"
+import {btnPlay, replaceCard, cardGenerator, btnOpen} from "./index.js"
 
 
-
-function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers) {
+function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers) {
     const nextTurn = document.querySelector(".next-turn");
     const btnStay = document.querySelector(".stay");
     const btnLeave = document.querySelector(".leave");
@@ -18,63 +15,21 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
 
     // HERE IS THE FIRST MOVE: the player select the fish he wants to play
     function insertFish(){
+        // when the player click on bet you can't change your card anymore
         btnBet.removeEventListener('click', insertFish);
         const cpuContainer = document.querySelector(".cpu-container");
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu");   
         let cardNumber = [];
+        playerRanksArray = []; 
+        ontablefish = [];
         total = document.querySelectorAll(".total-fish");
 
         //here I subtract the fish selected from the total available. + 10 is the open fish that I don't want to be counted two times
         total[0].textContent = parseInt(total[0].textContent) - (parseInt(ingame[0].textContent) - 10);
+
         
-        let cpuCurrent = [];
-        let discardedCard= [];
-        let ranking = [];
-        let replaceIndex;  
-        playerRanksArray = []; 
-       
-        ontablefish = [];
+        replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks);
         
-        // REPLACING USELESS CARDS
-        /* Here after the click I want that the cpu players change their useless cards
-            where card rank is = to 1.
-        */
-        let x=5;
-        /* I put every card divided among the cpu players into cpuCurrent array ex
-            0: ["14H", "10H", "6D", "12H", "4S"]
-            1: ["8D", "8S", "5D", "14S", "2C"]
-       */
-        for(let j=5; j<randomCard.length; j+=5) {
-            cpuCurrent.push(randomCard.slice(j, j+5));  
-        }    
-
-
-         /* I put the Object.entries of the totalObjectRanks inside an array of arrays
-            that include the rank and count of the card to see if it's one or not 
-            ["5", 1]
-            ["7", 1]
-            ["10", 1]
-            ["12", 2]
-        */
-
-        for(let i=0;i<playerNumbers-1;i++) {
-            cardNumber = Object.entries(totalObjectRanks[i+1]);
-            ranking = [];
-            discardedCard = [];
-           
-            cpuPlayers[i].querySelectorAll(".player__card").forEach(function(e,index) {
-                ranking.push(cpuCurrent[i][index].slice(0,-1));
-            })
-            
-        
-            if(result[i] === 1 || result[i] === 2 || result[i] === 0) {
-                cpuMove(cardNumber, discardedCard, replaceIndex,i, ranking,x, cpuPlayers,randomCard);
-            }
-            
-           
-            x+=5;
-        }
-
         rank = [];
         suit = [];
         result = [];
@@ -86,6 +41,76 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         ontablefish = [...ingame].map(e => e.textContent);
 
         console.log(ontablefish);
+        firstBet(playerNumbers, total, ingame, ontablefish, result);
+      
+         
+
+        ontablefish = [...ingame].map(e => e.textContent);
+        console.log(ontablefish);
+    
+        if(ingame[0].textContent < Math.max(...ontablefish)) {
+            if(ingame[0].textContent != 10) {
+                btnStay.style.display = "inline-block";
+                btnLeave.style.display = "inline-block";
+            } else {
+                btnShow.style.display = "inline-block";
+            }
+        }
+           //     }
+    }
+    
+    function replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks) {
+        let cpuCurrent = [];
+        let discardedCard= [];
+        let ranking = [];
+        let replaceIndex;  
+// REPLACING USELESS CARDS
+    /* Here after the click I want that the cpu players change their useless cards
+        where card rank is = to 1.
+    */
+        let x=5;
+        /* I put every card divided among the cpu players into cpuCurrent array ex
+            0: ["14H", "10H", "6D", "12H", "4S"]
+            1: ["8D", "8S", "5D", "14S", "2C"]
+       */
+        for(let j=5; j<randomCard.length; j+=5) {
+            cpuCurrent.push(randomCard.slice(j, j+5));  
+        }    
+         /* I put the Object.entries of the totalObjectRanks inside an array of arrays
+            that include the rank and count of the card to see if it's one or not 
+            ["5", 1]
+            ["7", 1]
+            ["10", 1]
+            ["12", 2]
+            each iteration is for a single player
+        */
+
+        for(let i=0;i<playerNumbers-1;i++) {
+            cardNumber = Object.entries(totalObjectRanks[i+1]);
+            ranking = [];
+            discardedCard = [];
+           
+            cpuPlayers[i].querySelectorAll(".player__card").forEach(function(e,index) {
+                // I push the ranks of every Cpu player inside ranking
+                ranking.push(cpuCurrent[i][index].slice(0,-1));
+            })
+            
+            console.log(cardNumber);
+            // if the result is 1(pair) or 2(two pair) or 0 (nothing) the cpuMove function'll be called
+            if(result[i] === 1 || result[i] === 2 || result[i] === 0) {
+
+                // this function is used to let the cpu player change the useless cards
+                cpuMove(cardNumber, discardedCard, replaceIndex,i, ranking,x, cpuPlayers);
+            }
+            
+           
+            x+=5;
+        }
+
+    }
+
+
+    function firstBet(playerNumbers, total, ingame, ontablefish, result) {
         for(let i=1; i<playerNumbers; i++) {
             let riskValue;
             let addedNumber;
@@ -120,28 +145,64 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                     }
                 } else if(result[i] >= 7 ) {
                     console.log("result = + di 7");
-                    ingame[i].textContent = parseInt(total[i].textContent)+ parseInt(ingame[i].textContent);
+                    allIn(ingame[i], total[i]);
                     cpuResponse(ontablefish,ingame,total,i )
                 }
             } else {
-                continue;
+                if(result[i] >= 1 && result[i] <= 3) {
+                    if(randomNumber > 5) {
+                        allIn(ingame[i], total[i]);
+                        cpuResponse(ontablefish,ingame,total,i );
+                    }
+                } else if(result[i] >= 4 && result[i] <= 6 || result[i] >= 7) {
+                    allIn(ingame[i], total[i]);
+                    cpuResponse(ontablefish,ingame,total,i );
+                }
             }
-        }    
+        }   
+    }   
 
-        ontablefish = [...ingame].map(e => e.textContent);
-        console.log(ontablefish);
-    
-        if(ingame[0].textContent < Math.max(...ontablefish)) {
-            if(ingame[0].textContent != 10) {
-                btnStay.style.display = "inline-block";
-                btnLeave.style.display = "inline-block";
-            } else {
-                btnShow.style.display = "inline-block";
-            }
-        }
-           //     }
+    function allIn(ingame, total) {
+        ingame.textContent = parseInt(total.textContent) + parseInt(ingame.textContent);
     }
-    
+
+
+    /* n: cardNumber (array of arrays with card and number); dCard: empty array for the discarded cards;
+    newIndex: a variable that'll be used to check the index of the card to discard; index;
+    cardRank: array of ranks of the cards; x: starting from 5 it'll increment of 5 to consider every
+    5 players cards; cpuP: cpuPlayers elements; 
+
+    */
+    function cpuMove(n, dCard, newIndex, index, cardRank,x, cpuP) { 
+        /* here I fill the dCard array with the cardNumber that is = 1
+            ex. card ranks ["2": 1; "3":2; "4":1; "5":1]
+            here into dCard = ["2", "4", "5"]
+        */ 
+            dCard = [];
+            n.forEach(function(e) {
+                if(e[1] === 1) {
+                    dCard.push(e[0]);
+                }   
+            })
+        // with this regular expression I'll check for numbers inside strings 
+            let findNumber = /\d+/;
+            cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
+                for(let j=0; j < dCard.length; j++) { 
+                    //check inside the string backgroundImage a number equal to dCard numbers
+                    if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
+                    /*I'll look for the dCard index inside the cardRank array + 5 to consider the
+                      active player that is not considered in cardRank but'll be in replaceCard
+                    */
+                        newIndex = (cardRank.indexOf(dCard[j]))+x;
+                        replaceCard(newIndex, e);  
+                        break;
+                    }
+                }
+            })
+        }
+         
+   
+
 
     function cpuResponse(ontablefish, ingame, total,i) {
         ontablefish[i] = ingame[i].textContent;
@@ -234,13 +295,6 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
         2. one winner;
         */  
        
-    
-    /*1. More than a winner
-        if the scores that are equal to winner are more than 1 we have multiple players with
-        the same score and we've to found a different method to declare the winner
-        Here among the players with the same score, the one which sum of the rank of the
-        cards is higher win.
-    */
 
       findtheWinner(winner, ingameScores, compareScores, playerRanksArray)
 
@@ -248,28 +302,6 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
     }
     
     
-        function cpuMove(n, dCard, newIndex, index, cardRank,x, cpuP, randomC) { 
-            
-            dCard = [];
-            n.forEach(function(e) {
-                if(e[1] === 1) {
-                    dCard.push(e[0]);
-                }   
-            })
-  
-            let findNumber = /\d+/;
-    
-            cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
-                for(let j=0; j < dCard.length; j++) { 
-                    if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
-                        newIndex = (cardRank.indexOf(dCard[j]))+x;
-                        replaceCard(newIndex, e, randomC);  
-                        break;
-                    }
-                }
-            })
-        }
-         
         function cpuSecondRound(previous,difference, ingame,total) {
             for(let i=1; i<playerNumbers; i++) {
                 previous = ingame[i].textContent;
@@ -281,13 +313,10 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                                 ingame[i].textContent = Math.max(...ontablefish);
                                 difference = parseInt(ingame[i].textContent) - previous;
                                 total[i].textContent = parseInt(total[i].textContent) - difference;
-                            
-                            //blufforNot(randomNumber, ingame[i], Math.max(...ontablefish), total[i]);
                         } else if(result[i] >= 1 && result[i] <= 3 ) {
                             riskValue = total[i].textContent * 2/5;
                             if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
                                 ingame[i].textContent = Math.max(...ontablefish);
-                                //ingame[i+1].textContent = 20;
                                 difference = parseInt(ingame[i].textContent) - previous;
                                 total[i].textContent = parseInt(total[i].textContent) - difference;  
                             } else {
@@ -308,7 +337,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                         } else if(result[i] >= 7 ) {
                             ingame[i].textContent = Math.max(...ontablefish);
                             difference = parseInt(ingame[i].textContent) - previous;
-                                total[i].textContent = parseInt(total[i].textContent) - difference;  
+                            total[i].textContent = parseInt(total[i].textContent) - difference;  
                         }
                     } else {
                 /*here is the case when the player has not enough fish to bet again and match the max
@@ -327,11 +356,31 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                 }
             } 
         }
+
+        function blufforNot(randomMove ,currentFish, betPrev, total, ontablefish, index) {
+            if(randomMove > 5) {
+                console.log(betPrev);
+                let bluff;
+                bluff = parseInt(betPrev) + Math.round(parseInt(total[index].textContent) * 1/10);
+                console.log(bluff);
+                currentFish[index].textContent = Math.round(bluff / 10) * 10;
+                ontablefish[index] = currentFish[index].textContent;
+                total[index].textContent = parseInt(total[index].textContent) - parseInt(currentFish[index].textContent);
+            } else {
+                ingame.textContent = 10;
+            }
+        }
     
         function findtheWinner(winner, scoreIn, compare, playerRanksArray) {
             let playerNumber = [];
             let sumcardRanks = [];
             console.log(compare)
+             /*1. More than a winner
+                if the scores that are equal to winner are more than 1 we have multiple players with
+                the same score and we've to found a different method to declare the winner
+                Here among the players with the same score, the one which sum of the rank of the
+                cards is higher win.
+              */
             if(compare.filter(e => e === winner).length > 1) {
                 scoreIn.forEach(function(e,index){
                 /* look into ingameScores array to find the keys (players number) that have the same score 
@@ -398,7 +447,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                     sumcardRanks.forEach(function(e, index) {
                         /*
                         here I try to find the keys (player number) which value match the max Score
-                        previous ex.
+                        previous found ex.
                         {3: 72}    3 is the result
                         */
                         if(Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore) !== undefined) {
@@ -414,6 +463,10 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
                     })
                 }
             } else {
+                 /*1. Only one winner
+                    here I find the keys of object scoreIn to find the player number which
+                    score is higher
+                 */
                 scoreIn.forEach(function(e,index) {
                     if(Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner) !== undefined) {
                         winner = Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner);
@@ -427,19 +480,7 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
             }
         }
     
-        function blufforNot(randomMove ,currentFish, betPrev, total, ontablefish, index) {
-            if(randomMove > 5) {
-                console.log(betPrev);
-                let bluff;
-                bluff = parseInt(betPrev) + Math.round(parseInt(total[index].textContent) * 1/10);
-                console.log(bluff);
-                currentFish[index].textContent = Math.round(bluff / 10) * 10;
-                ontablefish[index] = currentFish[index].textContent;
-                total[index].textContent = parseInt(total[index].textContent) - parseInt(currentFish[index].textContent);
-            } else {
-                ingame.textContent = 10;
-            }
-        }
+  
     
     
     
@@ -451,12 +492,16 @@ function playAndResponse(result, ingame, total, rank, suit, playerRanksArray, pl
             rank = [];
             suit = [];
             result = [];
-           
+            // set again the "clickable" class to avoid double click on player card to replace
+            activeCard.forEach(e => {
+                e.classList.remove("clickable");
+                e.classList.add("clickable");
+            })
             cardGenerator();
             for(let i =0; i<playerNumbers; i++) {
                 ingame[i].textContent = "";
             }
-
+            btnPlay.style.display = "none";
             btnOpen.style.display = "inline-block";
             ingame = document.querySelectorAll(".in-game-fish");
             total = document.querySelectorAll(".total-fish");
