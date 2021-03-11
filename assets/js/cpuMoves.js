@@ -55,6 +55,8 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
             } else {
                 btnShow.style.display = "inline-block";
             }
+        } else {
+            btnShow.style.display = "inline-block";
         }
            //     }
     }
