@@ -1,4 +1,4 @@
-require("../assets/js/findWinner");
+import {findtheWinner} from "../assets/js/findWinner.js"
 
 var assert = require('chai').assert;
 describe('function', function() {
