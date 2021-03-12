@@ -297,7 +297,8 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         1. more than a winner: 2 or more players with the same score;
         2. one winner;
         */  
-      winner = findtheWinner(winner, ingameScores, compareScores, playerRanksArray);
+       console.log(winner, ingameScores, playerRanksArray);
+      winner = findtheWinner(winner, ingameScores, playerRanksArray);
      
       ingame.forEach(e => {
         total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);

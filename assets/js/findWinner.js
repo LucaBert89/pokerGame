@@ -1,14 +1,13 @@
-function findtheWinner(winner, scoreIn, compare, playerRanksArray) {
+function findtheWinner(winner, scoreIn, playerRanksArray) {
     let playerNumber = [];
     let sumcardRanks = [];
-    console.log(compare)
      /*1. More than a winner
         if the scores that are equal to winner are more than 1 we have multiple players with
         the same score and we've to found a different method to declare the winner
         Here among the players with the same score, the one which sum of the rank of the
         cards is higher win.
       */
-    if(compare.filter(e => e === winner).length > 1) {
+    if(scoreIn.filter(e => e === winner).length > 1) {
         scoreIn.forEach(function(e,index){
         /* look into ingameScores array to find the keys (players number) that have the same score 
             push inside keyPlayers array.
