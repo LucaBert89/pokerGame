@@ -1,6 +1,7 @@
 import {players} from "./firstRound.js";
 import {btnPlay, replaceCard, cardGenerator, btnOpen} from "./index.js"
 import {findtheWinner} from "./findWinner.js"
+import {firstBet} from "./cpuBets.js"
 
 
 function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers) {
@@ -10,7 +11,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
     const btnShow = document.querySelector(".show");
     const btnBet = document.querySelector(".input-fish__btn")
     let ontablefish;
-    let randomNumber = Math.floor(Math.random() * 11);
+    let randomNumber;
 
     btnBet.addEventListener("click", insertFish);
 
@@ -42,7 +43,13 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         ontablefish = [...ingame].map(e => e.textContent);
 
         console.log(result);
-        firstBet(playerNumbers, total, ingame, ontablefish, result);
+        for(let i=1; i<playerNumbers; i++) {
+            console.log(total[i].textContent, ingame[i].textContent, ontablefish, result[i]);
+            ingame[i].textContent = firstBet(total[i].textContent, ingame[i].textContent, ontablefish, result[i], randomNumber);
+            ontablefish[i] = ingame[i].textContent;
+            total[i].textContent = parseInt(total[i].textContent ) - parseInt(ingame[i].textContent) +10; 
+        }
+        
         console.log(result);
          
 
@@ -113,61 +120,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
     }
 
 
-    function firstBet(playerNumbers, total, ingame, ontablefish, result) {
-        for(let i=1; i<playerNumbers; i++) {
-            let riskValue;
-            let addedNumber;
-            if(total[i].textContent >= Math.max(...ontablefish)) {
-                if(result[i] === 0) {
-                    console.log("result = 0");
-                    blufforNot(randomNumber, ingame, Math.max(...ontablefish), total, ontablefish, i);
-                } else if(result[i] >= 1 && result[i] <= 3 ) {
-                    
-                    console.log("result = 1 a 3");
-                    addedNumber = parseInt(total[i].textContent) * 2/10;
-                    riskValue = parseInt(total[i].textContent) * 2/5;
-                    console.log(addedNumber);
-                    if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                        ingame[i].textContent = Math.max(...ontablefish) + Math.round(addedNumber / 10) * 10;
-                        cpuResponse(ontablefish,ingame,total,i )
-                 
-                    } else {
-                        console.log("non scommetto sono tra 1 e 3");
-                        continue;
-                    }
-                } else if(result[i] >= 4 && result[i] <= 6 ) {
-                    console.log("result = 4 a 6");
-                    addedNumber = parseInt(total[i].textContent) * 4/10;
-                    riskValue = total[i].textContent * 3/5;
-                    if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                        ingame[i].textContent = Math.max(...ontablefish) + Math.round(addedNumber / 10) * 10;
-                        cpuResponse(ontablefish,ingame,total,i )
-                    } else {
-                        console.log("non scommetto sono tra 4 e 6");
-                        continue;
-                    }
-                } else if(result[i] >= 7 ) {
-                    console.log("result = + di 7");
-                    allIn(ingame[i], total[i]);
-                    cpuResponse(ontablefish,ingame,total,i )
-                }
-            } else {
-                if(result[i] >= 1 && result[i] <= 3) {
-                    if(randomNumber > 5) {
-                        allIn(ingame[i], total[i]);
-                        cpuResponse(ontablefish,ingame,total,i );
-                    }
-                } else if(result[i] >= 4 && result[i] <= 6 || result[i] >= 7) {
-                    allIn(ingame[i], total[i]);
-                    cpuResponse(ontablefish,ingame,total,i );
-                }
-            }
-        }   
-    }   
-
-    function allIn(ingame, total) {
-        ingame.textContent = parseInt(total.textContent) + parseInt(ingame.textContent);
-    }
+    
 
 
     /* n: cardNumber (array of arrays with card and number); dCard: empty array for the discarded cards;
@@ -205,14 +158,6 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         }
          
    
-
-
-    function cpuResponse(ontablefish, ingame, total,i) {
-        ontablefish[i] = ingame[i].textContent;
-
-        total[i].textContent = parseInt(total[i].textContent) - parseInt(ingame[i].textContent) +10;   
-    }
-
 
     
     
@@ -363,25 +308,6 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
                 }
             } 
         }
-
-        function blufforNot(randomMove ,currentFish, betPrev, total, ontablefish, index) {
-            if(randomMove > 5) {
-                console.log(betPrev);
-                let bluff;
-                bluff = parseInt(betPrev) + Math.round(parseInt(total[index].textContent) * 1/10);
-                console.log(bluff);
-                currentFish[index].textContent = Math.round(bluff / 10) * 10;
-                ontablefish[index] = currentFish[index].textContent;
-                total[index].textContent = parseInt(total[index].textContent) - parseInt(currentFish[index].textContent);
-            } else {
-                ingame.textContent = 10;
-            }
-        }
-    
- 
-    
-  
-    
     
     
         nextTurn.addEventListener("click",next)
@@ -409,5 +335,9 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         }
 
 }
+
+
+
+
 
 export {playAndResponse};
