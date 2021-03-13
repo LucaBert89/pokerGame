@@ -1,4 +1,5 @@
-function findtheWinner(winner, scoreIn, playerRanksArray) {
+function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksArray) {
+    
     let playerNumber = [];
     let sumcardRanks = [];
      /*1. More than a winner
@@ -7,7 +8,9 @@ function findtheWinner(winner, scoreIn, playerRanksArray) {
         Here among the players with the same score, the one which sum of the rank of the
         cards is higher win.
       */
-    if(scoreIn.filter(e => e === winner).length > 1) {
+    console.log(compareScores);
+    if(compareScores.filter(e => e === winnerScore).length > 1) {
+        console.log("ok");
         scoreIn.forEach(function(e,index){
         /* look into ingameScores array to find the keys (players number) that have the same score 
             push inside keyPlayers array.
@@ -18,7 +21,7 @@ function findtheWinner(winner, scoreIn, playerRanksArray) {
                 2: "3"
             ]
         */
-       playerNumber.push( Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner));
+       playerNumber.push( Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winnerScore));
         })
         let totalScore = [];
         let maxScore;
@@ -55,12 +58,15 @@ function findtheWinner(winner, scoreIn, playerRanksArray) {
            
             }
         })
+        let prova = totalScore.filter(e => e === maxScore)
+        console.log(prova); 
+        console.log(totalScore);
         console.log(sumcardRanks);
         console.log(maxScore);
         /*CASE: SUM OF CARDS HAVE EQUAL RANKS AMONG PLAYERS
         if there are two players with the same score and same cards rank sum*/
         let sameSum = [];
-        if((totalScore.filter(e => e === maxScore).length > 1)) {
+        if(totalScore.filter(e => e === maxScore).length > 1) {
             sumcardRanks.forEach(function(e, index) {
                 // push the player number with the same total ranks inside the array sameSum
                 sameSum.push(Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore));     
@@ -69,7 +75,7 @@ function findtheWinner(winner, scoreIn, playerRanksArray) {
            
             winner = sameSum[Math.round(Math.random())];
             console.log(winner);
-            return winner;
+           
         } else { 
             sumcardRanks.forEach(function(e, index) {
                 /*
@@ -85,22 +91,22 @@ function findtheWinner(winner, scoreIn, playerRanksArray) {
             })
             console.log(winner);
             //Here i pass the fishes that are in the game to the WINNER
-            return winner;
+          
         }
-    } else {
+    } else if(compareScores.filter(e => e === winnerScore).length === 1) {
          /*1. Only one winner
             here I find the keys of object scoreIn to find the player number which
             score is higher
          */
         scoreIn.forEach(function(e,index) {
-            if(Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner) !== undefined) {
-                winner = Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winner);
+            if(Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winnerScore) !== undefined) {
+                winner = Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winnerScore);
             }
         })
         console.log(winner);
-        return winner;
+        
     }
-  
+    return winner;
 }
 
 export {findtheWinner}

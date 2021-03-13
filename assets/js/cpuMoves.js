@@ -41,9 +41,9 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
 
         ontablefish = [...ingame].map(e => e.textContent);
 
-        console.log(ontablefish);
+        console.log(result);
         firstBet(playerNumbers, total, ingame, ontablefish, result);
-      
+        console.log(result);
          
 
         ontablefish = [...ingame].map(e => e.textContent);
@@ -224,7 +224,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         btnStay.removeEventListener("click", playersChoices);
         btnLeave.removeEventListener("click", playersChoices);
         btnShow.removeEventListener("click", playersChoices);
-
+        
         let previous;
         let difference; 
         if(e.target.className === "stay") {
@@ -255,6 +255,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
     
     //CHOOSING THE WINNER
         let winner;
+        let winnerScore;
         let ingameScores = [];
         //Loop through every playersIn (players that accept the bet), 
         playersIn.forEach(function(e) {
@@ -288,8 +289,8 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         ]
         winner is 3
         */
-       console.log(compareScores);
-        winner = Math.max(...compareScores);
+      
+       winnerScore = Math.max(...compareScores);
     
     // FIND THE CORRESPONDING KEY (PLAYER NUMBER).
         /*we found the max score that won the game, but whose player is it?
@@ -297,8 +298,8 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         1. more than a winner: 2 or more players with the same score;
         2. one winner;
         */  
-       console.log(winner, ingameScores, playerRanksArray);
-      winner = findtheWinner(winner, ingameScores, playerRanksArray);
+    
+      winner = findtheWinner(winner, winnerScore, compareScores, ingameScores, playerRanksArray);
      
       ingame.forEach(e => {
         total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
@@ -308,6 +309,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
     
     
         function cpuSecondRound(previous,difference, ingame,total) {
+            console.log(ontablefish);
             for(let i=1; i<playerNumbers; i++) {
                 previous = ingame[i].textContent;
                 ingame[i].removeAttribute("id");

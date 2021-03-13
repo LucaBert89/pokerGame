@@ -188,7 +188,7 @@ btnOpen.addEventListener("click", function() {
      fishSelector(ingame, total);
    // here function players is call passing randomCard, the array that contain all the cards
      players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
-
+    console.log(result);
     if(result.every(e => e === 0)) {
         console.log("no one can open");
         rank = [];

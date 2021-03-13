@@ -29,7 +29,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
     let pairComb;
     let threefullComb;
     let straightComb;
-    console.log(playerR);
+
 
     for(let i=0; i<playerNumbers; i++) {
         currentRankCount = {};
@@ -44,13 +44,16 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
 
         /*here the same I did for the rank but for the suit*/
         countValues(playerS,currentSuitCount,i, totalObjectSuit);
-        console.log(currentRankCount);
+  
         //take the values of rank and suit: the values of the objects
         values = Object.values(totalObjectRanks[i]);
         suitValues = Object.values(totalObjectSuit[i]);
         key = Object.keys(totalObjectRanks[i]);
+  
         pairComb = findPair(values, result);
+      
         threefullComb = threeOrFull(values, result);
+        console.log(pairComb);
         straightComb = straigth(playerR[i], suitValues, result);
         if(pairComb == undefined && threefullComb == undefined && straightComb == undefined) {
            high = noOther(result); 
@@ -58,7 +61,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
 
            
     }
-    console.log(result);
+    
 }
 
 // COUNTVALUES: array=rank or suit array, c=count or countSuit, index=i, total suit or count array empty
@@ -84,23 +87,28 @@ function findPair(howmany, result) {
     //if there are 2 equal cards then it means that it could be a pair or a two pair.
     if(howmany.filter(e => e == 2).length === 1 && howmany.filter(e => e !== 2).length > 1) {
         //if the array length is = 4 ex. ["2","1","1","1"] it means there is a pair
-            return result.push(score["pair"]);
+        result.push(score["pair"]);
+        return result.find(e => e === score["pair"]);
         /*if the array length is = 3 you could have three equal cards and two different
           ones or two pairs and another one like ex. ["2", "2", "1"] */
-        } else if(howmany.filter(e => e == 2).length === 2) {
-            // so if there aren't no 3 inside the array than it is a two pair for sure
-            return result.push(score["twopair"]);
-        }
+    } else if(howmany.filter(e => e == 2).length === 2) {
+        // so if there aren't no 3 inside the array than it is a two pair for sure
+       result.push(score["twopair"]);
+       return result.find(e => e === score["twopair"]);
     }
+}
 
 function threeOrFull(howmany,result) {
     if(howmany.filter(e => e == 4).length === 1) {
-        return result.push(score["fourofaKind"]);
+            result.push(score["fourofaKind"]);
+            return result.find(e => e === score["fourofaKind"]);
     } else if(howmany.filter(e => e == 3).length === 1) {
         if(howmany.filter(e => e == 2).length === 1) {
-            return result.push(score["fullHouse"]);
+           result.push(score["fullHouse"]);
+           return result.find(e => e === score["fullHouse"]);
         } else {
-            return result.push(score["threeofaKind"]);
+            result.push(score["threeofaKind"]);
+            return result.find(e => e === score["threeofaKind"]);
         }
     } 
 }
@@ -121,22 +129,26 @@ function straigth(arrayRank, arraySuit, result) {
     if(arraySuit.length === 1) {
         if(consecutiveArray.length == 4) {
             if(Math.min.apply(Math, consecutiveArray) === 10) {
-                return result.push(score["royalFlush"]);
+                result.push(score["royalFlush"]);
+                return result.find(e => e === score["royalFlush"]);
             } else {
-                return result.push(score["straightFlush"]);
+                result.push(score["straightFlush"]);
+                return result.find(e => e === score["straightFlush"]);
             }
             
         } else {
-            return result.push(score["flush"]);
+           result.push(score["flush"]);
+           return result.find(e => e === score["flush"]);
         }
     } else if(consecutiveArray.length == 4) {
-        return result.push(score["straight"]);
+        result.push(score["straight"]);
+        return result.find(e => e === score["straight"]);
     }
-
 }
 
 function noOther (result) {
-    return result.push(score["highCard"]);
+    result.push(score["highCard"]);
+    return result.find(e => e === score["highCard"]);
 }
 
-export {countValues, handCombination}
+export {countValues, handCombination, findPair, threeOrFull, straigth}
