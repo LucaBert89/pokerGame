@@ -17,8 +17,6 @@ let score = {
 
 /* HAND COMBINATION: rank array and suit array*/
 function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectSuit, playerNumbers) {
-   
-    let key;
     //variables for counting the elements: useful for pair or threes or others
     let suitValues;
     let currentRankCount = {};
@@ -36,8 +34,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
         currentSuitCount= {};
         
         //I called two functions to count: 1^rank of cards; 2^suit of cards 
-        /*here I pass to the function the rank array ex. ["2","3","4","5", "6"], the count obj
-        
+        /*here I pass to the function the rank array ex. ["2","3","4","5", "6"]; the currentRankCount obj,
         i need to create an array of objects of the player's ranks; the i(players); totalObjectRanks that
         is empty but it's going to be the new array of objects with the count divided among players*/
         countValues(playerR,currentRankCount,i, totalObjectRanks);
@@ -48,13 +45,11 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
         //take the values of rank and suit: the values of the objects
         values = Object.values(totalObjectRanks[i]);
         suitValues = Object.values(totalObjectSuit[i]);
-        key = Object.keys(totalObjectRanks[i]);
   
         pairComb = findPair(values, result);
-      
         threefullComb = threeOrFull(values, result);
-        console.log(pairComb);
         straightComb = straigth(playerR[i], suitValues, result);
+        
         if(pairComb == undefined && threefullComb == undefined && straightComb == undefined) {
            high = noOther(result); 
         }

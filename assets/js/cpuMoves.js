@@ -42,20 +42,15 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
 
         ontablefish = [...ingame].map(e => e.textContent);
 
-        console.log(result);
         for(let i=1; i<playerNumbers; i++) {
-            console.log(total[i].textContent, ingame[i].textContent, ontablefish, result[i]);
             ingame[i].textContent = firstBet(total[i].textContent, ingame[i].textContent, ontablefish, result[i], randomNumber);
             ontablefish[i] = ingame[i].textContent;
             total[i].textContent = parseInt(total[i].textContent ) - parseInt(ingame[i].textContent) +10; 
         }
-        
-        console.log(result);
          
 
         ontablefish = [...ingame].map(e => e.textContent);
-        console.log(ontablefish);
-    
+
         if(ingame[0].textContent < Math.max(...ontablefish)) {
             if(ingame[0].textContent != 10) {
                 btnStay.style.display = "inline-block";
@@ -105,12 +100,13 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
                 ranking.push(cpuCurrent[i][index].slice(0,-1));
             })
             
-            console.log(cardNumber);
             // if the result is 1(pair) or 2(two pair) or 0 (nothing) the cpuMove function'll be called
             if(result[i] === 1 || result[i] === 2 || result[i] === 0) {
 
                 // this function is used to let the cpu player change the useless cards
                 cpuMove(cardNumber, discardedCard, replaceIndex,i, ranking,x, cpuPlayers);
+            } else {
+                continue;
             }
             
            
@@ -191,7 +187,6 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
             previous = ingame[i].textContent;
             if(ingame[i].textContent != 10) {
                 if(total[i].textContent >= (Math.max(...ontablefish) - previous)) {
-                    console.log(difference,previous, ingame[i].textContent, total[i].textContent,ontablefish,result[i]);
                     ingame[i].textContent = cpuSecondRound(difference,previous, ingame[i].textContent, total[i].textContent,ontablefish,result[i]);
                     
                 } else {
@@ -271,7 +266,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         */  
     
       winner = findtheWinner(winner, winnerScore, compareScores, ingameScores, playerRanksArray);
-     
+        console.log(total[winner].textContent);
       ingame.forEach(e => {
         total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
         //e.innerHTML = "";

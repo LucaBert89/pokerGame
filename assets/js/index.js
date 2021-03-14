@@ -1,19 +1,27 @@
 import {players} from "./firstRound.js";
 import {playAndResponse} from "./cpuMoves.js";
 
-
+const modalStart = document.querySelector(".start-game__modal");
 const cardSuit = ["C", "D", "H", "S"];
-const generateBtn = document.querySelector(".generate");
+const generateBtn = document.querySelector(".start-game__btn");
 const btnOpen = document.querySelector(".player-active__btn");
 const btnPlay = document.querySelector(".input-fish");
+const selectNofPlayers = document.querySelector("#players");
+const selectNofPoints = document.querySelector("#points");
+console.log(selectNofPoints);
 let card;
 let cardImage;
 let randomCard = [];
+let playerNumbers;
+let points;
 
 // decide how many player you want to play against and points
-
-let playerNumbers = prompt("how many players?");
-let points = prompt("how many points?");
+selectNofPlayers.addEventListener("click", function(e) {
+    playerNumbers = e.target.value;
+})
+selectNofPoints.addEventListener("click", function(e) {
+    points = e.target.value;
+})
 
 let initialNumber = playerNumbers;
 
@@ -58,7 +66,7 @@ function generatePlayers(playerNumbers) {
     }  
 };
 
-generatePlayers(playerNumbers);
+
 
 function playerCash(p, bet,player, cash) {
     bet.classList.add("in-game-fish");
@@ -76,6 +84,9 @@ function playerCash(p, bet,player, cash) {
 generateBtn.addEventListener("click", cardGenerator);
 
 function cardGenerator() {
+    generatePlayers(playerNumbers);
+
+    modalStart.style.display = "none";
     randomCard = [];
     
     let gameCards = document.querySelectorAll(".player__card");
@@ -125,13 +136,9 @@ function generateCard(selectedCard, current) {
     here if the card isn't already in the array, add the card and assign the jpg path*/
     if(!randomCard.includes(card)) {
         randomCard.push(card);
-       // if(current < 5) {
+
             cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
             selectedCard.style.backgroundImage = cardImage;
-        /*} else {
-            cardImage = randomCard[current];
-            selectedCard.textContent = cardImage;
-        }*/
     
     } else {
         //if the card is already in the array call the function again to change the card
@@ -183,13 +190,14 @@ btnOpen.addEventListener("click", function() {
      rank = [];
      suit = [];
      result = [];  
-     console.log(ingame[0].textContent)
-     console.log(playerNumbers);
+
      fishSelector(ingame, total);
    // here function players is call passing randomCard, the array that contain all the cards
      players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
-    console.log(result);
+
+// based on the players cards, if someone've scores or not, it's decided if open or not
     if(result.every(e => e === 0)) {
+        // if we can't open than new cards we'll be generated emptying the existing rank, suit, result arrays
         console.log("no one can open");
         rank = [];
         suit = [];
@@ -197,12 +205,17 @@ btnOpen.addEventListener("click", function() {
         cardGenerator();
         
     } else {
+    //if someone has scores, than the game'll open 
+    /*first I've to check if the players've enough fishes to open the game */
         for(let i=0; i<initialNumber; i++) {
+            console.log(total[i]);
             if(total[i] !== undefined) {
+                // if they've enough fishes than the players pays 10 fishes to enter the game
                 if(total[i].textContent > 0) { 
                     total[i].textContent = parseInt(total[i].textContent) - 10;
                     ingame[i].textContent = 10;
                 } else {
+                // if the cpuPlayers doesn't even enough fishes they'll be deleted from the game
                     if(i>0) {
                         j++;
                         if( document.querySelector(`.player${i}`) !== undefined) {
@@ -214,9 +227,6 @@ btnOpen.addEventListener("click", function() {
                         console.log("you lose");
                     }
                     cardGenerator();
-                    /*document.querySelectorAll(".cpu").forEach(function(e, index) {
-                        e.className = `player${index+1} cpu`;
-                    })*/
                 }
             }
             
@@ -258,23 +268,14 @@ btnOpen.addEventListener("click", function() {
     suit = [];
     result = [];
     fishSelector(ingame, total);
-    console.log(playerNumbers);
+
    // here function players is call passing randomCard, the array that contain all the cards
     players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
     
+    // here playAndResponse is called to pass all the variables needed to play the game
     playAndResponse(activeCard, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
-      
-        /* here the compare function is called passing result. Result are the scores based on
-        the card combinations, displayed like this:
-        [
-            0: 9  (royal flush)
-            1: 1  (pair)
-        ]*/
 
-        
-        /*poker rule:
-        if no one of the player have points on their hand, than no one can open, randomCard
-        will be empty and refilled than cardGenerator generate new card for every one*/
+    
 }) 
 
 

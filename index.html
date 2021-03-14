@@ -7,6 +7,45 @@
     <title>Document</title>
 </head>
 <body class="background">
+    <div class="start-game__modal">
+
+        <!-- Modal content -->
+        <div class="start-game__modal-content">
+            <div class="start-game__control"> 
+                <div class="start-game__container">
+                    <span class="start-game__choose-picture">Choose your picture:</span>
+                    <input type="file" id="myfile" name="myfile">
+                </div>
+                <div class="start-game__container">
+                    <label for="players" class="start-game__player-label">
+                        Number of Players:
+                    </label>
+                    <select name="players" class="start-game__selector" id="players">
+                        <option class="start-game__playerNumber" value=""></option>
+                        <option class="start-game__playerNumber" value="2">2</option>
+                        <option class="start-game__playerNumber" value="3">3</option>
+                        <option class="start-game__playerNumber" value="4">4</option>
+                    </select>
+                </div>
+               <div class="start-game__container">
+                    <label for="points" class="start-game__points-label">
+                        Number of Points:
+                    </label>
+                    <select name="points" class="start-game__selector" id="points">
+                        <option class="start-game__total-points" value=""></option>
+                        <option class="start-game__total-points" value="50">50</option>
+                        <option class="start-game__total-points" value="100">100</option>
+                        <option class="start-game__total-points" value="150">150</option>
+                        <option class="start-game__total-points" value="200">200</option>
+                    </select>
+                </div>
+                <div class="start-game__btn">
+                    Start Game
+                </div>
+            </div>
+        </div>
+      
+    </div>
     <div class="table-bet"></div>
     <div class="players"></div>
     <div class="win-lose"></div>
@@ -14,9 +53,7 @@
         <div class="player-active__btn">
             OPEN
         </div>
-        <div class="generate">
-            generate cards
-        </div>
+     
         <div class="open">
             open
         </div>
