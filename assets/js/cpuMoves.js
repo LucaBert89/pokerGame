@@ -1,7 +1,7 @@
 import {players} from "./firstRound.js";
 import {btnPlay, replaceCard, cardGenerator, btnOpen} from "./index.js"
 import {findtheWinner} from "./findWinner.js"
-import {firstBet} from "./cpuBets.js"
+import {firstBet, cpuSecondRound} from "./cpuBets.js"
 
 
 function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers) {
@@ -185,7 +185,33 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
                 total[0].textContent = parseInt(total[0].textContent) - parseInt(total[0].textContent);
             }
         }
-        cpuSecondRound(previous, difference,ingame, total);
+       
+        for(let i=1; i<playerNumbers; i++) {
+            ingame[i].removeAttribute("id");
+            previous = ingame[i].textContent;
+            if(ingame[i].textContent != 10) {
+                if(total[i].textContent >= (Math.max(...ontablefish) - previous)) {
+                    console.log(difference,previous, ingame[i].textContent, total[i].textContent,ontablefish,result[i]);
+                    ingame[i].textContent = cpuSecondRound(difference,previous, ingame[i].textContent, total[i].textContent,ontablefish,result[i]);
+                    
+                } else {
+
+        /*here is the case when the player has not enough fish to bet again and match the max
+        bet that is on the table. 
+        
+        In this case I added an ID to highlight that he's in the game
+        despite he hasn't enough money. This "id" let me to consider the player score for comparation
+        inside findthewinner function
+        */
+                    ingame[i].setAttribute("id", "stayIn");
+                    ingame[i].textContent = parseInt(ingame[i].textContent) + parseInt(total[i].textContent);
+                    total[i].textContent = parseInt(total[i].textContent) - parseInt(total[i].textContent);
+                }
+            } else {
+                continue;
+            }
+        }
+        ontablefish = [...ingame].map(e => e.textContent);
     
         /*
             here playersIn are the players that match the max bet of fish on the table
@@ -253,62 +279,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
     }
     
     
-        function cpuSecondRound(previous,difference, ingame,total) {
-            console.log(ontablefish);
-            for(let i=1; i<playerNumbers; i++) {
-                previous = ingame[i].textContent;
-                ingame[i].removeAttribute("id");
-                let riskValue;
-                if(ingame[i].textContent != 10) {
-                    if(total[i].textContent >= (Math.max(...ontablefish) - previous)) {
-                        if(result[i] === 0) {
-                                ingame[i].textContent = Math.max(...ontablefish);
-                                difference = parseInt(ingame[i].textContent) - previous;
-                                total[i].textContent = parseInt(total[i].textContent) - difference;
-                        } else if(result[i] >= 1 && result[i] <= 3 ) {
-                            riskValue = total[i].textContent * 2/5;
-                            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                                ingame[i].textContent = Math.max(...ontablefish);
-                                difference = parseInt(ingame[i].textContent) - previous;
-                                total[i].textContent = parseInt(total[i].textContent) - difference;  
-                            } else {
-                                    console.log("ok");
-                                    continue;
-                                }
-                            }
-                            
-                        else if(result[i] >= 4 && result[i] <= 6 ) {
-                            riskValue = total[i].textContent * 3/5;
-                            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                                ingame[i].textContent = Math.max(...ontablefish);
-                                difference = parseInt(ingame[i].textContent) - previous;
-                                total[i].textContent = parseInt(total[i].textContent) - difference; 
-                            } else {
-                                continue;
-                            }
-                        } else if(result[i] >= 7 ) {
-                            ingame[i].textContent = Math.max(...ontablefish);
-                            difference = parseInt(ingame[i].textContent) - previous;
-                            total[i].textContent = parseInt(total[i].textContent) - difference;  
-                        }
-                    } else {
-                /*here is the case when the player has not enough fish to bet again and match the max
-                bet that is on the table. 
-                
-                In this case I added an ID to highlight that he's in the game
-                despite he hasn't enough money. This "id" let me to consider the player score for comparation
-                inside findthewinner function
-                */
-                        ingame[i].setAttribute("id", "stayIn");
-                        ingame[i].textContent = parseInt(ingame[i].textContent) + parseInt(total[i].textContent);
-                        total[i].textContent = parseInt(total[i].textContent) - parseInt(total[i].textContent);
-                    }
-                } else {
-                    continue;
-                }
-            } 
-        }
-    
+     
     
         nextTurn.addEventListener("click",next)
         
@@ -335,9 +306,6 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         }
 
 }
-
-
-
 
 
 export {playAndResponse};

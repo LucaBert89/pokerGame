@@ -23,7 +23,7 @@ function firstBet(total, ingame, ontablefish, result, random) {
                 ingame= cpuBet(ontablefish, addedNumber);
             } else {
                 console.log("non scommetto sono tra 4 e 6");
-                ingame = riskyAnswer(ontablefish, random);
+                ingame = riskyAnswer(ontablefish, random, total);
             }
         } else if(result >= 7 ) {
             console.log("result = + di 7");
@@ -31,7 +31,7 @@ function firstBet(total, ingame, ontablefish, result, random) {
         }
     } else {
         if(result >= 1 && result <= 3) {
-            if(randomNumber > 5) {
+            if(random > 5) {
                 ingame = allIn(ingame, total);
             }
         } else if(result >= 4 && result <= 6 || result >= 7) {
@@ -46,6 +46,7 @@ function allIn(ingame, total) {
 }
 
 function cpuBet(ontablefish, addedNumber) {
+    console.log(addedNumber);
     return Math.max(...ontablefish) + Math.round(addedNumber / 10) * 10;
 }
 
@@ -60,13 +61,56 @@ function blufforNot(randomMove, betPrev, total) {
     }
 }
 
-function riskyAnswer(ontablefish, randomNumber) {
-    randomNumber = Math.floor(Math.random() * 11);
-    if(randomNumber > 5) {
-        if(total -Math.max(...ontablefish) > 0) return Math.max(...ontablefish);
+function riskyAnswer(ontablefish, random) {
+    console.log("risky");
+    random = Math.floor(Math.random() * 11);    
+    if(random > 5) {
+        return Math.max(...ontablefish);
     } else {
         return 10;
     }
 }
 
-export {firstBet};
+
+function cpuSecondRound(difference, previous,ingame,total, ontablefish,result) {
+        let riskValue;
+        if(result === 0) {
+                ingame = Math.max(...ontablefish);
+                difference = parseInt(ingame) - previous;
+                total = parseInt(total) - difference; 
+        } else if(result >= 1 && result <= 3 ) {
+            riskValue = total * 2/5;
+            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
+                ingame = Math.max(...ontablefish);
+                difference = parseInt(ingame) - previous;
+                total = parseInt(total) - difference; 
+                console.log(total, difference, ingame);
+            } else {
+                ingame = previous;
+                difference = 0;
+                total = parseInt(total) - difference; 
+                console.log(total, ingame);
+            }
+        } else if(result >= 4 && result <= 6 ) {
+            riskValue = total * 3/5;
+            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
+                ingame = Math.max(...ontablefish);
+                difference = parseInt(ingame) - previous;
+                total = parseInt(total) - difference; 
+            } else {
+                ingame = previous;
+                difference = 0;
+                total = parseInt(total) - difference; 
+                console.log(total, ingame);
+            }
+        } else if(result >= 7 ) {
+            ingame = Math.max(...ontablefish);    
+            difference = parseInt(ingame) - previous;
+            total = parseInt(total) - difference;     
+        }
+        
+        return ingame;
+}
+
+
+export {firstBet, cpuSecondRound};
