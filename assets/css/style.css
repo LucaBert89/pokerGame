@@ -43,6 +43,29 @@
       color:#fff;
   }
 
+  input[type="file"] {
+    display: none;
+  }
+
+  .start-game__input-profile-click {
+        padding: 0 50px;
+        margin:auto;
+        display: block;
+        cursor: pointer;
+        width:10%;
+        height:220px;
+        background-image: url("/assets/images/profile/empty-profile.jpg");
+        background-size: 100% 100%;
+        border: 1px solid #000;
+        border-radius: 10px;
+  }
+
+  .start-game__profile {
+    width:100%;
+    height:100%;
+    border: 1px solid #000;
+  }
+
   .start-game__btn{
     background-color: #000;
     border-radius: 20px;
@@ -68,6 +91,13 @@
     align-items: center;
     position:relative;
     height: 600px;
+}
+
+.player__profile0 {
+    width:15%;
+    position:absolute;
+    bottom:-200px;
+    left:45%;
 }
 
 .cpu {
@@ -107,30 +137,40 @@
     border:2px solid yellow;
     background-repeat: no-repeat;
     background-size:cover;
+    
+}
+  
+.clickable {
+    animation: pulse 1.5s infinite;
+}
+
+  @keyframes pulse {
+    0% {
+      border:1px solid #000;
+    }
+    100% {
+        border:2px solid red;
+        
+    }
+  }
+
+.player-active {
+    text-align: center;
 }
 
 .player-active__btn {
     background-color: blue;
-    padding:20px;
+    padding:30px;
     display:inline-block;
     cursor:pointer;
     color:#fff;
-}
-
-
-
-.open {
-    background-color: blue;
-    padding:20px;
-    display:inline-block;
-    cursor:pointer;
-    color:#fff;
+    border-radius: 20px;
 }
 
 .next-turn {
+    display:none;
     background-color: blue;
     padding:20px;
-    display:inline-block;
     cursor:pointer;
     color:#fff;
 }

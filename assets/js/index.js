@@ -8,22 +8,37 @@ const btnOpen = document.querySelector(".player-active__btn");
 const btnPlay = document.querySelector(".input-fish");
 const selectNofPlayers = document.querySelector("#players");
 const selectNofPoints = document.querySelector("#points");
-console.log(selectNofPoints);
+const selectProfile= document.querySelector(".start-game__input-profile");
+
 let card;
 let cardImage;
 let randomCard = [];
 let playerNumbers;
 let points;
+let initialNumber;
 
 // decide how many player you want to play against and points
 selectNofPlayers.addEventListener("click", function(e) {
     playerNumbers = e.target.value;
+    initialNumber = playerNumbers;
 })
 selectNofPoints.addEventListener("click", function(e) {
     points = e.target.value;
 })
 
-let initialNumber = playerNumbers;
+selectProfile.addEventListener("change", selectImage);
+
+function selectImage() {
+    const reader = new FileReader();
+    const image = document.querySelector(".start-game__input-profile-click");
+    const file = this.files;
+
+    reader.addEventListener("load", function() {
+        image.style.backgroundImage = `url(${reader.result}`;
+    });
+    reader.readAsDataURL(file[0]);
+}
+
 
 // generate the players
 function generatePlayers(playerNumbers) {
@@ -31,7 +46,7 @@ function generatePlayers(playerNumbers) {
     let player;
     let totalCash;
     let fishBet;
-    let card;
+    let profile;
     let cpu = document.createElement("div");
     cpu.classList.add("cpu-container");
     
@@ -40,12 +55,15 @@ function generatePlayers(playerNumbers) {
         for(let j=0; j <= playerNumbers-1; j++) {
             player = document.createElement("div");
             fishBet = document.createElement("div");
-            
+            profile = document.createElement("img");
             playerCash(player, fishBet,j, totalCash);
             // to the user will be assigned the active class
             if(j==0) {
                 player.classList.add(`player${j}`);
+                profile.classList.add(`player__profile${j}`)
                 playersContainer.appendChild(player);
+                profile.src = document.querySelector(".start-game__input-profile-click").style.backgroundImage;
+                playersContainer.appendChild(profile);
             } else {
                 player.classList.add(`player${j}`);
                 player.classList.add("cpu")
@@ -84,8 +102,9 @@ function playerCash(p, bet,player, cash) {
 generateBtn.addEventListener("click", cardGenerator);
 
 function cardGenerator() {
-    generatePlayers(playerNumbers);
-
+    //call generatePlayers function only the first time and not when the next button is pressed
+    if(modalStart.style.display !== "none") generatePlayers(playerNumbers);
+    
     modalStart.style.display = "none";
     randomCard = [];
     
@@ -240,6 +259,7 @@ btnOpen.addEventListener("click", function() {
         // you've five second to change your cards
             setTimeout(function(){ 
                 element.removeEventListener("click", changeCard);
+                element.classList.remove("clickable");
             }, 5000);
     
             function changeCard () {
