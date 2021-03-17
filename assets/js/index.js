@@ -39,7 +39,6 @@ function selectImage() {
     reader.readAsDataURL(file[0]);
 }
 
-
 // generate the players
 function generatePlayers(playerNumbers) {
     const playersContainer = document.querySelector(".players");
@@ -47,6 +46,7 @@ function generatePlayers(playerNumbers) {
     let totalCash;
     let fishBet;
     let profile;
+    let enemyProfile;
     let cpu = document.createElement("div");
     cpu.classList.add("cpu-container");
     
@@ -55,18 +55,21 @@ function generatePlayers(playerNumbers) {
         for(let j=0; j <= playerNumbers-1; j++) {
             player = document.createElement("div");
             fishBet = document.createElement("div");
-            profile = document.createElement("img");
+            profile = document.createElement("div");
+            enemyProfile = document.createElement("div");
             playerCash(player, fishBet,j, totalCash);
             // to the user will be assigned the active class
             if(j==0) {
                 player.classList.add(`player${j}`);
                 profile.classList.add(`player__profile${j}`)
                 playersContainer.appendChild(player);
-                profile.src = document.querySelector(".start-game__input-profile-click").style.backgroundImage;
+                profile.style.backgroundImage = window.getComputedStyle(document.querySelector(".start-game__input-profile-click")).getPropertyValue("background-image");
                 playersContainer.appendChild(profile);
             } else {
                 player.classList.add(`player${j}`);
-                player.classList.add("cpu")
+                player.classList.add("cpu");
+                enemyProfile.classList.add("cpu-profile");
+                player.appendChild(enemyProfile);
                 cpu.appendChild(player);
                 playersContainer.appendChild(cpu);
             }
@@ -102,10 +105,16 @@ function playerCash(p, bet,player, cash) {
 generateBtn.addEventListener("click", cardGenerator);
 
 function cardGenerator() {
+    document.querySelector(".first-door").classList.add("out__up");
+    document.querySelector(".last-door").classList.add("out__down");
     //call generatePlayers function only the first time and not when the next button is pressed
     if(modalStart.style.display !== "none") generatePlayers(playerNumbers);
+    setTimeout(function(){ 
+        modalStart.style.display = "none";
+    }, 1500);
     
-    modalStart.style.display = "none";
+    
+    
     randomCard = [];
     
     let gameCards = document.querySelectorAll(".player__card");
