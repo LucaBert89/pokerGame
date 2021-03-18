@@ -18,26 +18,29 @@ let points;
 let initialNumber;
 
 // decide how many player you want to play against and points
-selectNofPlayers.addEventListener("click", function(e) {
-    playerNumbers = e.target.value;
-    initialNumber = playerNumbers;
-})
-selectNofPoints.addEventListener("click", function(e) {
-    points = e.target.value;
-})
+(function playersAndPoints() {
+    selectNofPlayers.addEventListener("click", function(e) {
+        playerNumbers = e.target.value;
+        initialNumber = playerNumbers;
+    })
+    selectNofPoints.addEventListener("click", function(e) {
+        points = e.target.value;
+    })
+    
+    selectProfile.addEventListener("change", selectImage);
+    
+    function selectImage() {
+        const reader = new FileReader();
+        const image = document.querySelector(".start-game__input-profile-click");
+        const file = this.files;
+    
+        reader.addEventListener("load", function() {
+            image.style.backgroundImage = `url(${reader.result}`;
+        });
+        reader.readAsDataURL(file[0]);
+    }
+})();
 
-selectProfile.addEventListener("change", selectImage);
-
-function selectImage() {
-    const reader = new FileReader();
-    const image = document.querySelector(".start-game__input-profile-click");
-    const file = this.files;
-
-    reader.addEventListener("load", function() {
-        image.style.backgroundImage = `url(${reader.result}`;
-    });
-    reader.readAsDataURL(file[0]);
-}
 
 // generate the players
 function generatePlayers(playerNumbers) {
