@@ -10,7 +10,6 @@
     width: 100%; 
     height: 100%; 
     overflow: auto; 
-    background-image: url("/assets/images/start/stars-background.jpg");
     background-color: rgb(0,0,0); 
     background-color: rgba(0,0,0,0.4); 
   }
@@ -33,11 +32,11 @@
   }
 
   .out__up {
-      animation: out-up 1s;
+      animation: out-up 1.2s;
   }
 
   .out__down {
-    animation: out-down 1s;
+    animation: out-down 1.2s;
 }
 
   @keyframes out-up {
@@ -56,6 +55,16 @@
       100% {
         transform: translateY(500px);
       }
+  }
+
+  .players-table {
+      background-color:green;
+      width:50%;
+      height:80%;
+      border-radius:50%;
+      z-index:0;
+        margin:0 auto;
+      position: relative;
   }
 
   .start-game__control {
@@ -119,10 +128,18 @@
     background-color: brown;
 }
 
+
+body {
+    background-image: url("/assets/images/start/galaxy-2643089_1280.jpg");
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
 .players{
     display: flex;
     align-items: center;
     position:relative;
+   
     height: 100vh;
 }
 
@@ -131,15 +148,15 @@
     position:absolute;
     display:flex;
     justify-content: center;
-    bottom:100px;
+    bottom:0px;
 }
 
 .player__profile0 {
-    width:10%;
-    height:30%;
+    width:5%;
+    height:15%;
+    padding:20px 40px;
     position:absolute;
-    bottom:100px;
-    left:55%;
+    bottom:-10%;
     background-size:100% 100%;
     border-radius:20px;
 }
@@ -149,45 +166,90 @@
     position:absolute;
     display:flex;
     justify-content: center;
+    align-items: center;
     z-index:-1;
 }
 
+.player1 .cpu-profile{
+    top:-70%;
+    right:20%;
+}
+
+.player2 .cpu-profile{
+    top:60%;
+    right:20%;
+}
+
+.player3 .cpu-profile{
+    top:60%;
+    right:20%;
+}
+
 .cpu-profile {
+    border:2px solid rgb(36, 182, 68);
     background-image: url("/assets/images/profile/alien-profile.jpg");
-    background-size:100% 100%;
-    width:10%;
-    padding:100px;
+    background-size:cover;
+    width:5%;
+    padding:40px 30px;
     position:absolute;
-    top:-20px;
-    border-radius: 100%;
+    border-radius: 20px;
 }
 
 .player1 {  
-    top:50px;
+    top:0px;
 }
 
 .player2 {
-    left:40%;
+    left:60%;
     transform:rotate(-90deg);
+    height: 100%;
 }
 
 .player3{
-    right:40%;
+    right:60%;
     transform:rotate(90deg);
+    height: 100%;
 }
 
 
 
-.player__card {
+.player0 .player__card {
     width:30px;
-    height:150px;
-    padding:0rem 2rem;
-    border:2px solid yellow;
+    height:180px;
+    padding:0rem 2.5rem;
     background-repeat: no-repeat;
     background-size:cover;
     
 }
+
+.cpu .player__card {
+    height:120px;
+    width: 20px;
+    padding:0rem 2rem;
+    background-repeat: no-repeat;
+    background-size:cover;
+}
+
+.card-cover {
+    background-color: #000;
+    border:2px solid yellow;
+}
   
+.dealing {
+    animation:deal 2s;
+}
+
+@keyframes deal {
+    0% {
+        opacity: 0;
+        transform:translateY(-500px)
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0px);
+      }
+}
+
 .clickable {
     animation: pulse 1.5s infinite;
 }
@@ -197,7 +259,7 @@
       border:1px solid #000;
     }
     100% {
-        border:2px solid red;
+        border:2px solid yellow;
         
     }
   }
@@ -269,11 +331,11 @@
 }
 
 .fish2 {
-    top:-200px;
+    top:0px;
 }
 
 .fish3 {
-    bottom:300px;
+    top:0px;
 }
 
 

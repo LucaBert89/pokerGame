@@ -45,7 +45,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         for(let i=1; i<playerNumbers; i++) {
             ingame[i].textContent = firstBet(total[i].textContent, ingame[i].textContent, ontablefish, result[i], randomNumber);
             ontablefish[i] = ingame[i].textContent;
-            total[i].textContent = parseInt(total[i].textContent ) - parseInt(ingame[i].textContent) +10; 
+            total[i].textContent = parseInt(total[i].textContent ) - (parseInt(ingame[i].textContent -10)); 
         }
          
 
@@ -141,7 +141,8 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
             cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
                 for(let j=0; j < dCard.length; j++) { 
                     //check inside the string backgroundImage a number equal to dCard numbers
-                    if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
+                    if(e.innerHTML.slice(0,-1) === dCard[j]){
+                    //if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
                     /*I'll look for the dCard index inside the cardRank array + 5 to consider the
                       active player that is not considered in cardRank but'll be in replaceCard
                     */
@@ -217,6 +218,14 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
             if(e.textContent == Math.max(...ontablefish) || e.id == "stayIn") return index;
         }).filter(e => e != undefined);
 
+        // show the hidden cards removing the class card-cover and giving the card text to the path image
+        document.querySelectorAll(".cpu").forEach(function(e) {
+            e.querySelectorAll(".player__card").forEach(function(e) {
+                e.classList.remove("card-cover");
+                e.style.backgroundImage = `url("./assets/images/${e.innerHTML}.jpg")`;
+                e.innerHTML = "";
+            })
+        })
     //here i took out the undefined values that don't match the max
     
     //CHOOSING THE WINNER
@@ -271,6 +280,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
         //e.innerHTML = "";
     })
+    nextTurn.style.display = "block";
     }
     
     
@@ -284,11 +294,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
             rank = [];
             suit = [];
             result = [];
-            // set again the "clickable" class to avoid double click on player card to replace
-            activeCard.forEach(e => {
-                e.classList.remove("clickable");
-                e.classList.add("clickable");
-            })
+
             cardGenerator();
             for(let i =0; i<playerNumbers; i++) {
                 ingame[i].textContent = "";

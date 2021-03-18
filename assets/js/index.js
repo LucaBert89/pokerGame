@@ -41,7 +41,7 @@ function selectImage() {
 
 // generate the players
 function generatePlayers(playerNumbers) {
-    const playersContainer = document.querySelector(".players");
+    const playersContainer = document.querySelector(".players-table");
     let player;
     let totalCash;
     let fishBet;
@@ -108,19 +108,21 @@ function cardGenerator() {
     document.querySelector(".first-door").classList.add("out__up");
     document.querySelector(".last-door").classList.add("out__down");
     //call generatePlayers function only the first time and not when the next button is pressed
-    if(modalStart.style.display !== "none") generatePlayers(playerNumbers);
+    
     setTimeout(function(){ 
         modalStart.style.display = "none";
-    }, 1500);
+        
+    }, 1200);
     
-    
+    if(modalStart.style.display !== "none") generatePlayers(playerNumbers); 
     
     randomCard = [];
     
-    let gameCards = document.querySelectorAll(".player__card");
    
+    let gameCards = document.querySelectorAll(".player__card");
     // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
     gameCards.forEach(function(element, index) {
+        element.classList.remove("dealing");
        //here I call the function passing the element (card class) and index;
         generateCard(element, index); 
         /*the first 5 cards are yours (index<5) so you can click only on your cards 
@@ -164,9 +166,21 @@ function generateCard(selectedCard, current) {
     here if the card isn't already in the array, add the card and assign the jpg path*/
     if(!randomCard.includes(card)) {
         randomCard.push(card);
-
-            cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
-            selectedCard.style.backgroundImage = cardImage;
+        
+        setTimeout(function(){ 
+            if(current < 5) {
+                cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+                selectedCard.classList.add("dealing");
+                selectedCard.style.backgroundImage = cardImage;
+            } else {
+                cardImage = randomCard[current];
+                selectedCard.classList.add("card-cover");
+                selectedCard.classList.add("dealing");
+                selectedCard.innerHTML = cardImage;
+            }
+       
+        }, 2000);
+            
     
     } else {
         //if the card is already in the array call the function again to change the card
@@ -187,11 +201,20 @@ function replaceCard(current, e) {
         return replaceCard(current, e);
     } else {
         randomCard.splice(current,1,card);
-        cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+        // if index < 5 there are my cards and I should display them
+        if(current < 5) {
+            cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+            e.style.backgroundImage = cardImage;
+        } else {
+            // these are the cpu cards and I can't display them
+            cardImage = randomCard[current];
+            e.innerHTML = cardImage;
+        }
+       
         // if the randomCard is unique than replace the card clicked with the new card
         // the new card image will take the new generated random card
         
-        e.style.backgroundImage = cardImage;
+        
     }
 }
 
@@ -202,7 +225,8 @@ btnOpen.addEventListener("click", function() {
     
     const player = document.querySelector(".player0");
     const activeCard = player.querySelectorAll(".player__card");
-
+    // remove the dealing class set for the animation
+    activeCard.forEach(e => e.classList.remove("dealing"));
     
     let totalObjectRanks = [];
     let totalObjectSuit = [];
