@@ -283,6 +283,7 @@ body {
     padding:20px;
     cursor:pointer;
     color:#fff;
+    border-radius: 20px;
 }
 
 .stay, .leave, .show {
@@ -292,6 +293,7 @@ body {
     cursor:pointer;
     color:#fff;
     display:none;
+    border-radius: 20px;
 }
 
 .input-fish{
@@ -299,6 +301,18 @@ body {
     padding:20px;
     display:none;
     cursor:pointer;
+    color:#fff;
+    border-radius:20px;
+}
+
+.input-fish__selector {
+    width:80px;
+    height: 40px;
+    margin:20px;
+    font-size:30px;
+    background-color:black;
+    border-radius: 20px;
+    border-color: #fff;
     color:#fff;
 }
 
@@ -312,6 +326,7 @@ body {
     padding:20px;
     cursor:pointer;
     color:#fff;
+    border-radius: 20px;
 }
 
 .in-game-fish {

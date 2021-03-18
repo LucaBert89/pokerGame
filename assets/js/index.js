@@ -139,7 +139,7 @@ function fishSelector(ingame, total) {
     if(selectorFish.children.length >0) {
         selectorFish.innerHTML = "";
     };
-    for(let i=0; i < total[0].textContent; i+=10) {
+    for(let i=0; i <= total[0].textContent; i+=10) {
         optionFish = document.createElement("option");
         optionFish.classList.add("option-fish")
         optionFish.value = i;
@@ -156,7 +156,6 @@ function fishSelector(ingame, total) {
 
 // calling generateCard function: selectedCard = the card div; current = index of card div
 function generateCard(selectedCard, current) {
-
     /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
     card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
@@ -191,6 +190,8 @@ function generateCard(selectedCard, current) {
 
 /* here I pass the index of the card that I clicked among mine*/
 function replaceCard(current, e) {
+    console.log(current);
+    e.classList.remove("dealing");
     /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
     card = (Math.floor(Math.random()*13)+2) + cardSuit[Math.floor(Math.random() * cardSuit.length)];
@@ -201,12 +202,13 @@ function replaceCard(current, e) {
         return replaceCard(current, e);
     } else {
         randomCard.splice(current,1,card);
+        e.classList.add("dealing");
         // if index < 5 there are my cards and I should display them
         if(current < 5) {
             cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
             e.style.backgroundImage = cardImage;
         } else {
-            // these are the cpu cards and I can't display them
+            // these are the cpu cards and I can't display them 
             cardImage = randomCard[current];
             e.innerHTML = cardImage;
         }
@@ -312,7 +314,7 @@ btnOpen.addEventListener("click", function() {
 
         // bet appear after 5 seconds, time allowed to change your cards
         setTimeout(function(){ 
-            btnPlay.style.display = "block";
+            btnPlay.style.display = "inline-block";
         }, 5000);
         
         
@@ -326,7 +328,7 @@ btnOpen.addEventListener("click", function() {
     players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
     
     // here playAndResponse is called to pass all the variables needed to play the game
-    playAndResponse(activeCard, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
+    playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
 
     
 }) 

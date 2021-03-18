@@ -4,7 +4,7 @@ import {findtheWinner} from "./findWinner.js"
 import {firstBet, cpuSecondRound} from "./cpuBets.js"
 
 
-function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers) {
+function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers) {
     const nextTurn = document.querySelector(".next-turn");
     const btnStay = document.querySelector(".stay");
     const btnLeave = document.querySelector(".leave");
@@ -19,6 +19,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
     function insertFish(){
         // when the player click on bet you can't change your card anymore
         btnBet.removeEventListener('click', insertFish);
+        btnPlay.style.display = "none";
         const cpuContainer = document.querySelector(".cpu-container");
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu");   
         let cardNumber = [];
@@ -101,7 +102,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
             })
             
             // if the result is 1(pair) or 2(two pair) or 0 (nothing) the cpuMove function'll be called
-            if(result[i] === 1 || result[i] === 2 || result[i] === 0) {
+            if(result[i+1] === 1 || result[i+1] === 2 || result[i+1] === 0) {
 
                 // this function is used to let the cpu player change the useless cards
                 cpuMove(cardNumber, discardedCard, replaceIndex,i, ranking,x, cpuPlayers);
@@ -137,7 +138,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
                 }   
             })
         // with this regular expression I'll check for numbers inside strings 
-            let findNumber = /\d+/;
+            //let findNumber = /\d+/;
             cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
                 for(let j=0; j < dCard.length; j++) { 
                     //check inside the string backgroundImage a number equal to dCard numbers
@@ -166,7 +167,10 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         btnStay.removeEventListener("click", playersChoices);
         btnLeave.removeEventListener("click", playersChoices);
         btnShow.removeEventListener("click", playersChoices);
-        
+        btnStay.style.display = "none";
+        btnLeave.style.display = "none";
+        btnShow.style.display = "none";
+
         let previous;
         let difference; 
         if(e.target.className === "stay") {
@@ -280,7 +284,7 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
         //e.innerHTML = "";
     })
-    nextTurn.style.display = "block";
+    nextTurn.style.display = "inline-block";
     }
     
     
@@ -291,15 +295,25 @@ function playAndResponse(activeCard, result, ingame, total, rank, suit, playerRa
         
         function next() {
             nextTurn.removeEventListener("click",next)
+            nextTurn.style.display = "none";
             rank = [];
             suit = [];
             result = [];
 
+            document.querySelectorAll(".cpu").forEach(function(e) {
+                e.querySelectorAll(".player__card").forEach(function(e) {
+                    e.classList.add("card-cover");
+                    e.style.backgroundImage = ``;
+                    e.innerHTML = "";
+                })
+            })
             cardGenerator();
             for(let i =0; i<playerNumbers; i++) {
                 ingame[i].textContent = "";
             }
             btnPlay.style.display = "none";
+            btnStay.style.display = "none";
+            btnLeave.style.display = "none";
             btnOpen.style.display = "inline-block";
             ingame = document.querySelectorAll(".in-game-fish");
             total = document.querySelectorAll(".total-fish");
