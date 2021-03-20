@@ -62,20 +62,20 @@ function generatePlayers(playerNumbers) {
             enemyProfile = document.createElement("div");
             playerCash(player, fishBet,j, totalCash);
             // to the user will be assigned the active class
-            if(j==0) {
-                player.classList.add(`player${j}`);
-                profile.classList.add(`player__profile${j}`)
-                playersContainer.appendChild(player);
-                profile.style.backgroundImage = window.getComputedStyle(document.querySelector(".start-game__input-profile-click")).getPropertyValue("background-image");
-                playersContainer.appendChild(profile);
-            } else {
-                player.classList.add(`player${j}`);
-                player.classList.add("cpu");
-                enemyProfile.classList.add("cpu-profile");
-                player.appendChild(enemyProfile);
-                cpu.appendChild(player);
-                playersContainer.appendChild(cpu);
-            }
+                if(j==0) {
+                    player.classList.add(`player${j}`);
+                    profile.classList.add(`player__profile${j}`)
+                    playersContainer.appendChild(player);
+                    profile.style.backgroundImage = window.getComputedStyle(document.querySelector(".start-game__input-profile-click")).getPropertyValue("background-image");
+                    playersContainer.appendChild(profile);
+                } else {
+                    player.classList.add(`player${j}`);
+                    player.classList.add("cpu");
+                    enemyProfile.classList.add("cpu-profile");
+                    player.appendChild(enemyProfile);
+                    cpu.appendChild(player);
+                    playersContainer.appendChild(cpu);
+                }
            
             
             // five card class will be assigned to every person
@@ -193,7 +193,7 @@ function generateCard(selectedCard, current) {
 
 /* here I pass the index of the card that I clicked among mine*/
 function replaceCard(current, e) {
-    console.log(current);
+    console.log(current, e);
     e.classList.remove("dealing");
     /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
@@ -262,34 +262,42 @@ btnOpen.addEventListener("click", function() {
         cardGenerator();
         
     } else {
+        btnOpen.style.display = "none";
     //if someone has scores, than the game'll open 
     /*first I've to check if the players've enough fishes to open the game */
-        for(let i=0; i<initialNumber; i++) {
-            console.log(total[i]);
-            if(total[i] !== undefined) {
-                // if they've enough fishes than the players pays 10 fishes to enter the game
-                if(total[i].textContent > 0) { 
-                    total[i].textContent = parseInt(total[i].textContent) - 10;
-                    ingame[i].textContent = 10;
-                } else {
-                // if the cpuPlayers doesn't even enough fishes they'll be deleted from the game
-                    if(i>0) {
-                        j++;
-                        if( document.querySelector(`.player${i}`) !== undefined) {
-                            document.querySelector(`.player${i}`).remove();
-                            console.log(`player${i} lose`);
-                            delete result[i];
-                        }
-                    } else  {
-                        console.log("you lose");
-                    }
-                    cardGenerator();
-                }
-            }
-            
-        }
+        loseOrOpen(total, ingame, result, j) 
+ 
+  
+  
+        ingame = document.querySelectorAll(".in-game-fish");
+        total = document.querySelectorAll(".total-fish"); 
+        playerNumbers-=j;
+
+        
+
         // CHANGE YOUR CARD IF YOU NEED TO
-        activeCard.forEach(function(element, index) {
+        playerActiveMove(activeCard);
+        // bet appear after 5 seconds, time allowed to change your cards
+        setTimeout(function(){ 
+            btnPlay.style.display = "inline-block";
+        }, 5000);
+    }
+    rank = [];
+    suit = [];
+    result = [];
+    fishSelector(ingame, total);
+
+   // here function players is call passing randomCard, the array that contain all the cards
+    players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
+    
+    // here playAndResponse is called to pass all the variables needed to play the game
+    playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
+
+    
+}) 
+
+function playerActiveMove(activeCard) {
+    activeCard.forEach(function(element, index) {
         // setted a control variable to check if the card has already been changed
             //let control = true;
             element.classList.add("clickable");
@@ -310,34 +318,35 @@ btnOpen.addEventListener("click", function() {
                     }
             }
         });
-        ingame = document.querySelectorAll(".in-game-fish");
-        total = document.querySelectorAll(".total-fish"); 
-        playerNumbers-=j;
-        btnOpen.style.display = "none";
 
-        // bet appear after 5 seconds, time allowed to change your cards
-        setTimeout(function(){ 
-            btnPlay.style.display = "inline-block";
-        }, 5000);
-        
+    
+}
+function loseOrOpen(total, ingame, result, j) {
+    for(let i=0; i<initialNumber; i++) {
+        console.log(total[i]);
+        if(total[i] !== undefined) {
+            // if they've enough fishes than the players pays 10 fishes to enter the game
+            if(total[i].textContent > 0) { 
+                total[i].textContent = parseInt(total[i].textContent) - 10;
+                ingame[i].textContent = 10;
+            } else {
+            // if the cpuPlayers doesn't even enough fishes they'll be deleted from the game
+                if(i>0) {
+                    j++;
+                    if( document.querySelector(`.player${i}`) !== undefined) {
+                        document.querySelector(`.player${i}`).remove();
+                        console.log(`player${i} lose`);
+                        delete result[i];
+                    }
+                } else  {
+                    console.log("you lose");
+                }
+                cardGenerator();
+            }
+        }
         
     }
-    rank = [];
-    suit = [];
-    result = [];
-    fishSelector(ingame, total);
-
-   // here function players is call passing randomCard, the array that contain all the cards
-    players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
-    
-    // here playAndResponse is called to pass all the variables needed to play the game
-    playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
-
-    
-}) 
-
-
-
+}
 export {replaceCard, generateBtn,btnOpen, cardGenerator, btnPlay}
 
 

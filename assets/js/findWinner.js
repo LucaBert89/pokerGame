@@ -67,8 +67,9 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
             //Flip a coin..
            
             winner = sameSum[Math.round(Math.random() * sameSum.length)];
-           
+           console.log(winner);
         } else { 
+            console.log(sumcardRanks);
             sumcardRanks.forEach(function(e, index) {
                 /*
                 here I try to find the keys (player number) which value match the max Score
@@ -77,8 +78,9 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
                 */
                 if(Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore) !== undefined) {
                     winner = Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore);
+                    console.log(winner);
                 }
-                
+              
             })
 
             //Here i pass the fishes that are in the game to the WINNER

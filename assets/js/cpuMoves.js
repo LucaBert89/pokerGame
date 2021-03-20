@@ -12,21 +12,23 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
     const btnBet = document.querySelector(".input-fish__btn")
     let ontablefish;
     let randomNumber;
-
+    console.log(total[1].textContent);
     btnBet.addEventListener("click", insertFish);
 
     // HERE IS THE FIRST MOVE: the player select the fish he wants to play
-    function insertFish(){
+    function insertFish(e){
+
+        e.stopPropagation();
         // when the player click on bet you can't change your card anymore
         btnBet.removeEventListener('click', insertFish);
+        console.log(total[1].textContent);
         btnPlay.style.display = "none";
         const cpuContainer = document.querySelector(".cpu-container");
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu");   
         let cardNumber = [];
         playerRanksArray = []; 
         ontablefish = [];
-        total = document.querySelectorAll(".total-fish");
-
+ 
         //here I subtract the fish selected from the total available. + 10 is the open fish that I don't want to be counted two times
         total[0].textContent = parseInt(total[0].textContent) - (parseInt(ingame[0].textContent) - 10);
 
@@ -44,11 +46,12 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         ontablefish = [...ingame].map(e => e.textContent);
 
         for(let i=1; i<playerNumbers; i++) {
-            ingame[i].textContent = firstBet(total[i].textContent, ingame[i].textContent, ontablefish, result[i], randomNumber);
+            ingame[i].textContent = firstBet(total[i].innerText, ingame[i].textContent, ontablefish, result[i], randomNumber);
             ontablefish[i] = ingame[i].textContent;
-            total[i].textContent = parseInt(total[i].textContent ) - (parseInt(ingame[i].textContent -10)); 
+            total[i].textContent = parseInt(total[i].textContent) - (parseInt(ingame[i].textContent -10)); 
+            
         }
-         
+        console.log(total[1].textContent);
 
         ontablefish = [...ingame].map(e => e.textContent);
 
@@ -62,6 +65,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         } else {
             btnShow.style.display = "inline-block";
         }
+        console.log(total[1].textContent);
            //     }
     }
     
@@ -100,19 +104,23 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                 // I push the ranks of every Cpu player inside ranking
                 ranking.push(cpuCurrent[i][index].slice(0,-1));
             })
-            
-            // if the result is 1(pair) or 2(two pair) or 0 (nothing) the cpuMove function'll be called
-            if(result[i+1] === 1 || result[i+1] === 2 || result[i+1] === 0) {
-
+        }
+        console.log(ranking);
+        for(let i=1; i<playerNumbers; i++) {
+ // if the result is 1(pair) or 2(two pair) or 0 (nothing) the cpuMove function'll be called
+            if(result[i] === 1 || result[i] === 2 || result[i] === 0) {
+                
                 // this function is used to let the cpu player change the useless cards
-                cpuMove(cardNumber, discardedCard, replaceIndex,i, ranking,x, cpuPlayers);
+                cpuMove(cardNumber, discardedCard, replaceIndex,i-1, ranking,x, cpuPlayers);
             } else {
                 continue;
             }
-            
-           
             x+=5;
+
+                 
         }
+           
+        
 
     }
 
@@ -126,7 +134,9 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
     5 players cards; cpuP: cpuPlayers elements; 
 
     */
-    function cpuMove(n, dCard, newIndex, index, cardRank,x, cpuP) { 
+    function cpuMove(n, dCard, newIndex, index, cardRank,x, cpuP) {
+        console.log(index);
+        console.log(n); 
         /* here I fill the dCard array with the cardNumber that is = 1
             ex. card ranks ["2": 1; "3":2; "4":1; "5":1]
             here into dCard = ["2", "4", "5"]
@@ -137,17 +147,20 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                     dCard.push(e[0]);
                 }   
             })
+            console.log(dCard, cardRank, x);
         // with this regular expression I'll check for numbers inside strings 
             //let findNumber = /\d+/;
             cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
                 for(let j=0; j < dCard.length; j++) { 
+                    console.log(e.textContent);
                     //check inside the string backgroundImage a number equal to dCard numbers
-                    if(e.innerHTML.slice(0,-1) === dCard[j]){
+                    if(e.textContent.slice(0,-1) === dCard[j]){
                     //if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
                     /*I'll look for the dCard index inside the cardRank array + 5 to consider the
                       active player that is not considered in cardRank but'll be in replaceCard
                     */
                         newIndex = (cardRank.indexOf(dCard[j]))+x;
+                        console.log(newIndex);
                         replaceCard(newIndex, e);  
                         break;
                     }
@@ -170,7 +183,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         btnStay.style.display = "none";
         btnLeave.style.display = "none";
         btnShow.style.display = "none";
-
+        console.log(total);
         let previous;
         let difference; 
         if(e.target.className === "stay") {
@@ -190,7 +203,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         for(let i=1; i<playerNumbers; i++) {
             ingame[i].removeAttribute("id");
             previous = ingame[i].textContent;
-            if(ingame[i].textContent != 10) {
+            if(ingame[i].textContent > 10) {
+                console.log(">10")
                 if(total[i].textContent >= (Math.max(...ontablefish) - previous)) {
                     ingame[i].textContent = cpuSecondRound(difference,previous, ingame[i].textContent, total[i].textContent,ontablefish,result[i]);
                     
@@ -202,12 +216,18 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         In this case I added an ID to highlight that he's in the game
         despite he hasn't enough money. This "id" let me to consider the player score for comparation
         inside findthewinner function
-        */
+        */          console.log(ingame[i]);
                     ingame[i].setAttribute("id", "stayIn");
                     ingame[i].textContent = parseInt(ingame[i].textContent) + parseInt(total[i].textContent);
                     total[i].textContent = parseInt(total[i].textContent) - parseInt(total[i].textContent);
                 }
+            } else if(ingame[i].textContent == 10 && total[i].textContent == 0){
+                console.log("Ok")
+                ingame[i].setAttribute("id", "stayIn");
+                ingame[i].textContent = parseInt(ingame[i].textContent) + parseInt(total[i].textContent);
+                total[i].textContent = parseInt(total[i].textContent) - parseInt(total[i].textContent);
             } else {
+                console.log("Ok")
                 continue;
             }
         }
@@ -221,13 +241,14 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         let playersIn = [...ingame].map((e,index) =>{
             if(e.textContent == Math.max(...ontablefish) || e.id == "stayIn") return index;
         }).filter(e => e != undefined);
-
+        console.log(playersIn);
         // show the hidden cards removing the class card-cover and giving the card text to the path image
         document.querySelectorAll(".cpu").forEach(function(e) {
             e.querySelectorAll(".player__card").forEach(function(e) {
+                console.log(e, e.textContent);
                 e.classList.remove("card-cover");
-                e.style.backgroundImage = `url("./assets/images/${e.innerHTML}.jpg")`;
-                e.innerHTML = "";
+                e.style.backgroundImage = `url("./assets/images/${e.textContent}.jpg")`;
+                e.textContent = "";
             })
         })
     //here i took out the undefined values that don't match the max
