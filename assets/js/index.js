@@ -272,15 +272,12 @@ btnOpen.addEventListener("click", function() {
         btnOpen.style.display = "none";
     //if someone has scores, than the game'll open 
     /*first I've to check if the players've enough fishes to open the game */
-        loseOrOpen(total, ingame, result, j) 
+        loseOrOpen(total, ingame, result) 
  
-        console.log(j);
   
         ingame = document.querySelectorAll(".in-game-fish");
         total = document.querySelectorAll(".total-fish"); 
         playerNumbers = document.querySelector(".cpu-container").children.length+1;
-
-        console.log(playerNumbers);
 
         // CHANGE YOUR CARD IF YOU NEED TO
         playerActiveMove(activeCard);
@@ -288,18 +285,18 @@ btnOpen.addEventListener("click", function() {
         setTimeout(function(){ 
             btnPlay.style.display = "inline-block";
         }, 5000);
-    }
-    rank = [];
-    suit = [];
-    result = [];
-    fishSelector(ingame, total);
-
-   // here function players is call passing randomCard, the array that contain all the cards
-    players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
     
-    // here playAndResponse is called to pass all the variables needed to play the game
-    playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
+        rank = [];
+        suit = [];
+        result = [];
+        fishSelector(ingame, total);
 
+    // here function players is call passing randomCard, the array that contain all the cards
+        players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
+        
+        // here playAndResponse is called to pass all the variables needed to play the game
+        playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
+    }
     
 }) 
 
@@ -330,7 +327,7 @@ function playerActiveMove(activeCard) {
 }
 function loseOrOpen(total, ingame, result) {
     for(let i=0; i<initialNumber; i++) {
-        console.log(total[i]);
+
         if(total[i] !== undefined) {
             // if they've enough fishes than the players pays 10 fishes to enter the game
             if(total[i].textContent > 0) { 

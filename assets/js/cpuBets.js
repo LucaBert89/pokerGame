@@ -1,53 +1,54 @@
-function firstBet(total, ingame, ontablefish, result, random) {
+function firstBet(total, ingame, ontablefish, result, random, i) {
     let riskValue;
     let addedNumber;
 
-    if(total >= Math.max(...ontablefish)) {
+    if(total[i].innerText >= Math.max(...ontablefish)) {
         if(result === 0) {
             
-            ingame = blufforNot(random, Math.max(...ontablefish), total);
-            console.log(ingame);
-        } else if(result >= 1 && result <= 3 ) {
-            console.log(ingame);
-            addedNumber = parseInt(total) * 2/10;
-            riskValue = parseInt(total) * 2/5;
+            ingame[i].innerText = blufforNot(random, Math.max(...ontablefish), total);
+
+        } else if(result[i] >= 1 && result[i] <= 3 ) {
+ 
+            addedNumber = parseInt(total[i].innerText) * 2/10;
+            riskValue = parseInt(total[i].innerText) * 2/5;
             
             if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                console.log(ingame);
-                ingame = cpuBet(ontablefish, addedNumber);      
+  
+                ingame[i].innerText = cpuBet(ontablefish, addedNumber);      
             } else {
+                console.log(total[i].innerText)
+                ingame[i].innerText = riskyAnswer(Math.max(...ontablefish), random);
+                console.log(ingame[i].innerText);
+            }
+        } else if(result[i] >= 4 && result[i] <= 6 ) {
 
-                ingame = riskyAnswer(ontablefish, random);
-                console.log(ingame);
-            }
-        } else if(result >= 4 && result <= 6 ) {
-            console.log(ingame);
-            addedNumber = parseInt(total) * 4/10;
-            riskValue = total * 3/5;
+            addedNumber = parseInt(total[i].innerText) * 4/10;
+            riskValue = parseInt(total[i].innerText) * 3/5;
             if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                ingame= cpuBet(ontablefish, addedNumber);
+                ingame[i].innerText = cpuBet(ontablefish, addedNumber);
             } else {
-              
-                ingame = riskyAnswer(ontablefish, random);
+                console.log(total[i].innerText)
+                ingame[i].innerText = riskyAnswer(Math.max(...ontablefish), random);
             }
-        } else if(result >= 7 ) {
-            console.log(ingame);
-            ingame = parseInt(total) + parseInt(ingame);
+        } else if(result[i] >= 7 ) {
+            ingame[i].innerText = parseInt(total[i].innerText) + parseInt(ingame[i].innerText);
         }
     } else {
-        if(result >= 1 && result <= 3) {
+        if(result[i] >= 1 && result[i] <= 3) {
+
             random = Math.floor(Math.random() * 11);
+            console.log(random);
             if(random > 1) {
-                ingame = parseInt(total) + parseInt(ingame);
-                console.log(ingame);
+                ingame[i].innerText = parseInt(total[i].innerText) + parseInt(ingame[i].innerText);
+
             }
-        } else if(result >= 4 && result <= 6 || result >= 7) {
-            ingame = parseInt(total) + parseInt(ingame);
-            console.log(ingame);
+        } else if(result[i] >= 4 && result[i] <= 6 || result[i] >= 7) {
+            ingame[i].innerText = parseInt(total[i].innerText) + parseInt(ingame[i].innerText);
+ 
         }
     }
-    console.log(total);
-return ingame;
+console.log(total[i]);
+return ingame[i].innerText;
 }   
 
 
@@ -58,24 +59,24 @@ function cpuBet(ontablefish, addedNumber) {
 
 function blufforNot(randomMove, betPrev, total) {
     randomMove =  Math.floor(Math.random() * 11);
-    console.log(randomMove)
+
     if(randomMove > 1) {
         let bluff;
         bluff = parseInt(betPrev) + Math.round(parseInt(total * 1/10));
         return Math.round(bluff / 10) * 10;
     } else {
-        return "10";
+        return 10;
     }
 }
 
-function riskyAnswer(ontablefish, random) {
-  
+function riskyAnswer(max, random) {
+    
     random = Math.floor(Math.random() * 11);    
     console.log(random)
     if(random > 1) {
-        return Math.max(...ontablefish);
+        return max;
     } else {
-        return "10";
+        return 10;
     }
 }
 

@@ -4,24 +4,26 @@ import {findtheWinner} from "./findWinner.js"
 import {firstBet, cpuSecondRound} from "./cpuBets.js"
 
 
+const btnBet = document.querySelector(".input-fish__btn")
+
 function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers) {
     const nextTurn = document.querySelector(".next-turn");
     const btnStay = document.querySelector(".stay");
     const btnLeave = document.querySelector(".leave");
     const btnShow = document.querySelector(".show");
-    const btnBet = document.querySelector(".input-fish__btn")
+   
     let ontablefish;
     let randomNumber;
-    console.log(playerNumbers); 
+
     btnBet.addEventListener("click", insertFish);
 
     // HERE IS THE FIRST MOVE: the player select the fish he wants to play
     function insertFish(e){
-
         e.stopPropagation();
+        e.preventDefault();
         // when the player click on bet you can't change your card anymore
         btnBet.removeEventListener('click', insertFish);
-        console.log(total[1].textContent);
+
         btnPlay.style.display = "none";
         const cpuContainer = document.querySelector(".cpu-container");
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu");   
@@ -30,10 +32,10 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         ontablefish = [];
  
         //here I subtract the fish selected from the total available. + 10 is the open fish that I don't want to be counted two times
-        total[0].textContent = parseInt(total[0].textContent) - (parseInt(ingame[0].textContent) - 10);
+        total[0].innerText = parseInt(total[0].innerText) - (parseInt(ingame[0].innerText) - 10);
 
         
-        replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks, playerNumbers);
+        replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks, playerNumbers, randomCard);
         
         rank = [];
         suit = [];
@@ -43,17 +45,18 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
       
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);   
 
-        ontablefish = [...ingame].map(e => e.textContent);
+        ontablefish = [...ingame].map(event => event.textContent);
 
         for(let i=1; i<playerNumbers; i++) {
-            ingame[i].textContent = firstBet(total[i].innerText, ingame[i].textContent, ontablefish, result[i], randomNumber);
-            ontablefish[i] = ingame[i].textContent;
-            total[i].textContent = parseInt(total[i].textContent) - (parseInt(ingame[i].textContent -10)); 
+            console.log(i);
+            ingame[i].innerText = firstBet(total, ingame, ontablefish, result, randomNumber,i);
+            ontablefish[i] = ingame[i].innerText;
+            total[i].innerText = parseInt(total[i].innerText) - (parseInt(ingame[i].innerText) -10); 
             
         }
-        console.log(total[1].textContent);
 
-        ontablefish = [...ingame].map(e => e.textContent);
+
+        ontablefish = [...ingame].map(event => event.textContent);
 
         if(ingame[0].textContent < Math.max(...ontablefish)) {
             if(ingame[0].textContent != 10) {
@@ -65,15 +68,15 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         } else {
             btnShow.style.display = "inline-block";
         }
-        console.log(total[1].textContent);
+
            //     }
     }
     
-    function replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks, playerNumbers) {
-        console.log(playerNumbers);
+    function replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks, playerNumbers, randomCard) {
         let cpuCurrent = [];
         let discardedCard= [];
         let ranking = [];
+        cardNumber = [];
         let replaceIndex;  
 // REPLACING USELESS CARDS
     /* Here after the click I want that the cpu players change their useless cards
@@ -87,7 +90,12 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         for(let j=5; j<randomCard.length; j+=5) {
             cpuCurrent.push(randomCard.slice(j, j+5));  
         }    
-         /* I put the Object.entries of the totalObjectRanks inside an array of arrays
+        console.log(randomCard);
+        console.log(cpuCurrent);
+       
+
+        for(let i=0;i<playerNumbers-1;i++) {
+        /* I put the Object.entries of the totalObjectRanks inside an array of arrays
             that include the rank and count of the card to see if it's one or not 
             ["5", 1]
             ["7", 1]
@@ -95,30 +103,22 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             ["12", 2]
             each iteration is for a single player
         */
-
-        for(let i=0;i<playerNumbers-1;i++) {
-            cardNumber = Object.entries(totalObjectRanks[i+1]);
-            ranking = [];
+            cardNumber.push(Object.entries(totalObjectRanks[i+1]));
             discardedCard = [];
-           
-            cpuPlayers[i].querySelectorAll(".player__card").forEach(function(e,index) {
                 // I push the ranks of every Cpu player inside ranking
-                ranking.push(cpuCurrent[i][index].slice(0,-1));
-            })
+            ranking.push(cpuCurrent[i].map(e => e.slice(0,-1)));
         }
-        console.log(ranking);
+
         for(let i=1; i<playerNumbers; i++) {
  // if the result is 1(pair) or 2(two pair) or 0 (nothing) the cpuMove function'll be called
             if(result[i] === 1 || result[i] === 2 || result[i] === 0) {
                 
                 // this function is used to let the cpu player change the useless cards
-                cpuMove(cardNumber, discardedCard, replaceIndex,i-1, ranking,x, cpuPlayers);
+                cpuMove(cardNumber[i-1], discardedCard, replaceIndex,i-1, ranking[i-1],x, cpuPlayers);
             } else {
                 continue;
             }
             x+=5;
-
-                 
         }
            
         
@@ -136,38 +136,39 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
 
     */
     function cpuMove(n, dCard, newIndex, index, cardRank,x, cpuP) {
-        console.log(index);
-        console.log(n); 
         /* here I fill the dCard array with the cardNumber that is = 1
             ex. card ranks ["2": 1; "3":2; "4":1; "5":1]
             here into dCard = ["2", "4", "5"]
         */ 
             dCard = [];
             n.forEach(function(e) {
+                console.log(e)
                 if(e[1] === 1) {
                     dCard.push(e[0]);
                 }   
             })
-            console.log(dCard, cardRank, x);
+
         // with this regular expression I'll check for numbers inside strings 
             //let findNumber = /\d+/;
             cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
-                for(let j=0; j < dCard.length; j++) { 
-                    console.log(e.textContent);
-                    //check inside the string backgroundImage a number equal to dCard numbers
-                    if(e.textContent.slice(0,-1) === dCard[j]){
-                    //if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
-                    /*I'll look for the dCard index inside the cardRank array + 5 to consider the
+                    dCard.forEach(function(event,index) {
+                    // i check into the dCard (card useless) and for the dCard among the player cards I assign a newIndex
+                        if(e.innerText.slice(0,-1) == dCard[index]){
+                   /*I'll look for the dCard index inside the cardRank array + 5 to consider the
                       active player that is not considered in cardRank but'll be in replaceCard
                     */
-                   console.log(x);
-                   console.log(cardRank.indexOf(dCard[j]));
-                        newIndex = (cardRank.indexOf(dCard[j]))+x;
-                        console.log(newIndex);
-                        replaceCard(newIndex, e);  
-                        break;
-                    }
-                }
+                            newIndex = (cardRank.indexOf(dCard[index]))+x;
+                            if(newIndex >= 5) replaceCard(newIndex, e);
+                        } 
+                    }) 
+               
+                    //check inside the string backgroundImage a number equal to dCard numbers
+                    
+                    //if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
+                    
+                  
+                    
+                
             })
         }
          
@@ -248,7 +249,6 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         // show the hidden cards removing the class card-cover and giving the card text to the path image
         document.querySelectorAll(".cpu").forEach(function(e) {
             e.querySelectorAll(".player__card").forEach(function(e) {
-                console.log(e, e.textContent);
                 e.classList.remove("card-cover");
                 e.style.backgroundImage = `url("./assets/images/${e.textContent}.jpg")`;
                 e.textContent = "";
