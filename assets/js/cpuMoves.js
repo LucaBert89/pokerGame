@@ -12,7 +12,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
     const btnBet = document.querySelector(".input-fish__btn")
     let ontablefish;
     let randomNumber;
-    console.log(total[1].textContent);
+    console.log(playerNumbers); 
     btnBet.addEventListener("click", insertFish);
 
     // HERE IS THE FIRST MOVE: the player select the fish he wants to play
@@ -33,7 +33,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         total[0].textContent = parseInt(total[0].textContent) - (parseInt(ingame[0].textContent) - 10);
 
         
-        replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks);
+        replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks, playerNumbers);
         
         rank = [];
         suit = [];
@@ -69,7 +69,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
            //     }
     }
     
-    function replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks) {
+    function replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks, playerNumbers) {
+        console.log(playerNumbers);
         let cpuCurrent = [];
         let discardedCard= [];
         let ranking = [];
@@ -159,6 +160,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                     /*I'll look for the dCard index inside the cardRank array + 5 to consider the
                       active player that is not considered in cardRank but'll be in replaceCard
                     */
+                   console.log(x);
+                   console.log(cardRank.indexOf(dCard[j]));
                         newIndex = (cardRank.indexOf(dCard[j]))+x;
                         console.log(newIndex);
                         replaceCard(newIndex, e);  

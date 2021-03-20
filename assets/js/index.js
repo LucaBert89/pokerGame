@@ -204,17 +204,25 @@ function replaceCard(current, e) {
     if(randomCard.includes(card)) {
         return replaceCard(current, e);
     } else {
-        randomCard.splice(current,1,card);
-        e.classList.add("dealing");
-        // if index < 5 there are my cards and I should display them
-        if(current < 5) {
-            cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
-            e.style.backgroundImage = cardImage;
-        } else {
-            // these are the cpu cards and I can't display them 
-            cardImage = randomCard[current];
-            e.innerHTML = cardImage;
-        }
+            
+                randomCard.splice(current,1,card);
+            
+            
+            // if index < 5 there are my cards and I should display them
+            if(current < 5) {
+                e.classList.add("dealing");
+                cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+                e.style.backgroundImage = cardImage;
+            } else {
+                // these are the cpu cards and I can't display them 
+                setTimeout(function(){ 
+                    e.classList.add("dealing");
+                    cardImage = randomCard[current];
+                    e.innerHTML = cardImage;
+                }, 1000);
+            }
+       
+        
        
         // if the randomCard is unique than replace the card clicked with the new card
         // the new card image will take the new generated random card
@@ -242,7 +250,6 @@ btnOpen.addEventListener("click", function() {
     let rank;
     let suit;
     let result;
-    let j = 0;
      // here rank, suit and result'll empty and refill every time btnplay is clicked
      rank = [];
      suit = [];
@@ -267,13 +274,13 @@ btnOpen.addEventListener("click", function() {
     /*first I've to check if the players've enough fishes to open the game */
         loseOrOpen(total, ingame, result, j) 
  
-  
+        console.log(j);
   
         ingame = document.querySelectorAll(".in-game-fish");
         total = document.querySelectorAll(".total-fish"); 
-        playerNumbers-=j;
+        playerNumbers = document.querySelector(".cpu-container").children.length+1;
 
-        
+        console.log(playerNumbers);
 
         // CHANGE YOUR CARD IF YOU NEED TO
         playerActiveMove(activeCard);
@@ -321,7 +328,7 @@ function playerActiveMove(activeCard) {
 
     
 }
-function loseOrOpen(total, ingame, result, j) {
+function loseOrOpen(total, ingame, result) {
     for(let i=0; i<initialNumber; i++) {
         console.log(total[i]);
         if(total[i] !== undefined) {
@@ -332,7 +339,6 @@ function loseOrOpen(total, ingame, result, j) {
             } else {
             // if the cpuPlayers doesn't even enough fishes they'll be deleted from the game
                 if(i>0) {
-                    j++;
                     if( document.querySelector(`.player${i}`) !== undefined) {
                         document.querySelector(`.player${i}`).remove();
                         console.log(`player${i} lose`);
