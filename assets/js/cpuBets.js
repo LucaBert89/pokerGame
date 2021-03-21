@@ -16,9 +16,9 @@ function firstBet(total, ingame, ontablefish, result, random, i) {
   
                 ingame[i].innerText = cpuBet(ontablefish, addedNumber);      
             } else {
-                console.log(total[i].innerText)
+
                 ingame[i].innerText = riskyAnswer(Math.max(...ontablefish), random);
-                console.log(ingame[i].innerText);
+
             }
         } else if(result[i] >= 4 && result[i] <= 6 ) {
 
@@ -27,7 +27,7 @@ function firstBet(total, ingame, ontablefish, result, random, i) {
             if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
                 ingame[i].innerText = cpuBet(ontablefish, addedNumber);
             } else {
-                console.log(total[i].innerText)
+
                 ingame[i].innerText = riskyAnswer(Math.max(...ontablefish), random);
             }
         } else if(result[i] >= 7 ) {
@@ -37,8 +37,8 @@ function firstBet(total, ingame, ontablefish, result, random, i) {
         if(result[i] >= 1 && result[i] <= 3) {
 
             random = Math.floor(Math.random() * 11);
-            console.log(random);
-            if(random > 1) {
+
+            if(random > 4) {
                 ingame[i].innerText = parseInt(total[i].innerText) + parseInt(ingame[i].innerText);
 
             }
@@ -47,7 +47,6 @@ function firstBet(total, ingame, ontablefish, result, random, i) {
  
         }
     }
-console.log(total[i]);
 return ingame[i].innerText;
 }   
 
@@ -60,7 +59,7 @@ function cpuBet(ontablefish, addedNumber) {
 function blufforNot(randomMove, betPrev, total) {
     randomMove =  Math.floor(Math.random() * 11);
 
-    if(randomMove > 1) {
+    if(randomMove > 3) {
         let bluff;
         bluff = parseInt(betPrev) + Math.round(parseInt(total * 1/10));
         return Math.round(bluff / 10) * 10;
@@ -72,8 +71,7 @@ function blufforNot(randomMove, betPrev, total) {
 function riskyAnswer(max, random) {
     
     random = Math.floor(Math.random() * 11);    
-    console.log(random)
-    if(random > 1) {
+    if(random > 3) {
         return max;
     } else {
         return 10;

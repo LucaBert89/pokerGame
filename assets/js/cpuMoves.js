@@ -48,7 +48,6 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         ontablefish = [...ingame].map(event => event.textContent);
 
         for(let i=1; i<playerNumbers; i++) {
-            console.log(i);
             ingame[i].innerText = firstBet(total, ingame, ontablefish, result, randomNumber,i);
             ontablefish[i] = ingame[i].innerText;
             total[i].innerText = parseInt(total[i].innerText) - (parseInt(ingame[i].innerText) -10); 
@@ -90,8 +89,6 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         for(let j=5; j<randomCard.length; j+=5) {
             cpuCurrent.push(randomCard.slice(j, j+5));  
         }    
-        console.log(randomCard);
-        console.log(cpuCurrent);
        
 
         for(let i=0;i<playerNumbers-1;i++) {
@@ -142,7 +139,6 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         */ 
             dCard = [];
             n.forEach(function(e) {
-                console.log(e)
                 if(e[1] === 1) {
                     dCard.push(e[0]);
                 }   
@@ -187,7 +183,6 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         btnStay.style.display = "none";
         btnLeave.style.display = "none";
         btnShow.style.display = "none";
-        console.log(total);
         let previous;
         let difference; 
         if(e.target.className === "stay") {
@@ -208,7 +203,6 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             ingame[i].removeAttribute("id");
             previous = ingame[i].textContent;
             if(ingame[i].textContent > 10) {
-                console.log(">10")
                 if(total[i].textContent >= (Math.max(...ontablefish) - previous)) {
                     ingame[i].textContent = cpuSecondRound(difference,previous, ingame[i].textContent, total[i].textContent,ontablefish,result[i]);
                     
@@ -220,18 +214,16 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         In this case I added an ID to highlight that he's in the game
         despite he hasn't enough money. This "id" let me to consider the player score for comparation
         inside findthewinner function
-        */          console.log(ingame[i]);
+        */          
                     ingame[i].setAttribute("id", "stayIn");
                     ingame[i].textContent = parseInt(ingame[i].textContent) + parseInt(total[i].textContent);
                     total[i].textContent = parseInt(total[i].textContent) - parseInt(total[i].textContent);
                 }
             } else if(ingame[i].textContent == 10 && total[i].textContent == 0){
-                console.log("Ok")
                 ingame[i].setAttribute("id", "stayIn");
                 ingame[i].textContent = parseInt(ingame[i].textContent) + parseInt(total[i].textContent);
                 total[i].textContent = parseInt(total[i].textContent) - parseInt(total[i].textContent);
             } else {
-                console.log("Ok")
                 continue;
             }
         }
@@ -245,7 +237,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         let playersIn = [...ingame].map((e,index) =>{
             if(e.textContent == Math.max(...ontablefish) || e.id == "stayIn") return index;
         }).filter(e => e != undefined);
-        console.log(playersIn);
+
         // show the hidden cards removing the class card-cover and giving the card text to the path image
         document.querySelectorAll(".cpu").forEach(function(e) {
             e.querySelectorAll(".player__card").forEach(function(e) {
@@ -303,7 +295,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         */  
     
       winner = findtheWinner(winner, winnerScore, compareScores, ingameScores, playerRanksArray);
-        console.log(total[winner].textContent);
+
       ingame.forEach(e => {
         total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
         //e.innerHTML = "";
@@ -338,7 +330,10 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             btnPlay.style.display = "none";
             btnStay.style.display = "none";
             btnLeave.style.display = "none";
-            btnOpen.style.display = "inline-block";
+            setTimeout(function(){ 
+                btnOpen.style.display = "inline-block";
+            }, 2000);
+            
             ingame = document.querySelectorAll(".in-game-fish");
             total = document.querySelectorAll(".total-fish");
         

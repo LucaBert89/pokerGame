@@ -57,7 +57,7 @@ function generatePlayers(playerNumbers) {
     cpu.classList.add("cpu-container");
     
 //max of the player is four: a class and a div will be generated for each player
-    if(playerNumbers <= 4) {
+  
         for(let j=0; j <= playerNumbers-1; j++) {
             player = document.createElement("div");
             fishBet = document.createElement("div");
@@ -88,9 +88,6 @@ function generatePlayers(playerNumbers) {
                 player.appendChild(card);
             }
         }
-    } else {
-        console.log("no more than 4");
-    }  
 };
 
 
@@ -196,7 +193,6 @@ function generateCard(selectedCard, current) {
 
 /* here I pass the index of the card that I clicked among mine*/
 function replaceCard(current, e) {
-    console.log(current, e);
     e.classList.remove("dealing");
     /*card is a random number with a score between 0 and 13+2(14) 
     and a random index of cardSuit until the max length*/
@@ -265,14 +261,13 @@ btnOpen.addEventListener("click", function() {
 // based on the players cards, if someone've scores or not, it's decided if open or not
     if(result.every(e => e === 0)) {
         // if we can't open than new cards we'll be generated emptying the existing rank, suit, result arrays
-        console.log("no one can open");
         rank = [];
         suit = [];
         result = [];
         cardGenerator();
         setTimeout(function(){ 
             btnOpen.style.display = "inline-block";
-        }, 1000);
+        }, 2000);
     } else {
         btnOpen.style.display = "none";
     //if someone has scores, than the game'll open 
@@ -362,7 +357,6 @@ function loseOrOpen(total, ingame, result) {
                         gameOver();
                         modalMessage.textContent = "You lose, the planet is fucked!";
                 }
-                cardGenerator();
             }
         }
         

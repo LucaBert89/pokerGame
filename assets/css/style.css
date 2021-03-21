@@ -1,6 +1,7 @@
 * {
     padding:0;
-    margin:0;
+    margin:auto;
+    max-width: 1624px;
 }
 
 /* The Modal (background) */
@@ -8,8 +9,6 @@
     display: block;     
     position: fixed;
     z-index: 1;
-    left: 0;
-    top: 0;
     width: 100%; 
     height: 100%; 
     overflow: hidden; 
@@ -20,7 +19,7 @@
   /* Modal Content/Box */
   .start-game__modal-content {
     background-color: #bec2d8de;
-    margin:3% auto 0 auto;
+    margin:2% auto 0 auto;
     padding: 20px;
     border: 1px solid #888;
     width: 90%; 
@@ -30,8 +29,12 @@
     font-size:30px;
   }
 
+  .first-door {
+      margin-bottom:0;
+  }
   .last-door {
-      transform:translateY(-50px)
+      transform:translateY(-50px);
+      margin-top:50px;
   }
 
   .out__up {
@@ -71,7 +74,6 @@
   }
 
   .start-game__control {
-      margin-top:50px;
       width:100%;
       text-align: center;
       font-size: 30px;
@@ -114,7 +116,6 @@
   .start-game__btn{
     background-color: #000;
     border-radius: 20px;
-    margin-top:50px;
     padding:20px 100px;
     display:inline-block;
     cursor:pointer;
@@ -131,9 +132,7 @@
     background-image: url("/assets/images/start/galaxy-2643089_1280.jpg");
     background-repeat: no-repeat;
     background-size:cover;
-    height:100vw;
     width:100%;
-    
 }
 
 
@@ -151,14 +150,16 @@
     display:flex;
     justify-content: center;
     bottom:0px;
+    left:-50px;
 }
 
 .player__profile0 {
     width:5%;
     height:15%;
-    padding:20px 40px;
+    padding:10px 30px;
     position:absolute;
     bottom:-10%;
+    right:0;
     background-size:100% 100%;
     border-radius:20px;
 }
@@ -173,17 +174,17 @@
 }
 
 .player1 .cpu-profile{
-    top:-70%;
-    right:20%;
+    top:-50%;
+    left:30%;
 }
 
 .player2 .cpu-profile{
-    top:60%;
+    top:70%;
     right:20%;
 }
 
 .player3 .cpu-profile{
-    top:60%;
+    top:80%;
     right:20%;
 }
 
@@ -192,36 +193,37 @@
     background-image: url("/assets/images/profile/alien-profile.jpg");
     background-size:cover;
     width:5%;
-    padding:40px 30px;
+    padding:30px 20px;
     position:absolute;
     border-radius: 20px;
 }
 
 .player1 {  
     top:0px;
+    right:20%;
 }
 
 .player2 {
-    left:60%;
+    left:70%;
     transform:rotate(-90deg);
-    height: 100%;
+    height: 80%;
+    top:30%;
 }
 
 .player3{
-    right:60%;
+    right:70%;
     transform:rotate(90deg);
-    height: 100%;
+    height: 60%;
 }
 
 
 
 .player0 .player__card {
-    width:30px;
-    height:180px;
-    padding:0rem 2.5rem;
+    width:40px;
+    padding:5rem 2.5rem;
     background-repeat: no-repeat;
-    background-size:cover;
-    
+    background-size:100% 100%;
+    margin:0;
 }
 
 .player__message {
@@ -233,11 +235,12 @@
 }
 
 .cpu .player__card {
-    height:120px;
+    height:100px;
     width: 20px;
-    padding:0rem 2rem;
+    padding:10px 30px;
     background-repeat: no-repeat;
     background-size:cover;
+    margin:0;
 }
 
 .card-cover {
@@ -276,11 +279,14 @@
 
 .player-active {
     text-align: center;
+    position:absolute;
+    bottom:20px;
+    left:45%;
 }
 
 .player-active__btn {
     background-color: blue;
-    padding:30px;
+    padding:20px;
     display:inline-block;
     cursor:pointer;
     color:#fff;
@@ -308,7 +314,7 @@
 
 .input-fish{
     background-color: blue;
-    padding:20px;
+    padding:10px;
     display:none;
     cursor:pointer;
     color:#fff;
@@ -316,10 +322,10 @@
 }
 
 .input-fish__selector {
-    width:80px;
-    height: 40px;
+    width:60px;
+    height: 30px;
     margin:20px;
-    font-size:30px;
+    font-size:20px;
     background-color:black;
     border-radius: 20px;
     border-color: #fff;
@@ -340,27 +346,31 @@
 }
 
 .in-game-fish {
-    position:absolute;
-   
+    position:relative;
+    text-align: center;
     display:block;
     color:#fff;
-   font-size:50px;  
+   font-size:40px;  
+   left:50%;
 }
 
 .fish0 {
-    top:-100px;
+    top:-120px;
 }
 
 .fish1 {
-    top:200px;
+    top:120px;
+    padding:0 85px;
 }
 
 .fish2 {
-    top:0px;
+    top:-80%;
+    padding: 0 100px;
 }
 
 .fish3 {
-    top:0px;
+    top:-90%;
+    padding:0 50px;
 }
 
 
