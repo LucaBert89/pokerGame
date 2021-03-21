@@ -9,6 +9,9 @@ const btnPlay = document.querySelector(".input-fish");
 const selectNofPlayers = document.querySelector("#players");
 const selectNofPoints = document.querySelector("#points");
 const selectProfile= document.querySelector(".start-game__input-profile");
+const modalEndGame = document.querySelector(".modal-end");
+const modalMessage = document.querySelector(".modal-gameover__message");
+const btnPlayAgain = document.querySelector(".modal-gameover__start-again");
 
 let card;
 let cardImage;
@@ -235,9 +238,9 @@ function replaceCard(current, e) {
 // OPEN BTN
 
 btnOpen.addEventListener("click", function() {
-    
     const player = document.querySelector(".player0");
     const activeCard = player.querySelectorAll(".player__card");
+    btnOpen.style.display = "none";
     // remove the dealing class set for the animation
     activeCard.forEach(e => e.classList.remove("dealing"));
     
@@ -267,35 +270,49 @@ btnOpen.addEventListener("click", function() {
         suit = [];
         result = [];
         cardGenerator();
-        
+        setTimeout(function(){ 
+            btnOpen.style.display = "inline-block";
+        }, 1000);
     } else {
         btnOpen.style.display = "none";
     //if someone has scores, than the game'll open 
-    /*first I've to check if the players've enough fishes to open the game */
-        loseOrOpen(total, ingame, result) 
- 
-  
-        ingame = document.querySelectorAll(".in-game-fish");
-        total = document.querySelectorAll(".total-fish"); 
-        playerNumbers = document.querySelector(".cpu-container").children.length+1;
+    /*I call this function to check if the players've enough fishes to open the game */
+        loseOrOpen(total, ingame, result);
 
-        // CHANGE YOUR CARD IF YOU NEED TO
-        playerActiveMove(activeCard);
-        // bet appear after 5 seconds, time allowed to change your cards
-        setTimeout(function(){ 
-            btnPlay.style.display = "inline-block";
-        }, 5000);
-    
-        rank = [];
-        suit = [];
-        result = [];
-        fishSelector(ingame, total);
+    // if there aren't cpu Players anymore the active player 'll win the game and the messagge'll appear
+        if(document.querySelector(".cpu-container").children.length === 0) {
+            gameOver();
+            modalMessage.textContent = "You Win, the planet is saved!";
+        } else {
+            ingame = document.querySelectorAll(".in-game-fish");
+            total = document.querySelectorAll(".total-fish"); 
+            playerNumbers = document.querySelector(".cpu-container").children.length+1;
 
-    // here function players is call passing randomCard, the array that contain all the cards
-        players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
+            let message = document.createElement("div");
+            message.classList.add("player__message");
+            message.innerText = "change the cards";
+            player.appendChild(message);
+            // CHANGE YOUR CARD IF YOU NEED TO
+            playerActiveMove(activeCard);
+            // bet appear after 5 seconds, time allowed to change your cards
+            setTimeout(function(){ 
+                message.innerHTML = "";
+                btnPlay.style.display = "inline-block";
+            }, 5000);
         
-        // here playAndResponse is called to pass all the variables needed to play the game
-        playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
+            rank = [];
+            suit = [];
+            result = [];
+            fishSelector(ingame, total);
+
+        // here function players is call passing randomCard, the array that contain all the cards
+            players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
+            
+            // here playAndResponse is called to pass all the variables needed to play the game
+            playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
+        }
+
+        
     }
     
 }) 
@@ -338,11 +355,12 @@ function loseOrOpen(total, ingame, result) {
                 if(i>0) {
                     if( document.querySelector(`.player${i}`) !== undefined) {
                         document.querySelector(`.player${i}`).remove();
-                        console.log(`player${i} lose`);
                         delete result[i];
                     }
                 } else  {
-                    console.log("you lose");
+                // if the active player doesn't have enough fishes to open the game the messagge'll be shown and you can play again
+                        gameOver();
+                        modalMessage.textContent = "You lose, the planet is fucked!";
                 }
                 cardGenerator();
             }
@@ -350,6 +368,20 @@ function loseOrOpen(total, ingame, result) {
         
     }
 }
+
+
+function gameOver() {
+    document.querySelector(".players-table").innerHTML = "";
+    modalEndGame.style.display = "block";
+        
+
+    btnPlayAgain.addEventListener("click", function() {
+        
+        modalEndGame.style.display = "none";
+        modalStart.style.display = "block";
+    })
+}
+
 export {replaceCard, generateBtn,btnOpen, cardGenerator, btnPlay}
 
 
