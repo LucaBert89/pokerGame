@@ -22,7 +22,7 @@ If the cpuPlayer doesn't have enough fishes'll **lose the game** after the open 
 
 ## TECHNOLOGY
 
-To realize this game I used **HTML,CSS and JAVASCRIPT**. I used **mocha and chai** for testing some function inside the game. I used **trello** to create the tasks and **toggle** to time my activity. 
+To realize this game I used **HTML,CSS and JAVASCRIPT**. I used **mocha and chai** for testing some functions inside the game and **babel** to use ES6 with mocha. I used **trello** to create the tasks and **toggle** to time my activity. 
 
 The list of hands in ranking order are as follows:
 
