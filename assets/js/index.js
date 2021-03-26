@@ -50,6 +50,7 @@ generateBtn.addEventListener("click", cardGenerator);
 function cardGenerator() {
     // if I select the player number and points than the game can start
     if(playerNumbers != undefined && points != undefined) {
+        btnOpen.style.display = "inline-block";
         selectNofPlayers.style.backgroundColor = "black";
         selectNofPoints.style.backgroundColor = "black";
         // here the animation for the Ship door is added
@@ -87,6 +88,7 @@ function cardGenerator() {
 function generatePlayers(playerNumbers) {
     const playersContainer = document.querySelector(".players-table");
     let player;
+    let cardContainer;
     let playerCard;
     let totalCash;
     let fishBet;
@@ -98,6 +100,7 @@ function generatePlayers(playerNumbers) {
 //max of the player is four: a class and a div will be generated for each player
   
         for(let j=0; j <= playerNumbers-1; j++) {
+            cardContainer = document.createElement("div");
             player = document.createElement("div");
             fishBet = document.createElement("div");
             profile = document.createElement("div");
@@ -119,13 +122,14 @@ function generatePlayers(playerNumbers) {
                     cpu.appendChild(player);
                     playersContainer.appendChild(cpu);
                 }
-           
+                cardContainer.classList.add("cards-container");
             
             // five card class will be assigned to every person
             for(let x=1; x <= 5;x++) {
                 playerCard = document.createElement("div");
                 playerCard.classList.add("player__card");
-                player.appendChild(playerCard);
+                cardContainer.appendChild(playerCard);
+                player.appendChild(cardContainer);
             }
         }
 };
@@ -265,7 +269,7 @@ btnOpen.addEventListener("click", function() {
         loseOrOpen(total, ingame, result);
 
     // if there aren't cpu Players anymore the active player 'll win the game and the messagge'll appear
-        if(document.querySelector(".cpu-container").children.length === 0) {
+        if(document.querySelector(".cpu-container") === null) {
             gameOver();
             modalMessage.textContent = "You Win, the planet is saved!";
         } else {
@@ -366,7 +370,7 @@ function loseOrOpen(total, ingame, result) {
             } else {
             // if the cpuPlayers doesn't even enough fishes they'll be deleted from the game
                 if(i>0) {
-                    if( document.querySelector(`.player${i}`) !== undefined) {
+                    if(document.querySelector(`.player${i}`) !== undefined) {
                         document.querySelector(`.player${i}`).remove();
                         delete result[i];
                     }

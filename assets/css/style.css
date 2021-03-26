@@ -19,7 +19,7 @@
   /* Modal Content/Box */
   .start-game__modal-content {
     background-color: #a6a9be;
-    margin:2% auto 0 auto;
+    margin:2% auto 0 auto;  
     padding: 20px;
     border: 1px solid #888;
     width: 90%; 
@@ -204,7 +204,7 @@
 }
 
 .player2 {
-    right:-55%;
+    right:-50%;
     transform:rotate(-90deg);
     top:40%;
 }
@@ -240,6 +240,10 @@
     background-repeat: no-repeat;
     background-size:cover;
     margin:0;
+}
+
+.cards-container {
+    display:flex;
 }
 
 .card-cover {
