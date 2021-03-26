@@ -66,11 +66,11 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         setTimeout(function(){ 
             if(ingame[0].textContent < Math.max(...ontablefish)) {
                 if(ingame[0].textContent != 10) {
-                    console.log("ok")
+                   
                     btnStay.style.display = "inline-block";
                     btnLeave.style.display = "inline-block";
                 } else {
-                    console.log("sbagliato");
+                 
                     btnShow.style.display = "inline-block";
                 }
             } else {

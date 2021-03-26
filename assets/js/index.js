@@ -267,9 +267,9 @@ btnOpen.addEventListener("click", function() {
     //if someone has scores, than the game'll open 
     /*I call this function to check if the players've enough fishes to open the game */
         loseOrOpen(total, ingame, result);
-
-    // if there aren't cpu Players anymore the active player 'll win the game and the messagge'll appear
-        if(document.querySelector(".cpu-container") === null) {
+       
+    // if there aren't cpu Players anymore the active player 'll win the game and the message'll appear
+        if(document.querySelector(".cpu-container").querySelectorAll(".cpu").length === 0) {
             gameOver();
             modalMessage.textContent = "You Win, the planet is saved!";
         } else {
