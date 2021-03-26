@@ -5,10 +5,10 @@ import {handCombination} from "./combinations.js";
 /* PLAYER FUNCTION: to separate rank and suit and use them to display combinations
 random = randomCard (the array that contains all the cards of the game*/
 function players(random, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers) {
-    /*for each card of the game call the hand function passing the single card and index
-    to separate the rank and the suit*/
+    /*for each card of the game called the hand function pass the single card and empty rank and suit array
+    to separate the rank of the card from the suit*/
     random.forEach(element => {hand(element, rank, suit);})
-    // here the playerRanksArray and playerSuitsArray are emptyed and refilled every time btn is clicked
+
 
     /* cardSplit is used to deal the card to the players rounding with ceil in combination
     with dealingCards function.
@@ -19,6 +19,10 @@ function players(random, rank, suit, result, playerRanksArray, playerSuitsArray,
     , cardSplit, rank and suit arrays. 
     The goal is to divide the cards among the players, 5 per player with their rank and suit*/
         dealingCards(playerRanksArray,playerSuitsArray,cardSplit,rank,suit, playerNumbers);
+
+    /*after the cards are dealt I can find the combination that set the score.
+        the playerRanksArray and Suits filled with the array of cards can be passed
+    */
         handCombination(playerRanksArray,playerSuitsArray, result, totalObjectRanks,totalObjectSuit, playerNumbers); 
 }
     
@@ -29,7 +33,7 @@ function hand(random, rank, suit) {
         suit.push(random[random.length-1]);
     }
 
-// DEALINGCARDS: tr= totalrank empty array, ts=totalObjectSuit empty array, cs=cardSplit, r = rank array, s=suit array
+// DEALINGCARDS: tr= playerRanksArray empty array, ts=playerSuitsArray empty array, cs=cardSplit, r = rank array, s=suit array
 function dealingCards(tr,ts,cs,r,s, playerNumbers) {
  
     for(let i=0;i < playerNumbers;i++) {

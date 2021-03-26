@@ -1,5 +1,5 @@
 import {players} from "./firstRound.js";
-import {btnPlay, replaceCard, cardGenerator, btnOpen} from "./index.js"
+import {replaceCard, cardGenerator, btnOpen} from "./index.js"
 import {findtheWinner} from "./findWinner.js"
 import {firstBet, cpuSecondRound} from "./cpuBets.js"
 
@@ -15,18 +15,21 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
     let ontablefish;
     let randomNumber;
 
+    // HERE THE ACTIVE PLAYER HAS CHOSEN HOW MANY FISHES HE WANTS TO PLAY AND CLICK ON BET
     btnBet.addEventListener("click", insertFish);
 
     // HERE IS THE FIRST MOVE: the player select the fish he wants to play
     function insertFish(e){
         e.stopPropagation();
         e.preventDefault();
-        // when the player click on bet you can't change your card anymore
+        
+        // when the player click on bet the eventListener has to be removed or it'll be seamlessly added
         btnBet.removeEventListener('click', insertFish);
 
-        btnPlay.style.display = "none";
         const cpuContainer = document.querySelector(".cpu-container");
-        const cpuPlayers = cpuContainer.querySelectorAll(".cpu");   
+        const cpuPlayers = cpuContainer.querySelectorAll(".cpu"); 
+        btnPlay.style.display = "none";
+         
         let cardNumber = [];
         playerRanksArray = []; 
         ontablefish = [];
@@ -34,7 +37,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         //here I subtract the fish selected from the total available. + 10 is the open fish that I don't want to be counted two times
         total[0].innerText = parseInt(total[0].innerText) - (parseInt(ingame[0].innerText) - 10);
 
-        
+        // here I call replaceCpuCards: it's a function that let the cpu to change the useless cards if needed
+        // totalObjectRanks is the object that keep ranks and count ex. [3:1; 2:1;4:3]
         replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks, playerNumbers, randomCard);
         
         rank = [];
@@ -48,26 +52,31 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         ontablefish = [...ingame].map(event => event.textContent);
 
         for(let i=1; i<playerNumbers; i++) {
-            ingame[i].innerText = firstBet(total, ingame, ontablefish, result, randomNumber,i);
-            ontablefish[i] = ingame[i].innerText;
-            total[i].innerText = parseInt(total[i].innerText) - (parseInt(ingame[i].innerText) -10); 
+            setTimeout(function(){ 
+                ingame[i].innerText = firstBet(total, ingame, ontablefish, result, randomNumber,i);
+                ontablefish[i] = ingame[i].innerText;
+                total[i].innerText = parseInt(total[i].innerText) - (parseInt(ingame[i].innerText) -10); 
+            }, 1000);
+            
             
         }
 
 
         ontablefish = [...ingame].map(event => event.textContent);
-
-        if(ingame[0].textContent < Math.max(...ontablefish)) {
-            if(ingame[0].textContent != 10) {
-                btnStay.style.display = "inline-block";
-                btnLeave.style.display = "inline-block";
+        setTimeout(function(){ 
+            if(ingame[0].textContent < Math.max(...ontablefish)) {
+                if(ingame[0].textContent != 10) {
+                    console.log("ok")
+                    btnStay.style.display = "inline-block";
+                    btnLeave.style.display = "inline-block";
+                } else {
+                    console.log("sbagliato");
+                    btnShow.style.display = "inline-block";
+                }
             } else {
                 btnShow.style.display = "inline-block";
             }
-        } else {
-            btnShow.style.display = "inline-block";
-        }
-
+        }, 1000);
            //     }
     }
     
@@ -146,9 +155,10 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
 
         // with this regular expression I'll check for numbers inside strings 
             //let findNumber = /\d+/;
+            // I check inside all the cpu cards
             cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
                     dCard.forEach(function(event,index) {
-                    // i check into the dCard (card useless) and for the dCard among the player cards I assign a newIndex
+                    // check if the current card of the cpu is equal to the dCard of the player
                         if(e.innerText.slice(0,-1) == dCard[index]){
                    /*I'll look for the dCard index inside the cardRank array + 5 to consider the
                       active player that is not considered in cardRank but'll be in replaceCard
@@ -158,6 +168,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                         } 
                     }) 
                
+
+
                     //check inside the string backgroundImage a number equal to dCard numbers
                     
                     //if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
@@ -185,25 +197,37 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         btnShow.style.display = "none";
         let previous;
         let difference; 
+        //ACTIVE PLAYER 
+        /*if the button clicked is "stay" than the player has to match the max bet after first round*/
         if(e.target.className === "stay") {
             ingame[0].removeAttribute("id");
+            // previous is the current ingame bet
             previous = ingame[0].textContent;
+            // difference is the max bet on table - the current
             difference = Math.max(...ontablefish) - parseInt(previous);
+            // if the player has still enough fishes >= the difference between the max bet and his previous bet
             if(total[0].textContent >= difference){
+                // match the max bet summing the difference
                 ingame[0].textContent = parseInt(ingame[0].textContent) + difference;
                 total[0].textContent = parseInt(total[0].textContent) - difference;
             } else {
+            // if the player couldn't match the max than a stayIn "id" 'll be added to identify the willness to bet
                 ingame[0].setAttribute("id","stayIn");
                 ingame[0].textContent = parseInt(total[0].textContent) + parseInt(ingame[0].textContent);
                 total[0].textContent = parseInt(total[0].textContent) - parseInt(total[0].textContent);
             }
         }
        
+        //OTHER PLAYERS
         for(let i=1; i<playerNumbers; i++) {
             ingame[i].removeAttribute("id");
+            // previous is the current ingame bet
             previous = ingame[i].textContent;
+            // if ingame bet is > 10 (it means that the player has bet in the first round if his total > 0)
             if(ingame[i].textContent > 10) {
+                // if the player has still enough fishes >= the difference between the max bet and his previous bet
                 if(total[i].textContent >= (Math.max(...ontablefish) - previous)) {
+                    // call cpuSecondRound function to define the bet
                     ingame[i].textContent = cpuSecondRound(difference,previous, ingame[i].textContent, total[i].textContent,ontablefish,result[i]);
                     
                 } else {
@@ -310,12 +334,14 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         
         
         function next() {
+            // next turn button is clicked
             nextTurn.removeEventListener("click",next)
             nextTurn.style.display = "none";
+            // empty all the arrays
             rank = [];
             suit = [];
             result = [];
-
+            // remove the images and add the card-cover
             document.querySelectorAll(".cpu").forEach(function(e) {
                 e.querySelectorAll(".player__card").forEach(function(e) {
                     e.classList.add("card-cover");
@@ -323,6 +349,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                     e.innerHTML = "";
                 })
             })
+            // generate the cards again
             cardGenerator();
             for(let i =0; i<playerNumbers; i++) {
                 ingame[i].textContent = "";

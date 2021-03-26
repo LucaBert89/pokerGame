@@ -2,7 +2,6 @@ import {players} from "./firstRound.js";
 import {playAndResponse} from "./cpuMoves.js";
 
 const modalStart = document.querySelector(".start-game__modal");
-const cardSuit = ["C", "D", "H", "S"];
 const generateBtn = document.querySelector(".start-game__btn");
 const btnOpen = document.querySelector(".player-active__btn");
 const btnPlay = document.querySelector(".input-fish");
@@ -12,7 +11,7 @@ const selectProfile= document.querySelector(".start-game__input-profile");
 const modalEndGame = document.querySelector(".modal-end");
 const modalMessage = document.querySelector(".modal-gameover__message");
 const btnPlayAgain = document.querySelector(".modal-gameover__start-again");
-
+const cardSuit = ["C", "D", "H", "S"];
 let card;
 let cardImage;
 let randomCard = [];
@@ -24,6 +23,7 @@ let initialNumber;
 (function playersAndPoints() {
     selectNofPlayers.addEventListener("click", function(e) {
         playerNumbers = e.target.value;
+        //initial number is created because I need it later when a player that lose the game is eliminated and removed
         initialNumber = playerNumbers;
     })
     selectNofPoints.addEventListener("click", function(e) {
@@ -31,7 +31,7 @@ let initialNumber;
     })
     
     selectProfile.addEventListener("change", selectImage);
-    
+    // select your image profile
     function selectImage() {
         const reader = new FileReader();
         const image = document.querySelector(".start-game__input-profile-click");
@@ -45,10 +45,49 @@ let initialNumber;
 })();
 
 
+generateBtn.addEventListener("click", cardGenerator);
+
+function cardGenerator() {
+    // if I select the player number and points than the game can start
+    if(playerNumbers != undefined && points != undefined) {
+        selectNofPlayers.style.backgroundColor = "black";
+        selectNofPoints.style.backgroundColor = "black";
+        // here the animation for the Ship door is added
+        document.querySelector(".first-door").classList.add("out__up");
+        document.querySelector(".last-door").classList.add("out__down");
+        
+        
+        setTimeout(function(){ 
+            modalStart.style.display = "none";
+            
+        }, 1200);
+        //call generatePlayers function only the first time and not when the next button is pressed
+        if(modalStart.style.display !== "none") generatePlayers(playerNumbers); 
+        
+        randomCard = [];
+        
+    
+        let gameCards = document.querySelectorAll(".player__card");
+        // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
+        gameCards.forEach(function(element, index) {
+            element.classList.remove("dealing");
+        //here I call the function passing the element (card class) and index;
+            generateCard(element, index); 
+         
+        });
+    } else {
+        selectNofPlayers.style.backgroundColor = "red";
+        selectNofPoints.style.backgroundColor = "red";
+    }
+}   
+
+
+
 // generate the players
 function generatePlayers(playerNumbers) {
     const playersContainer = document.querySelector(".players-table");
     let player;
+    let playerCard;
     let totalCash;
     let fishBet;
     let profile;
@@ -63,8 +102,9 @@ function generatePlayers(playerNumbers) {
             fishBet = document.createElement("div");
             profile = document.createElement("div");
             enemyProfile = document.createElement("div");
+            //here I call the function to assign the right ingame fish and total fish for each player
             playerCash(player, fishBet,j, totalCash);
-            // to the user will be assigned the active class
+            // to the user will be assigned the background image chose in the start board
                 if(j==0) {
                     player.classList.add(`player${j}`);
                     profile.classList.add(`player__profile${j}`)
@@ -83,79 +123,12 @@ function generatePlayers(playerNumbers) {
             
             // five card class will be assigned to every person
             for(let x=1; x <= 5;x++) {
-                card = document.createElement("div");
-                card.classList.add("player__card");
-                player.appendChild(card);
+                playerCard = document.createElement("div");
+                playerCard.classList.add("player__card");
+                player.appendChild(playerCard);
             }
         }
 };
-
-
-
-function playerCash(p, bet,player, cash) {
-    bet.classList.add("in-game-fish");
-    bet.classList.add(`fish${player}`)
-    cash = document.createElement("div");
-    cash.classList.add("total-fish");
-    cash.innerHTML = points;
-    p.appendChild(bet);
-    p.appendChild(cash);
-}
-
-
-
-
-generateBtn.addEventListener("click", cardGenerator);
-
-function cardGenerator() {
-    document.querySelector(".first-door").classList.add("out__up");
-    document.querySelector(".last-door").classList.add("out__down");
-    //call generatePlayers function only the first time and not when the next button is pressed
-    
-    setTimeout(function(){ 
-        modalStart.style.display = "none";
-        
-    }, 1200);
-    
-    if(modalStart.style.display !== "none") generatePlayers(playerNumbers); 
-    
-    randomCard = [];
-    
-   
-    let gameCards = document.querySelectorAll(".player__card");
-    // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
-    gameCards.forEach(function(element, index) {
-        element.classList.remove("dealing");
-       //here I call the function passing the element (card class) and index;
-        generateCard(element, index); 
-        /*the first 5 cards are yours (index<5) so you can click only on your cards 
-        if you want to change them*/
-    });
- 
-}   
-
-
-function fishSelector(ingame, total) {
-    
-    let selectorFish = document.querySelector(".input-fish__selector");
-    let optionFish;
-    if(selectorFish.children.length >0) {
-        selectorFish.innerHTML = "";
-    };
-    for(let i=0; i <= total[0].textContent; i+=10) {
-        optionFish = document.createElement("option");
-        optionFish.classList.add("option-fish")
-        optionFish.value = i;
-        optionFish.innerHTML = i;
-        selectorFish.appendChild(optionFish);
-    }
-    selectorFish.addEventListener("change", function(e){
-        ingame[0].textContent = 10;
-        ingame[0].textContent = parseInt(ingame[0].textContent) + parseInt(e.target.value);
-    })
-
-   
-}
 
 // calling generateCard function: selectedCard = the card div; current = index of card div
 function generateCard(selectedCard, current) {
@@ -170,8 +143,11 @@ function generateCard(selectedCard, current) {
         randomCard.push(card);
         
         setTimeout(function(){ 
+               //the first 5 cards are yours (current<5) so you can display them 
+            
             if(current < 5) {
                 cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+                //dealing class is the animation of the card that is dealt
                 selectedCard.classList.add("dealing");
                 selectedCard.style.backgroundImage = cardImage;
             } else {
@@ -189,6 +165,17 @@ function generateCard(selectedCard, current) {
         generateCard(selectedCard, current);
     }  
 }
+
+function playerCash(p, bet,player, cash) {
+    bet.classList.add("in-game-fish");
+    bet.classList.add(`fish${player}`)
+    cash = document.createElement("div");
+    cash.classList.add("total-fish");
+    cash.innerHTML = points;
+    p.appendChild(bet);
+    p.appendChild(cash);
+}
+
 
 
 /* here I pass the index of the card that I clicked among mine*/
@@ -253,9 +240,12 @@ btnOpen.addEventListener("click", function() {
      rank = [];
      suit = [];
      result = [];  
-
+    // fishSelector is the function made to choose how much you want to bet
      fishSelector(ingame, total);
-   // here function players is call passing randomCard, the array that contain all the cards
+
+   /*here function players is called passing empty arrays + playerNumber. 
+    The goal of the function is to deal the cards and find the combination that set the score to open or not the game
+   */
      players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
 
 // based on the players cards, if someone've scores or not, it's decided if open or not
@@ -287,7 +277,7 @@ btnOpen.addEventListener("click", function() {
             message.classList.add("player__message");
             message.innerText = "change the cards";
             player.appendChild(message);
-            // CHANGE YOUR CARD IF YOU NEED TO
+            // CHANGE YOUR CARD IF YOU NEED TO. playerActiveMove function is called
             playerActiveMove(activeCard);
             // bet appear after 5 seconds, time allowed to change your cards
             setTimeout(function(){ 
@@ -298,9 +288,12 @@ btnOpen.addEventListener("click", function() {
             rank = [];
             suit = [];
             result = [];
+            // here fishSelector is called to display the right fishes the player've to choose from based on his total
             fishSelector(ingame, total);
 
-        // here function players is call passing randomCard, the array that contain all the cards
+        /*here function players is called passing empty arrays + playerNumber. 
+        The goal of the function is to deal the cards and find the combination that set the score to decide first and secondround
+        */
             players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
             
             // here playAndResponse is called to pass all the variables needed to play the game
@@ -312,10 +305,35 @@ btnOpen.addEventListener("click", function() {
     
 }) 
 
+function fishSelector(ingame, total) {
+    
+    let selectorFish = document.querySelector(".input-fish__selector");
+    let optionFish;
+    // once fishSelector is called the previous one has to be deleted
+    if(selectorFish.children.length >0) {
+        selectorFish.innerHTML = "";
+    };
+    // here I assign a group of fish you can choose from. They are multiple of 10 until they reach the total of the player
+    for(let i=0; i <= total[0].textContent; i+=10) {
+        optionFish = document.createElement("option");
+        optionFish.classList.add("option-fish")
+        optionFish.value = i;
+        optionFish.innerHTML = i;
+        selectorFish.appendChild(optionFish);
+    }
+    selectorFish.addEventListener("change", function(e){
+    // once a selection is made your ingame fish take that number + 10
+        ingame[0].textContent = 10;
+        ingame[0].textContent = parseInt(ingame[0].textContent) + parseInt(e.target.value);
+    })
+
+   
+}
+
+
 function playerActiveMove(activeCard) {
     activeCard.forEach(function(element, index) {
-        // setted a control variable to check if the card has already been changed
-            //let control = true;
+        // add a "clickable" class to check if the card si already changed
             element.classList.add("clickable");
             element.addEventListener("click", changeCard);
         // you've five second to change your cards
@@ -329,7 +347,7 @@ function playerActiveMove(activeCard) {
                     with another and this (element selected)*/
                     if(element.className ==="player__card clickable") {
                         replaceCard(index, this);
-                        // control switched to false and you can't change that card again
+                        // remove "clickable" and you can't change that card again
                         element.classList.remove("clickable");
                     }
             }
@@ -365,10 +383,11 @@ function loseOrOpen(total, ingame, result) {
 
 
 function gameOver() {
+    // game is over: you win or lose
     document.querySelector(".players-table").innerHTML = "";
     modalEndGame.style.display = "block";
         
-
+    //click on play again to get back to the start board
     btnPlayAgain.addEventListener("click", function() {
         
         modalEndGame.style.display = "none";

@@ -18,7 +18,7 @@
   
   /* Modal Content/Box */
   .start-game__modal-content {
-    background-color: #bec2d8de;
+    background-color: #a6a9be;
     margin:2% auto 0 auto;
     padding: 20px;
     border: 1px solid #888;
@@ -71,6 +71,7 @@
       z-index:0;
         margin:0 auto;
       position: relative;
+      border: 4px solid brown;
   }
 
   .start-game__control {
@@ -165,7 +166,6 @@
 }
 
 .cpu {
-    width: 100%;
     position:absolute;
     display:flex;
     justify-content: center;
@@ -179,12 +179,12 @@
 }
 
 .player2 .cpu-profile{
-    top:70%;
+    bottom:-50%;
     right:20%;
 }
 
 .player3 .cpu-profile{
-    top:80%;
+    bottom:-50%;
     right:20%;
 }
 
@@ -204,16 +204,15 @@
 }
 
 .player2 {
-    left:70%;
+    right:-55%;
     transform:rotate(-90deg);
-    height: 80%;
-    top:30%;
+    top:40%;
 }
 
 .player3{
-    right:70%;
+    right:80%;
     transform:rotate(90deg);
-    height: 60%;
+    top:30%;
 }
 
 
@@ -246,6 +245,7 @@
 .card-cover {
     background-color: #000;
     border:2px solid yellow;
+    z-index:1;
 }
   
 .dealing {
@@ -305,7 +305,6 @@
 .stay, .leave, .show {
     background-color: blue;
     padding:20px;
-    display:inline-block;
     cursor:pointer;
     color:#fff;
     display:none;
@@ -334,7 +333,10 @@
 
 .total-fish {
     color:#fff;
-    font-size:40px;
+    font-size:30px;
+    background-color: brown;
+    border-radius: 100%;
+    padding:5px;    
 }
 
 .input-fishes-btn{
@@ -348,10 +350,13 @@
 .in-game-fish {
     position:relative;
     text-align: center;
-    display:block;
+    display:inline-block;
     color:#fff;
-   font-size:40px;  
-   left:50%;
+    font-size:40px;  
+    left:50%;
+    background-color:brown;
+    border-radius: 50%;
+    padding:5px;
 }
 
 .fish0 {
@@ -360,17 +365,17 @@
 
 .fish1 {
     top:120px;
-    padding:0 85px;
+    transform: translate(5px,0px);
 }
 
 .fish2 {
-    top:-80%;
-    padding: 0 100px;
+    top:-400px;
+    left:250px;
 }
 
 .fish3 {
-    top:-90%;
-    padding:0 50px;
+    top:-80%;
+    bottom:350px;
 }
 
 

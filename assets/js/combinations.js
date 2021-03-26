@@ -50,6 +50,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
         threefullComb = threeOrFull(values, result);
         straightComb = straigth(playerR[i], suitValues, result);
         
+        // if the other results are undefined than it is high card
         if(pairComb == undefined && threefullComb == undefined && straightComb == undefined) {
            high = noOther(result); 
         }
@@ -94,14 +95,18 @@ function findPair(howmany, result) {
 }
 
 function threeOrFull(howmany,result) {
+    //if there are 4 equal cards then it means that it is a fourofakind
     if(howmany.filter(e => e == 4).length === 1) {
             result.push(score["fourofaKind"]);
             return result.find(e => e === score["fourofaKind"]);
+    //if there are 3 equal cards then it means that it could be a fullHouse or a threeofakind
     } else if(howmany.filter(e => e == 3).length === 1) {
+        //if there are not only 3 equal cards but also the other two are equals than fullHouse
         if(howmany.filter(e => e == 2).length === 1) {
            result.push(score["fullHouse"]);
            return result.find(e => e === score["fullHouse"]);
         } else {
+        //if the other cards are not equal than it's a three of a kind
             result.push(score["threeofaKind"]);
             return result.find(e => e === score["threeofaKind"]);
         }
@@ -110,31 +115,39 @@ function threeOrFull(howmany,result) {
 
 function straigth(arrayRank, arraySuit, result) {
     let consecutiveArray = [];
+    // sort the array of rank in order
     arrayRank.sort(function(a, b) {
         return a - b;
     });
     
     consecutiveArray = [];  
- 
+    
     arrayRank.forEach(function(element, index){
+        // check if the array have consecutive rank
         if(arrayRank[index+1] - element == 1) {
             consecutiveArray.push(element);
         }
     });
+    //if there is only one suit
     if(arraySuit.length === 1) {
+        //if the number are all consecutive
         if(consecutiveArray.length == 4) {
+            // if the lowest number is 10 than it is royalFlush
             if(Math.min.apply(Math, consecutiveArray) === 10) {
                 result.push(score["royalFlush"]);
                 return result.find(e => e === score["royalFlush"]);
             } else {
+                // in the other cases is straight flush
                 result.push(score["straightFlush"]);
                 return result.find(e => e === score["straightFlush"]);
             }
             
         } else {
+            //if the ranks aren't straight it is a flush
            result.push(score["flush"]);
            return result.find(e => e === score["flush"]);
         }
+        //if there isn't only one suit value than it is only a normal straight
     } else if(consecutiveArray.length == 4) {
         result.push(score["straight"]);
         return result.find(e => e === score["straight"]);
