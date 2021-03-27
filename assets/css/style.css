@@ -146,12 +146,11 @@
 }
 
 .player0{
-    width:100%;
     position:absolute;
     display:flex;
     justify-content: center;
     bottom:0px;
-    left:-50px;
+    left:10%;
 }
 
 .player__profile0 {
@@ -173,19 +172,30 @@
     z-index:-1;
 }
 
-.player1 .cpu-profile{
-    top:-50%;
-    left:30%;
+.player1 .cpu-profile__container{
+    position:absolute;
+    display: flex;
+    align-items: center;
+    top:-30%;
+    left:40%;
 }
 
-.player2 .cpu-profile{
-    bottom:-50%;
-    right:20%;
+.player2 .cpu-profile__container{
+    position:absolute;
+    display: flex;
+    align-items: center;
+    bottom:-30%;
+    right:30%;
+    transform: rotate(-180deg);
 }
 
-.player3 .cpu-profile{
-    bottom:-50%;
-    right:20%;
+.player3 .cpu-profile__container{
+    position:absolute;
+    display: flex;
+    align-items: center;
+    bottom:-30%;
+    right:30%;
+    transform: rotate(-180deg);
 }
 
 .cpu-profile {
@@ -193,24 +203,30 @@
     background-image: url("/assets/images/profile/alien-profile.jpg");
     background-size:cover;
     width:5%;
-    padding:30px 20px;
+    padding:30px 30px;
     position:absolute;
     border-radius: 20px;
 }
 
+.cpu-profile__name {
+    padding-left:80px;
+    color:#fff;
+    font-size:20px;
+}
+
 .player1 {  
     top:0px;
-    right:20%;
+    left:10%;
 }
 
 .player2 {
-    right:-50%;
+    left:75%;
     transform:rotate(-90deg);
     top:40%;
 }
 
 .player3{
-    right:80%;
+    right:75%;
     transform:rotate(90deg);
     top:30%;
 }
@@ -218,8 +234,9 @@
 
 
 .player0 .player__card {
-    width:40px;
-    padding:5rem 2.5rem;
+    width:20px;
+    height:100px;
+    padding:20px 35px;
     background-repeat: no-repeat;
     background-size:100% 100%;
     margin:0;
@@ -291,7 +308,7 @@
 .player-active__btn {
     background-color: blue;
     padding:20px;
-    display:inline-block;
+    display:none    ;
     cursor:pointer;
     color:#fff;
     border-radius: 20px;
@@ -317,7 +334,6 @@
 
 .input-fish{
     background-color: blue;
-    padding:10px;
     display:none;
     cursor:pointer;
     color:#fff;
@@ -357,7 +373,6 @@
     display:inline-block;
     color:#fff;
     font-size:40px;  
-    left:50%;
     background-color:brown;
     border-radius: 50%;
     padding:5px;
@@ -365,21 +380,22 @@
 
 .fish0 {
     top:-120px;
+    left:47%;
 }
 
 .fish1 {
     top:120px;
-    transform: translate(5px,0px);
+    left:50%;
 }
 
 .fish2 {
-    top:-400px;
-    left:250px;
+    top:-150px;
+    left:50%;
 }
 
 .fish3 {
-    top:-80%;
-    bottom:350px;
+    bottom:150px;
+    left:50%;
 }
 
 

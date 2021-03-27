@@ -50,7 +50,7 @@ generateBtn.addEventListener("click", cardGenerator);
 function cardGenerator() {
     // if I select the player number and points than the game can start
     if(playerNumbers != undefined && points != undefined) {
-        btnOpen.style.display = "inline-block";
+        
         selectNofPlayers.style.backgroundColor = "black";
         selectNofPoints.style.backgroundColor = "black";
         // here the animation for the Ship door is added
@@ -65,9 +65,13 @@ function cardGenerator() {
         //call generatePlayers function only the first time and not when the next button is pressed
         if(modalStart.style.display !== "none") generatePlayers(playerNumbers); 
         
+        setTimeout(function(){ 
+            btnOpen.style.display = "block";
+        }, 2000);
         randomCard = [];
-        
-    
+
+      
+
         let gameCards = document.querySelectorAll(".player__card");
         // assignment of the cards: i looped through the card of the players and assign a random number and suit letter
         gameCards.forEach(function(element, index) {
@@ -93,7 +97,9 @@ function generatePlayers(playerNumbers) {
     let totalCash;
     let fishBet;
     let profile;
+    let enemyContainer;
     let enemyProfile;
+    let enemyName;
     let cpu = document.createElement("div");
     cpu.classList.add("cpu-container");
     
@@ -104,6 +110,8 @@ function generatePlayers(playerNumbers) {
             player = document.createElement("div");
             fishBet = document.createElement("div");
             profile = document.createElement("div");
+            enemyContainer =document.createElement("div"); 
+            enemyName = document.createElement("div");
             enemyProfile = document.createElement("div");
             //here I call the function to assign the right ingame fish and total fish for each player
             playerCash(player, fishBet,j, totalCash);
@@ -118,7 +126,12 @@ function generatePlayers(playerNumbers) {
                     player.classList.add(`player${j}`);
                     player.classList.add("cpu");
                     enemyProfile.classList.add("cpu-profile");
-                    player.appendChild(enemyProfile);
+                    enemyName.classList.add("cpu-profile__name");
+                    enemyContainer.classList.add("cpu-profile__container")
+                    enemyName.innerText = `Alien${j}`
+                    enemyContainer.appendChild(enemyName);
+                    enemyContainer.appendChild(enemyProfile);
+                    player.appendChild(enemyContainer);
                     cpu.appendChild(player);
                     playersContainer.appendChild(cpu);
                 }
@@ -261,7 +274,7 @@ btnOpen.addEventListener("click", function() {
         cardGenerator();
         setTimeout(function(){ 
             btnOpen.style.display = "inline-block";
-        }, 2000);
+        }, 3000);
     } else {
         btnOpen.style.display = "none";
     //if someone has scores, than the game'll open 
@@ -393,7 +406,7 @@ function gameOver() {
         
     //click on play again to get back to the start board
     btnPlayAgain.addEventListener("click", function() {
-        
+        btnOpen.style.display = "inline-block";
         modalEndGame.style.display = "none";
         modalStart.style.display = "block";
     })
