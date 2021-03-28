@@ -238,10 +238,9 @@
 
 
 .player0 .player__card {
-    display:inline;
-    width:100%;
+    display:inline-block;
+    width:80px;
     height:80px;
-    padding:10px 25px;
     background-repeat: no-repeat;
     background-size:cover;
     margin:0;
@@ -259,7 +258,6 @@
     display:inline;
     height:60px;
     width: 100%;
-    padding:30px 20px;
     background-repeat: no-repeat;
     background-size:cover;
     margin:0;
