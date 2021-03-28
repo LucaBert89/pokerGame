@@ -48,12 +48,10 @@ function firstBet(total, ingame, ontablefish, result, random, i) {
             // if the random number is > 4 try to bet all your total (that is less than Math.max(ontable))
             if(random > 4) {
                 ingame[i].innerText = parseInt(total[i].innerText) + parseInt(ingame[i].innerText);
-
-            }
+            } 
        // if result is >= 4 try to bet all your total (that is less than Math.max(ontable))
         } else if(result[i] >= 4) {
             ingame[i].innerText = parseInt(total[i].innerText) + parseInt(ingame[i].innerText);
- 
         }
     }
 return ingame[i].innerText;
@@ -97,7 +95,7 @@ function cpuSecondRound(difference, previous,ingame,total, ontablefish,result) {
         let riskValue;
     /*in the second round the players have already change their cards and they've to dedice to match another players
     higher bet or not*/
-    //if result === 0
+  
         if(result === 0) {
                 ingame = Math.max(...ontablefish);
                 difference = parseInt(ingame) - previous;
