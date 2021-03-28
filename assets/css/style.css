@@ -1,6 +1,7 @@
 * {
     padding:0;
     margin:auto;
+    box-sizing: border-box;
     max-width: 1624px;
 }
 
@@ -23,10 +24,10 @@
     padding: 20px;
     border: 1px solid #888;
     width: 90%; 
-    height:40%;
+    height:35%;
     border-radius: 20px;
     text-align: center;
-    font-size:30px;
+    font-size:10px;
   }
 
   .first-door {
@@ -67,7 +68,6 @@
       background-color:green;
       width:50%;
       height:80%;
-      border-radius:50%;
       z-index:0;
         margin:0 auto;
       position: relative;
@@ -77,14 +77,14 @@
   .start-game__control {
       width:100%;
       text-align: center;
-      font-size: 30px;
+      font-size: 20px;
   }
 
   .start-game__selector {
       width:80px;
-      height: 50px;
+      height: 20px;
       margin:20px;
-      font-size:30px;
+      font-size:10px;
       background-color:black;
       border-radius: 20px;
       border-color: #fff;
@@ -101,7 +101,7 @@
         display: block;
         cursor: pointer;
         width:10%;
-        height:220px;
+        height:120px;
         background-image: url("/assets/images/profile/empty-profile.jpg");
         background-size: 100% 100%;
         border: 1px solid #000;
@@ -147,36 +147,32 @@
 
 .player0{
     position:absolute;
-    display:flex;
-    justify-content: center;
     bottom:0px;
-    left:10%;
+    left:-40%;
 }
 
 .player__profile0 {
     width:5%;
-    height:15%;
+    height:10%;
     padding:10px 30px;
     position:absolute;
+    right:-30%;
     bottom:-10%;
-    right:0;
     background-size:100% 100%;
     border-radius:20px;
 }
 
 .cpu {
     position:absolute;
-    display:flex;
-    justify-content: center;
     align-items: center;
     z-index:-1;
 }
 
 .player1 .cpu-profile__container{
-    position:absolute;
+    position: absolute;
     display: flex;
     align-items: center;
-    top:-30%;
+    top:-35%;
     left:40%;
 }
 
@@ -184,7 +180,7 @@
     position:absolute;
     display: flex;
     align-items: center;
-    bottom:-30%;
+    bottom:-40%;
     right:30%;
     transform: rotate(-180deg);
 }
@@ -193,7 +189,7 @@
     position:absolute;
     display: flex;
     align-items: center;
-    bottom:-30%;
+    bottom:-40%;
     right:30%;
     transform: rotate(-180deg);
 }
@@ -209,14 +205,14 @@
 }
 
 .cpu-profile__name {
-    padding-left:80px;
+    margin-left:80px;
     color:#fff;
     font-size:20px;
 }
 
 .player1 {  
     top:0px;
-    left:10%;
+    left:-30%;
 }
 
 .player2 {
@@ -228,15 +224,15 @@
 .player3{
     right:75%;
     transform:rotate(90deg);
-    top:30%;
+    top:40%;
 }
 
 
 
 .player0 .player__card {
-    width:20px;
-    height:100px;
-    padding:20px 35px;
+    width:10px;
+    height:60px;
+    padding:10px 20px;
     background-repeat: no-repeat;
     background-size:100% 100%;
     margin:0;
@@ -244,19 +240,19 @@
 
 .player__message {
     color:#fff;
-    display: block;
     position:absolute;
-    top:200px;
-    font-size:20px;
+    top:100px;
+    font-size:15px;
 }
 
 .cpu .player__card {
-    height:100px;
-    width: 20px;
-    padding:10px 30px;
+    height:60px;
+    width: 10px;
+    padding:10px 20px;
     background-repeat: no-repeat;
     background-size:cover;
     margin:0;
+
 }
 
 .cards-container {
@@ -306,7 +302,7 @@
 }
 
 .player-active__btn {
-    background-color: blue;
+    background-color: #A6A9BE;
     padding:20px;
     display:none    ;
     cursor:pointer;
@@ -333,10 +329,10 @@
 }
 
 .input-fish{
-    background-color: blue;
+    background-color: #7a7e9b;
     display:none;
     cursor:pointer;
-    color:#fff;
+    color:#000;
     border-radius:20px;
 }
 
@@ -345,22 +341,38 @@
     height: 30px;
     margin:20px;
     font-size:20px;
-    background-color:black;
+    background-color:#000;
     border-radius: 20px;
     border-color: #fff;
     color:#fff;
 }
 
+.input-fish__btn{
+    background-color: #227A86;
+    color: #fff;
+    border-radius: 20%;
+    padding: 5px;
+}
+
+.input-fish__btn:hover {
+    background-color: #fff;
+    color:#227A86; 
+    z-index:2;
+}
+
 .total-fish {
     color:#fff;
-    font-size:30px;
+    font-size:20px;
     background-color: brown;
     border-radius: 100%;
     padding:5px;    
+    position:absolute;
+    top:50%;
+    left:-15%;
 }
 
 .input-fishes-btn{
-    background-color: blue;
+    background-color: #A6A9BE;
     padding:20px;
     cursor:pointer;
     color:#fff;
@@ -368,7 +380,7 @@
 }
 
 .in-game-fish {
-    position:relative;
+    position:absolute;
     text-align: center;
     display:inline-block;
     color:#fff;
@@ -379,23 +391,23 @@
 }
 
 .fish0 {
-    top:-120px;
-    left:47%;
+    top:-60%;
+    left:35%;
 }
 
 .fish1 {
-    top:120px;
-    left:50%;
+    top:100px;
+    left:39%;
 }
 
 .fish2 {
-    top:-150px;
+    top:-70px;
     left:50%;
 }
 
 .fish3 {
-    bottom:150px;
-    left:50%;
+    bottom:120px;
+    left:32%;
 }
 
 
@@ -439,3 +451,64 @@
         border-radius: 20px;
   }
 
+
+
+  
+@media all and (min-width: 1044px) {
+    .start-game__modal-content {
+        height:45%;
+        font-size:30px;
+    }
+
+    .start-game__input-profile-click {
+        height:200px;
+        width:15%;
+    }
+
+    .start-game__selector {
+        font-size: 30px;
+        height: 50px;
+    }
+
+    .start-game__control {
+        font-size: 30px;
+    }
+
+    .players-table {
+        border-radius:50%;
+    }
+
+    .player0 .player__card {
+        width:20px;
+        height:100px;
+        padding:20px 35px;
+    }
+
+    .total-fish {
+        font-size:30px;
+    }
+
+    .player0 {
+        left:25%;
+    }
+
+    .player__profile0 {
+        height:20%;
+        width:13%;
+        right:15%;
+    }
+    
+    .cpu .player__card {
+        height:100px;
+        width: 20px;
+        padding:10px 30px;
+        background-repeat: no-repeat;
+        background-size:cover;
+        margin:0;
+        font-size: 0;
+    }
+
+    .player1 {  
+        left:25%;
+    }
+}

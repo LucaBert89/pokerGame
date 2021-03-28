@@ -289,8 +289,8 @@ btnOpen.addEventListener("click", function() {
             ingame = document.querySelectorAll(".in-game-fish");
             total = document.querySelectorAll(".total-fish"); 
             playerNumbers = document.querySelector(".cpu-container").children.length+1;
-
-            let message = document.createElement("div");
+            let message = document.createElement("span");
+            
             message.classList.add("player__message");
             message.innerText = "change the cards";
             player.appendChild(message);
@@ -298,7 +298,7 @@ btnOpen.addEventListener("click", function() {
             playerActiveMove(activeCard);
             // bet appear after 5 seconds, time allowed to change your cards
             setTimeout(function(){ 
-                message.innerHTML = "";
+                document.querySelector(".player__message").remove();
                 btnPlay.style.display = "inline-block";
             }, 5000);
         
