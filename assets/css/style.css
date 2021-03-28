@@ -266,9 +266,9 @@
     z-index:1;
 }
   
-.dealing {
+/*.dealing {
     animation:deal 2s;
-}
+}*/
 
 @keyframes deal {
     0% {
