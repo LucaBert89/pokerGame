@@ -256,9 +256,10 @@
 }
 
 .cpu .player__card {
+    display:inline;
     height:60px;
-    width: 10px;
-    padding:10px 20px;
+    width: 100%;
+    padding:30px 20px;
     background-repeat: no-repeat;
     background-size:cover;
     margin:0;
@@ -267,7 +268,7 @@
 
 .cards-container {
     width:100%;
-    display:flex;
+    display:block;
 }
 
 .card-cover {
@@ -276,9 +277,9 @@
     z-index:1;
 }
   
-/*.dealing {
+.dealing {
     animation:deal 2s;
-}*/
+}
 
 @keyframes deal {
     0% {
