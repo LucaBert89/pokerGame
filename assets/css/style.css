@@ -24,10 +24,10 @@
     padding: 20px;
     border: 1px solid #888;
     width: 90%; 
-    height:35%;
+    height:45%;
     border-radius: 20px;
     text-align: center;
-    font-size:10px;
+    font-size:20px;
   }
 
   .first-door {
@@ -106,6 +106,7 @@
         background-size: 100% 100%;
         border: 1px solid #000;
         border-radius: 10px;
+        margin-top: 70px;
   }
 
   .start-game__profile {
@@ -117,7 +118,7 @@
   .start-game__btn{
     background-color: #000;
     border-radius: 20px;
-    padding:20px 100px;
+    padding:20px 80px;
     display:inline-block;
     cursor:pointer;
     color:#fff;
@@ -148,7 +149,7 @@
 .player0{
     position:absolute;
     bottom:0px;
-    left:-40%;
+    left:-15%;
 }
 
 .player__profile0 {
@@ -172,7 +173,7 @@
     position: absolute;
     display: flex;
     align-items: center;
-    top:-35%;
+    top:-65%;
     left:40%;
 }
 
@@ -199,7 +200,7 @@
     background-image: url("/assets/images/profile/alien-profile.jpg");
     background-size:cover;
     width:5%;
-    padding:30px 30px;
+    padding:20px 20px;
     position:absolute;
     border-radius: 20px;
 }
@@ -212,17 +213,17 @@
 
 .player1 {  
     top:0px;
-    left:-30%;
+    left:-10%;
 }
 
 .player2 {
-    left:75%;
+    left:55%;
     transform:rotate(-90deg);
     top:40%;
 }
 
 .player3{
-    right:75%;
+    right:55%;
     transform:rotate(90deg);
     top:40%;
 }
@@ -231,8 +232,8 @@
 
 .player0 .player__card {
     width:10px;
-    height:60px;
-    padding:10px 20px;
+    height:80px;
+    padding:10px 25px;
     background-repeat: no-repeat;
     background-size:100% 100%;
     margin:0;
@@ -302,7 +303,7 @@
 }
 
 .player-active__btn {
-    background-color: #A6A9BE;
+    background-color: #1C7681;
     padding:20px;
     display:none    ;
     cursor:pointer;
@@ -312,7 +313,7 @@
 
 .next-turn {
     display:none;
-    background-color: blue;
+    background-color: #1C7681;
     padding:20px;
     cursor:pointer;
     color:#fff;
@@ -320,7 +321,7 @@
 }
 
 .stay, .leave, .show {
-    background-color: blue;
+    background-color: #1C7681;
     padding:20px;
     cursor:pointer;
     color:#fff;
@@ -339,7 +340,7 @@
 .input-fish__selector {
     width:60px;
     height: 30px;
-    margin:20px;
+    margin:5px;
     font-size:20px;
     background-color:#000;
     border-radius: 20px;
@@ -384,14 +385,14 @@
     text-align: center;
     display:inline-block;
     color:#fff;
-    font-size:40px;  
+    font-size:20px;  
     background-color:brown;
     border-radius: 50%;
     padding:5px;
 }
 
 .fish0 {
-    top:-60%;
+    top:-100%;
     left:35%;
 }
 
@@ -401,12 +402,12 @@
 }
 
 .fish2 {
-    top:-70px;
+    top:-40px;
     left:50%;
 }
 
 .fish3 {
-    bottom:120px;
+    bottom:60px;
     left:32%;
 }
 
@@ -463,6 +464,7 @@
     .start-game__input-profile-click {
         height:200px;
         width:15%;
+        margin-top:0;
     }
 
     .start-game__selector {
@@ -472,6 +474,10 @@
 
     .start-game__control {
         font-size: 30px;
+    }
+
+    .start-game__btn{
+        padding:20px 100px;
     }
 
     .players-table {
@@ -510,5 +516,41 @@
 
     .player1 {  
         left:25%;
+    }
+
+    .player2 {
+        left:75%;
+    }
+
+    .player3 {
+        right:75%
+    }
+
+    .fish0 {
+        top:-100%;
+    }
+
+    .fish2 {
+        top:-70px;
+    }
+
+    .fish3 {
+        bottom:120px;
+    }
+
+    .player1 .cpu-profile__container{
+        top:-35%;
+    }
+
+    .in-game-fish {
+        font-size:40px;
+    }
+
+    .cpu-profile {
+        padding:30px 30px;
+    }
+
+    .input-fish__selector {
+        margin:20px;
     }
 }

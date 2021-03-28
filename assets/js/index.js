@@ -292,15 +292,15 @@ btnOpen.addEventListener("click", function() {
             let message = document.createElement("span");
             
             message.classList.add("player__message");
-            message.innerText = "change the cards";
+            message.innerText = "7 seconds to change the cards";
             player.appendChild(message);
             // CHANGE YOUR CARD IF YOU NEED TO. playerActiveMove function is called
             playerActiveMove(activeCard);
-            // bet appear after 5 seconds, time allowed to change your cards
+            // bet appear after 7 seconds, time allowed to change your cards
             setTimeout(function(){ 
                 document.querySelector(".player__message").remove();
                 btnPlay.style.display = "inline-block";
-            }, 5000);
+            }, 7000);
         
             rank = [];
             suit = [];
@@ -353,11 +353,11 @@ function playerActiveMove(activeCard) {
         // add a "clickable" class to check if the card si already changed
             element.classList.add("clickable");
             element.addEventListener("click", changeCard);
-        // you've five second to change your cards
+        // you've 7 second to change your cards
             setTimeout(function(){ 
                 element.removeEventListener("click", changeCard);
                 element.classList.remove("clickable");
-            }, 5000);
+            }, 7000);
     
             function changeCard () {
                     /*call the function replace card passing the index to replace your card
