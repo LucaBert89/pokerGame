@@ -163,10 +163,12 @@ function generateCard(selectedCard, current) {
                //the first 5 cards are yours (current<5) so you can display them 
             
             if(current < 5) {
-                cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+                cardImage = randomCard[current];
+                //cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
                 //dealing class is the animation of the card that is dealt
                 selectedCard.classList.add("dealing");
-                selectedCard.style.backgroundImage = cardImage;
+                //selectedCard.style.backgroundImage = cardImage;
+                selectedCard.innerHTML = cardImage;
             } else {
                 cardImage = randomCard[current];
                 selectedCard.classList.add("card-cover");

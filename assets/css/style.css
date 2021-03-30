@@ -131,7 +131,7 @@
 }
 
 .background {
-    background-image: url("/assets/images/start/galaxy-2643089_1280.jpg");
+    /*background-image: url("/assets/images/start/galaxy-2643089_1280.jpg");*/
     background-repeat: no-repeat;
     background-size:cover;
     width:100%;
