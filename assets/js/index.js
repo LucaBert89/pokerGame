@@ -2,45 +2,30 @@ import {players} from "./firstRound.js";
 import {playAndResponse} from "./cpuMoves.js";
 
 const modalStart = document.querySelector(".start-game__modal");
+const rulesBtn = document.querySelector(".game-rules__btn");
+console.log(rulesBtn);
 const generateBtn = document.querySelector(".start-game__btn");
 const btnOpen = document.querySelector(".player-active__btn");
 const btnPlay = document.querySelector(".input-fish");
+const btnPlayAgain = document.querySelector(".modal-gameover__start-again");
 const selectNofPlayers = document.querySelector("#players");
 const selectNofPoints = document.querySelector("#points");
 const selectProfile= document.querySelector(".start-game__input-profile");
+
 const modalEndGame = document.querySelector(".modal-end");
 const modalMessage = document.querySelector(".modal-gameover__message");
-const btnPlayAgain = document.querySelector(".modal-gameover__start-again");
-const cardSuit = ["C", "D", "H", "S"];
+const modalRules = document.querySelector(".modal-rules");
+const cardSuit = ["C", "D", "H", "S"];  
 
-//TEST
-/*
-const themeBtn = document.querySelector("#themeSelector");
-const themeSelection = document.querySelector("#themeSelection")
-const themes = document.querySelectorAll(".themes");
-const divs = document.querySelectorAll("div");
-
-for(let i=0; i < themes.length; i++) {
-    themes[i].addEventListener("click", setTheme);
-}
-
-themeBtn.addEventListener("click", openMenu);
-
-function openMenu() {
-    themeSelection.classList.toggle("active");
-}
-
-function setTheme (event) {
-    const clicked = event.target.getAttribute("value");
-    console.log(clicked);
-}   
-*/
 let card;
 let cardImage;
 let randomCard = [];
 let playerNumbers;
 let points;
 let initialNumber;
+
+
+
 
 // decide how many player you want to play against and points
 (function playersAndPoints() {
@@ -52,6 +37,11 @@ let initialNumber;
     selectNofPoints.addEventListener("change", function(e) {
         points = e.target.value;
     })
+
+    rulesBtn.addEventListener("click", function () {
+        modalRules.style.display = "block";
+    })
+    
     
     selectProfile.addEventListener("change", selectImage);
     // select your image profile

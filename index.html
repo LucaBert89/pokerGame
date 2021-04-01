@@ -31,24 +31,7 @@
                         <option class="start-game__playerNumber" value="4">4</li>
                     </select> 
                 </div>
-                <!-- <div id="themeSelector">
-                    <div id="themeBtn">
-                        <span>Change Theme</span>
-                    </div>
-                    <div class="start-game__container">
-                        <ul id="themeSelection">
-                            <li class="themes bcwhite" value=""></li>
-                            <li class="themes bcblack" value="2"></li>
-                            <li class="themes bcgreenblue" value="3"></li>
-                            <li class="themes bclightorange" value="4"></li>
-                        </ul>
-                    </div>
-                   <select name="" id="themeSelector">
-                        <option class="themes" value="#ECF0F5">light</option>
-                        <option class="themes" value="black">dark</option>
-                    </select>
-                    
-                </div> -->
+      
                <div class="start-game__container">
                     <label for="points" class="start-game__points-label">
                         Number of Points:
@@ -64,12 +47,43 @@
                 <div class="start-game__btn">
                     Start Game
                 </div>
+                <div class="game-rules__btn">
+                    Rules
+                </div>
             </div>
         </div>
     </div>
 
+    <div class="modal-rules">
 
-        <!-- The Modal -->
+        <!-- Modal content -->
+        <div class="modal-rules__modal-content">
+          <h1>RULES OF THE GAME</h1>
+          <ul>
+             <li>Choose a profile picture if you want, then number of players and points</li> 
+             <li>Click   on the "open" button to play: you've to have at least 10 fishes to play, if not you or other player'll lose</li>
+             <li>you've to click on "open" until some of the player in the game have score (a pair, two pair ecc)</li>
+             <li>when the players open the game you pay 10 fishes and you've 7 seconds to change your cards if you want</li>
+             <li>select from the selector the fishes you want to play and press bet, you can bet 0 if you leave</li>
+             <li>here starts the second round of the game:
+                 <ol>   
+                     <li>if the other players bet more than you, you can decide to stay (bet the same) or to leave and to bet</li>
+                     <li>if you bet more than the others or you bet 0 in the first move, you can simply click on btn show</li>
+                 </ol>
+            </li>
+            <li>Only the player who match the max bet on the table can partecipate the game and win</li>
+            <li>DECIDE THE WINNER
+                <ul>
+                    <li>the player who has the highest score wins</li>
+                    <li>if the scores among the players who match the max bet on table are the same then the winner is who has the highest sum of the cards</li>
+                    <li>if the sum of the cards is the same among players, then the winner is choosen flipping a coin</li>
+                </ul>
+            </li>
+          </ul>
+        </div>
+    </div>
+
+        <!-- The Modal game over-->
     <div class="modal-end">
 
         <!-- Modal content -->
