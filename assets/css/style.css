@@ -131,7 +131,7 @@
 }
 
 .background {
-    /*background-image: url("/assets/images/start/galaxy-2643089_1280.jpg");*/
+    background-image: url("/assets/images/start/galaxy-2643089_1280.jpg");
     background-repeat: no-repeat;
     background-size:cover;
     width:100%;
@@ -386,7 +386,6 @@
     display:inline-block;
     color:#fff;
     font-size:20px;  
-    background-color:brown;
     border-radius: 50%;
     padding:5px;
 }
@@ -499,7 +498,7 @@
     }
 
     .player__profile0 {
-        height:20%;
+        height:17%;
         width:13%;
         right:15%;
     }
@@ -553,4 +552,42 @@
     .input-fish__selector {
         margin:20px;
     }
+}
+
+
+#themeSelector {
+    position: absolute;
+    height:100%;
+    left: 40px;
+    top: 8px;
+    cursor: pointer;
+}
+
+#themeBtn {
+    border: 2px solid #fff;
+}
+
+#themeBtn span {
+    padding: 10px;
+    color: #fff;
+    background-color:transparent;
+    display:inline-block;
+    font-size: 9px;
+}
+
+#themeSelection {
+    padding:0;
+    margin:0;
+    display: none;
+}
+
+.active {
+    display: block !important;  
+}
+
+.themes {
+    list-style-type: none;
+    padding:20px 0px 20px 0px;
+    text-align: center;
+    border: 1px solid #000;
 }

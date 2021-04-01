@@ -12,6 +12,29 @@ const modalEndGame = document.querySelector(".modal-end");
 const modalMessage = document.querySelector(".modal-gameover__message");
 const btnPlayAgain = document.querySelector(".modal-gameover__start-again");
 const cardSuit = ["C", "D", "H", "S"];
+
+//TEST
+/*
+const themeBtn = document.querySelector("#themeSelector");
+const themeSelection = document.querySelector("#themeSelection")
+const themes = document.querySelectorAll(".themes");
+const divs = document.querySelectorAll("div");
+
+for(let i=0; i < themes.length; i++) {
+    themes[i].addEventListener("click", setTheme);
+}
+
+themeBtn.addEventListener("click", openMenu);
+
+function openMenu() {
+    themeSelection.classList.toggle("active");
+}
+
+function setTheme (event) {
+    const clicked = event.target.getAttribute("value");
+    console.log(clicked);
+}   
+*/
 let card;
 let cardImage;
 let randomCard = [];
@@ -21,12 +44,12 @@ let initialNumber;
 
 // decide how many player you want to play against and points
 (function playersAndPoints() {
-    selectNofPlayers.addEventListener("click", function(e) {
+    selectNofPlayers.addEventListener("change", function(e) {
         playerNumbers = e.target.value;
         //initial number is created because I need it later when a player that lose the game is eliminated and removed
         initialNumber = playerNumbers;
     })
-    selectNofPoints.addEventListener("click", function(e) {
+    selectNofPoints.addEventListener("change", function(e) {
         points = e.target.value;
     })
     
@@ -67,7 +90,7 @@ function cardGenerator() {
         
         setTimeout(function(){ 
             btnOpen.style.display = "block";
-        }, 2000);
+        }, 4000);
         randomCard = [];
 
       
@@ -163,12 +186,10 @@ function generateCard(selectedCard, current) {
                //the first 5 cards are yours (current<5) so you can display them 
             
             if(current < 5) {
-                cardImage = randomCard[current];
-                //cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+                cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
                 //dealing class is the animation of the card that is dealt
                 selectedCard.classList.add("dealing");
-                //selectedCard.style.backgroundImage = cardImage;
-                selectedCard.innerHTML = cardImage;
+                selectedCard.style.backgroundImage = cardImage;
             } else {
                 cardImage = randomCard[current];
                 selectedCard.classList.add("card-cover");

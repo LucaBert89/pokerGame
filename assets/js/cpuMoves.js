@@ -11,7 +11,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
     const btnStay = document.querySelector(".stay");
     const btnLeave = document.querySelector(".leave");
     const btnShow = document.querySelector(".show");
-   
+    
     let ontablefish;
     let randomNumber;
 
@@ -22,7 +22,6 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
     function insertFish(e){
         e.stopPropagation();
         e.preventDefault();
-        
         // when the player click on bet the eventListener has to be removed or it'll be seamlessly added
         btnBet.removeEventListener('click', insertFish);
 
