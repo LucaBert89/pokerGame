@@ -186,7 +186,7 @@ function generateCard(selectedCard, current) {
                //the first 5 cards are yours (current<5) so you can display them 
             
             if(current < 5) {
-                cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+                cardImage = `url("./assets/images/cards/${randomCard[current]}.jpg")`;
                 //dealing class is the animation of the card that is dealt
                 selectedCard.classList.add("dealing");
                 selectedCard.style.backgroundImage = cardImage;
@@ -237,7 +237,7 @@ function replaceCard(current, e) {
             // if index < 5 there are my cards and I should display them
             if(current < 5) {
                 e.classList.add("dealing");
-                cardImage = `url("./assets/images/${randomCard[current]}.jpg")`;
+                cardImage = `url("./assets/images/cards/${randomCard[current]}.jpg")`;
                 e.style.backgroundImage = cardImage;
             } else {
                 // these are the cpu cards and I can't display them 
@@ -311,6 +311,7 @@ btnOpen.addEventListener("click", function() {
         } else {
             ingame = document.querySelectorAll(".in-game-fish");
             total = document.querySelectorAll(".total-fish"); 
+            ingame.forEach(e => e.style.backgroundColor = "brown");
             playerNumbers = document.querySelector(".cpu-container").children.length+1;
             let message = document.createElement("span");
             

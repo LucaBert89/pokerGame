@@ -27,6 +27,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
 
         const cpuContainer = document.querySelector(".cpu-container");
         const cpuPlayers = cpuContainer.querySelectorAll(".cpu"); 
+
+        
         btnPlay.style.display = "none";
          
         let cardNumber = [];
@@ -265,7 +267,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         document.querySelectorAll(".cpu").forEach(function(e) {
             e.querySelectorAll(".player__card").forEach(function(e) {
                 e.classList.remove("card-cover");
-                e.style.backgroundImage = `url("./assets/images/${e.textContent}.jpg")`;
+                e.style.backgroundImage = `url("./assets/images/cards/${e.textContent}.jpg")`;
                 e.textContent = "";
             })
         })
@@ -321,6 +323,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
 
       ingame.forEach(e => {
         total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
+        total[winner].classList.add("total-animation");
         //e.innerHTML = "";
     })
     nextTurn.style.display = "inline-block";
@@ -333,6 +336,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         
         
         function next() {
+            total.forEach(e => e.classList.remove("total-animation"));
+            ingame.forEach(e => e.style.backgroundColor = "");
             // next turn button is clicked
             nextTurn.removeEventListener("click",next)
             nextTurn.style.display = "none";
