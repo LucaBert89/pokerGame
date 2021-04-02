@@ -119,13 +119,14 @@
       margin:0;
   }
 
-  .start-game__btn{
+  .start-game__btn, .game-rules__btn {
     background-color: #000;
     border-radius: 20px;
     padding:20px 80px;
     display:inline-block;
     cursor:pointer;
     color:#fff;
+    margin-bottom:5px;
 }
 
 .start-game__btn:hover {
@@ -501,15 +502,46 @@
   /* Modal Content/Box */
   .modal-rules__modal-content {
     margin: 5% auto; /* 15% from the top and centered */
-    padding: 20px;
-    width: 100%; /* Could be more or less, depending on screen size */
+    padding: 10px;
+    width: 90%; /* Could be more or less, depending on screen size */
     display:flex;
     align-items: center;
     justify-content:center;
     flex-direction: column;
     color:#fff;
+    background-color: brown;
+    position: relative;
   }
 
+  .modal-rules__exit-btn {
+      background-color: blue;
+      border-radius: 50%;
+      padding:10px;
+      position: absolute;
+      top:10px;
+      right:10px;
+  }
+
+  .modal-rules__rules-indent {
+      padding-left:20px;
+  }
+
+  .modal-rules__bold{
+    color:#000;
+  }
+
+  .modal-rules__modal-list {
+    margin-top:10px;
+  }
+
+  .modal-rules__modal-title {
+      font-size:18px;
+  } 
+
+  .modal-rules__modal-list li {
+      line-height: 25px;
+      font-size:12px;
+  }
 
   
 @media all and (min-width: 1044px) {
@@ -538,9 +570,20 @@
     .start-game__control {
         font-size: 30px;
     }
+    
+    .modal-rules__modal-content {
+        padding: 20px;
+        width: 70%;
+    }
+
+    .modal-rules__modal-list li {
+        line-height: 30px;
+        font-size:15px;
+    }
 
     .start-game__btn{
         padding:20px 100px;
+        margin-bottom:0;
     }
 
     .players-table {

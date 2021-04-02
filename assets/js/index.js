@@ -1,9 +1,7 @@
 import {players} from "./firstRound.js";
 import {playAndResponse} from "./cpuMoves.js";
 
-const modalStart = document.querySelector(".start-game__modal");
-const rulesBtn = document.querySelector(".game-rules__btn");
-console.log(rulesBtn);
+
 const generateBtn = document.querySelector(".start-game__btn");
 const btnOpen = document.querySelector(".player-active__btn");
 const btnPlay = document.querySelector(".input-fish");
@@ -12,6 +10,9 @@ const selectNofPlayers = document.querySelector("#players");
 const selectNofPoints = document.querySelector("#points");
 const selectProfile= document.querySelector(".start-game__input-profile");
 
+const modalStart = document.querySelector(".start-game__modal");
+const rulesBtn = document.querySelector(".game-rules__btn");
+const modalExit = document.querySelector(".modal-rules__exit-btn");
 const modalEndGame = document.querySelector(".modal-end");
 const modalMessage = document.querySelector(".modal-gameover__message");
 const modalRules = document.querySelector(".modal-rules");
@@ -41,6 +42,10 @@ let initialNumber;
     rulesBtn.addEventListener("click", function () {
         modalRules.style.display = "block";
     })
+
+    modalExit.addEventListener("click", function () {
+        modalRules.style.display = "none";
+    }); 
     
     
     selectProfile.addEventListener("change", selectImage);
