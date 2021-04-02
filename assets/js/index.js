@@ -65,9 +65,9 @@ let initialNumber;
 
 generateBtn.addEventListener("click", cardGenerator);
 
-function cardGenerator() {
+function cardGenerator() {  
     // if I select the player number and points than the game can start
-    if(playerNumbers != undefined && points != undefined) {
+    if((playerNumbers != undefined && playerNumbers != "") && (points != undefined && points != "")) {
         
         selectNofPlayers.style.backgroundColor = "black";
         selectNofPoints.style.backgroundColor = "black";
@@ -153,6 +153,8 @@ function generatePlayers(playerNumbers) {
                     cpu.appendChild(player);
                     playersContainer.appendChild(cpu);
                 }
+                // I need this to check the in game player
+                player.classList.add("ingame");
                 cardContainer.classList.add("cards-container");
             
             // five card class will be assigned to every person
@@ -292,7 +294,7 @@ btnOpen.addEventListener("click", function() {
         cardGenerator();
         setTimeout(function(){ 
             btnOpen.style.display = "inline-block";
-        }, 3000);
+        }, 4000);
     } else {
         btnOpen.style.display = "none";
     //if someone has scores, than the game'll open 
@@ -425,7 +427,6 @@ function gameOver() {
         
     //click on play again to get back to the start board
     btnPlayAgain.addEventListener("click", function() {
-        btnOpen.style.display = "inline-block";
         modalEndGame.style.display = "none";
         modalStart.style.display = "block";
     })

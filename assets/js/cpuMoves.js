@@ -264,13 +264,25 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         }).filter(e => e != undefined);
 
         // show the hidden cards removing the class card-cover and giving the card text to the path image
-        document.querySelectorAll(".cpu").forEach(function(e) {
+        playersIn.forEach(e => {
+            document.querySelectorAll(".ingame").forEach(function(event,index) {
+                if(e === index && e != 0) {
+                    event.querySelectorAll(".player__card").forEach(e => {
+                        e.classList.remove("card-cover");
+                        e.style.backgroundImage = `url("./assets/images/cards/${e.textContent}.jpg")`;
+                        e.textContent = "";
+                    })
+                }
+            })
+        })
+       /* document.querySelectorAll(".ingame").forEach(function(e,index) {
+            if(index )
             e.querySelectorAll(".player__card").forEach(function(e) {
                 e.classList.remove("card-cover");
                 e.style.backgroundImage = `url("./assets/images/cards/${e.textContent}.jpg")`;
                 e.textContent = "";
             })
-        })
+        })*/
     //here i took out the undefined values that don't match the max
     
     //CHOOSING THE WINNER
