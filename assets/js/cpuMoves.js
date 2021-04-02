@@ -363,7 +363,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             btnLeave.style.display = "none";
             setTimeout(function(){ 
                 btnOpen.style.display = "inline-block";
-            }, 2000);
+            }, 4000);
             
             ingame = document.querySelectorAll(".in-game-fish");
             total = document.querySelectorAll(".total-fish");
