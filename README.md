@@ -21,10 +21,6 @@ After the first round of bet you can choose if **stay (match the maxBet)** or **
 To find the winner only the scores of the player that match the max on table'll count. If someone has the highest score than he'll get all the fishes on the tabel. If there are more than 1 player that bet the max and has the same score than the player that has the higher sum of the cards'll win. If the sum is equal than a coin'll be flipped..
 If the cpuPlayer doesn't have enough fishes'll **lose the game** after the open button is press in the next turn. He doesn't have the 10 fishes cost, so he'll lose. The same can happen to you!
 
-## TECHNOLOGY
-
-To realize this game I used **HTML,CSS and JAVASCRIPT**. I used **mocha and chai** for testing some functions inside the game and **babel** to use ES6 with mocha. I used **trello** to create the tasks and **toggle** to time my activity. 
-
 The list of hands in ranking order are as follows:
 
 Royal Flush	🃁🃎🃍🃋🃊	Ten to Ace of the same suit
@@ -46,5 +42,11 @@ Two Pair	🂻🂫🃓🂣🂲	Two separate pairs
 Pair	🂪🂺🂨🂷🃔	Two cards of the same rank
 
 High Card	🃎🃍🂧🂤🂳	No other hand applies
+
+
+## TECHNOLOGY
+
+To realize this game I used **HTML,CSS and JAVASCRIPT**. I used **mocha and chai** for testing some functions inside the game and **babel** to use ES6 with mocha. I used **trello** to create the tasks and **toggle** to time my activity. 
+
 
 
