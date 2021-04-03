@@ -217,7 +217,7 @@
 }
 
 .player1 {  
-    top:0px;
+    top:-5%;
     left:-10%;
 }
 
@@ -395,14 +395,15 @@
 
 .total-fish {
     color:#fff;
-    font-size:20px;
+    font-size:15px;
     background-color: brown;
     border-radius: 100%;
     padding:5px;    
     position:absolute;
-    top:50%;
-    left:-15%;
+    top:30%;
+    left:-20%;
     z-index: 2;
+    border:4px solid #fff;
 }
 
 .input-fishes-btn{
@@ -418,7 +419,7 @@
     text-align: center;
     display:inline-block;
     color:#fff;
-    font-size:20px;  
+    font-size:14px;  
     border-radius: 100%;
     padding:5px;
 }
@@ -452,8 +453,8 @@
 }
 
 .fish3 {
-    bottom:60px;
-    left:32%;
+    bottom:70px;
+    left:37%;
 }
 
 
@@ -557,8 +558,70 @@
       padding:5px 0;
   }
 
-  
-@media all and (min-width: 1044px) {
+
+  @media all and (min-width: 480px) {
+    .start-game__input-profile-click {
+        height:100px;
+        width:10%;
+        margin-top:0;
+    }
+
+    .start-game__modal-content{
+        font-size:15px;
+        padding:0;
+    }
+
+    .player0 {
+        left:10%;
+        bottom:-10%;
+    }
+
+    .player1 {  
+        top:0;
+        left:15%;
+    }
+
+    .player__profile0 {
+        height:17%;
+        width:13%;
+        right:-10%;
+        padding:30px 30px;
+    }
+
+    .fish0 {
+        top:-50%;
+    }
+
+    .fish1 {
+        top:70px;
+        left:33%;
+    }
+
+    .fish2 {
+        top:-80px;
+    }
+
+    .fish3 {
+        bottom:110px;
+        left:37%;
+    }
+
+
+    .player2 {
+        left:85%;
+    }
+
+    .player3 {
+        right:85%
+    }
+
+    .total-fish {
+        top:30%;
+    }
+  }
+
+
+@media all and (min-width: 768px) {
     .start-game__modal-content {
         height:45%;
         font-size:25px;
@@ -615,11 +678,12 @@
     }
 
     .total-fish {
-        font-size:30px;
+        font-size:35px;
     }
 
     .player0 {
         left:25%;
+        bottom:0;
     }
 
     .player__message {
@@ -630,6 +694,7 @@
         height:17%;
         width:13%;
         right:15%;
+        padding:10px 30px;
     }
     
     .cpu .player__card {
@@ -657,12 +722,18 @@
         top:-100%;
     }
 
+    .fish1 {
+        top:120px;
+        left:39%;
+    }
+
     .fish2 {
         top:-70px;
     }
 
     .fish3 {
         bottom:120px;
+        left:32%;
     }
 
     .player1 .cpu-profile__container{
@@ -670,7 +741,7 @@
     }
 
     .in-game-fish {
-        font-size:40px;
+        font-size:30px;
     }
 
     .cpu-profile {
