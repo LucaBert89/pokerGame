@@ -4,7 +4,7 @@ import {findtheWinner} from "./findWinner.js"
 import {firstBet, cpuSecondRound} from "./cpuBets.js"
 
 
-const btnBet = document.querySelector(".input-fish__btn")
+const btnBet = document.querySelector(".input-fiche__btn")
 
 function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers) {
     const nextTurn = document.querySelector(".next-turn");
@@ -12,13 +12,13 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
     const btnLeave = document.querySelector(".leave");
     const btnShow = document.querySelector(".show");
     
-    let ontablefish;
+    let ontablefiche;
     let randomNumber;
 
     // HERE THE ACTIVE PLAYER HAS CHOSEN HOW MANY FISHES HE WANTS TO PLAY AND CLICK ON BET
     btnBet.addEventListener("click", insertFish);
 
-    // HERE IS THE FIRST MOVE: the player select the fish he wants to play
+    // HERE IS THE FIRST MOVE: the player select the fiche he wants to play
     function insertFish(e){
         e.stopPropagation();
         e.preventDefault();
@@ -33,9 +33,9 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
          
         let cardNumber = [];
         playerRanksArray = []; 
-        ontablefish = [];
+        ontablefiche = [];
  
-        //here I subtract the fish selected from the total available. + 10 is the open fish that I don't want to be counted two times
+        //here I subtract the fiche selected from the total available. + 10 is the open fiche that I don't want to be counted two times
         total[0].innerText = parseInt(total[0].innerText) - (parseInt(ingame[0].innerText) - 10);
 
         // here I call replaceCpuCards: it's a function that let the cpu to change the useless cards if needed
@@ -50,12 +50,12 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
       
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);   
 
-        ontablefish = [...ingame].map(event => event.textContent);
+        ontablefiche = [...ingame].map(event => event.textContent);
 
         for(let i=1; i<playerNumbers; i++) {
             setTimeout(function(){ 
-                ingame[i].innerText = firstBet(total, ingame, ontablefish, result, randomNumber,i);
-                ontablefish[i] = ingame[i].innerText;
+                ingame[i].innerText = firstBet(total, ingame, ontablefiche, result, randomNumber,i);
+                ontablefiche[i] = ingame[i].innerText;
                 total[i].innerText = parseInt(total[i].innerText) - (parseInt(ingame[i].innerText) -10); 
             }, 1000);
             
@@ -63,9 +63,9 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         }
 
 
-        ontablefish = [...ingame].map(event => event.textContent);
+        ontablefiche = [...ingame].map(event => event.textContent);
         setTimeout(function(){ 
-            if(ingame[0].textContent < Math.max(...ontablefish)) {
+            if(ingame[0].textContent < Math.max(...ontablefiche)) {
                 if(ingame[0].textContent != 10) {
                    
                     btnStay.style.display = "inline-block";
@@ -205,8 +205,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             // previous is the current ingame bet
             previous = ingame[0].textContent;
             // difference is the max bet on table - the current
-            difference = Math.max(...ontablefish) - parseInt(previous);
-            // if the player has still enough fishes >= the difference between the max bet and his previous bet
+            difference = Math.max(...ontablefiche) - parseInt(previous);
+            // if the player has still enough fichees >= the difference between the max bet and his previous bet
             if(total[0].textContent >= difference){
                 // match the max bet summing the difference
                 ingame[0].textContent = parseInt(ingame[0].textContent) + difference;
@@ -226,14 +226,14 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             previous = ingame[i].textContent;
             // if ingame bet is > 10 (it means that the player has bet in the first round if his total > 0)
             if(ingame[i].textContent > 10) {
-                // if the player has still enough fishes >= the difference between the max bet and his previous bet
-                if(total[i].textContent >= (Math.max(...ontablefish) - previous)) {
+                // if the player has still enough fichees >= the difference between the max bet and his previous bet
+                if(total[i].textContent >= (Math.max(...ontablefiche) - previous)) {
                     // call cpuSecondRound function to define the bet
-                    ingame[i].textContent = cpuSecondRound(difference,previous, ingame[i].textContent, total[i].textContent,ontablefish,result[i]);
+                    ingame[i].textContent = cpuSecondRound(difference,previous, ingame[i].textContent, total[i].textContent,ontablefiche,result[i]);
                     
                 } else {
 
-        /*here is the case when the player has not enough fish to bet again and match the max
+        /*here is the case when the player has not enough fiche to bet again and match the max
         bet that is on the table. 
         
         In this case I added an ID to highlight that he's in the game
@@ -252,15 +252,15 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                 continue;
             }
         }
-        ontablefish = [...ingame].map(e => e.textContent);
+        ontablefiche = [...ingame].map(e => e.textContent);
     
         /*
-            here playersIn are the players that match the max bet of fish on the table
+            here playersIn are the players that match the max bet of fiche on the table
             here is returned the index of the players that play the max and accept the bet 
             ex.[0, undefined, 2, undefined] the players in the game are the number 0 and 2
         */
         let playersIn = [...ingame].map((e,index) =>{
-            if(e.textContent == Math.max(...ontablefish) || e.id == "stayIn") return index;
+            if(e.textContent == Math.max(...ontablefiche) || e.id == "stayIn") return index;
         }).filter(e => e != undefined);
 
         // show the hidden cards removing the class card-cover and giving the card text to the path image
@@ -377,8 +377,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                 btnOpen.style.display = "inline-block";
             }, 4000);
             
-            ingame = document.querySelectorAll(".in-game-fish");
-            total = document.querySelectorAll(".total-fish");
+            ingame = document.querySelectorAll(".in-game-fiche");
+            total = document.querySelectorAll(".total-fiches");
         
         }
 

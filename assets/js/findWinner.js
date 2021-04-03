@@ -82,7 +82,7 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
               
             })
 
-            //Here i pass the fishes that are in the game to the WINNER
+            //Here i pass the fichees that are in the game to the WINNER
           
         }
     } else if(compareScores.filter(e => e === winnerScore).length === 1) {

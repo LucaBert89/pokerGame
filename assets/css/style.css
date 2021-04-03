@@ -360,7 +360,7 @@
     color: #1C7681;
 }
 
-.input-fish{
+.input-fiche{
     background-color: #7a7e9b;
     display:none;
     cursor:pointer;
@@ -369,7 +369,7 @@
     
 }
 
-.input-fish__selector {
+.input-fiche__selector {
     width:60px;
     height: 30px;
     font-size:20px;
@@ -379,7 +379,7 @@
     color:#fff;
 }
 
-.input-fish__btn{
+.input-fiche__btn{
     background-color: #227A86;
     color: #fff;
     border-radius: 20px;
@@ -387,13 +387,13 @@
     border:4px solid #fff;
 }
 
-.input-fish__btn:hover {
+.input-fiche__btn:hover {
     background-color: #fff;
     color:#227A86; 
     z-index:2;
 }
 
-.total-fish {
+.total-fiches{
     color:#fff;
     font-size:15px;
     background-color: brown;
@@ -406,7 +406,7 @@
     border:4px solid #fff;
 }
 
-.input-fishes-btn{
+.input-fiches-btn{
     background-color: #A6A9BE;
     padding:20px;
     cursor:pointer;
@@ -414,7 +414,7 @@
     border-radius: 20px;
 }
 
-.in-game-fish {
+.in-game-fiche {
     position:absolute;
     text-align: center;
     display:inline-block;
@@ -437,22 +437,22 @@
     }
 }
 
-.fish0 {
+.fiche0 {
     top:-100%;
     left:35%;
 }
 
-.fish1 {
+.fiche1 {
     top:100px;
     left:39%;
 }
 
-.fish2 {
+.fiche2 {
     top:-40px;
     left:50%;
 }
 
-.fish3 {
+.fiche3 {
     bottom:70px;
     left:37%;
 }
@@ -588,20 +588,20 @@
         padding:30px 30px;
     }
 
-    .fish0 {
+    .fiche0 {
         top:-50%;
     }
 
-    .fish1 {
+    .fiche1 {
         top:70px;
         left:33%;
     }
 
-    .fish2 {
+    .fiche2 {
         top:-80px;
     }
 
-    .fish3 {
+    .fiche3 {
         bottom:110px;
         left:37%;
     }
@@ -615,7 +615,7 @@
         right:85%
     }
 
-    .total-fish {
+    .total-fiches {
         top:30%;
     }
   }
@@ -677,7 +677,7 @@
         padding:20px 35px;
     }
 
-    .total-fish {
+    .total-fiches {
         font-size:35px;
     }
 
@@ -718,20 +718,20 @@
         right:75%
     }
 
-    .fish0 {
+    .fiche0 {
         top:-100%;
     }
 
-    .fish1 {
+    .fiche1 {
         top:120px;
         left:39%;
     }
 
-    .fish2 {
+    .fiche2 {
         top:-70px;
     }
 
-    .fish3 {
+    .fiche3 {
         bottom:120px;
         left:32%;
     }
@@ -740,7 +740,7 @@
         top:-35%;
     }
 
-    .in-game-fish {
+    .in-game-fiche {
         font-size:30px;
     }
 
@@ -748,7 +748,7 @@
         padding:30px 30px;
     }
 
-    .input-fish__selector {
+    .input-fiche__selector {
         margin:10px;
     }
 

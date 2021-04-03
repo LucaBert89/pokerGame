@@ -1,25 +1,25 @@
-function firstBet(total, ingame, ontablefish, result, random, i) {
+function firstBet(total, ingame, ontablefiche, result, random, i) {
     let riskValue;
     let addedNumber;
 // if the total of the current player is >= than the max bet on the table
-    if(total[i].innerText >= Math.max(...ontablefish)) {
+    if(total[i].innerText >= Math.max(...ontablefiche)) {
         if(result === 0) {
             //here result = 0 and the cpu'll decide if bluffing or not
-            ingame[i].innerText = blufforNot(random, Math.max(...ontablefish), total);
+            ingame[i].innerText = blufforNot(random, Math.max(...ontablefiche), total);
             // if result is between 1 and 3
         } else if(result[i] >= 1 && result[i] <= 3 ) {
             //risk analysis: the riskvalue is 2/5 of total
             addedNumber = parseInt(total[i].innerText) * 2/10;
             riskValue = parseInt(total[i].innerText) * 2/5;
             // if riskvalue is higher than the max on the table
-            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                // ingame is defined by cpuBet passing the ontablefish array and addedNumber
-                ingame[i].innerText = cpuBet(ontablefish, addedNumber);      
+            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefiche)) {
+                // ingame is defined by cpuBet passing the ontablefiche array and addedNumber
+                ingame[i].innerText = cpuBet(ontablefiche, addedNumber);      
             } else {
                 /* ingame is defined by riskyAnswer passing the max on the table and the random. 
                 This function check if to risk to bet or not also beyond the riskvalue
                 */
-                ingame[i].innerText = riskyAnswer(Math.max(...ontablefish), random);
+                ingame[i].innerText = riskyAnswer(Math.max(...ontablefiche), random);
 
             }
             // if result between 4 and 6
@@ -27,11 +27,11 @@ function firstBet(total, ingame, ontablefish, result, random, i) {
 
             addedNumber = parseInt(total[i].innerText) * 4/10;
             riskValue = parseInt(total[i].innerText) * 3/5;
-            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                ingame[i].innerText = cpuBet(ontablefish, addedNumber);
+            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefiche)) {
+                ingame[i].innerText = cpuBet(ontablefiche, addedNumber);
             } else {
 
-                ingame[i].innerText = riskyAnswer(Math.max(...ontablefish), random);
+                ingame[i].innerText = riskyAnswer(Math.max(...ontablefiche), random);
             }
             // if result > 7
         } else if(result[i] >= 7 ) {
@@ -40,7 +40,7 @@ function firstBet(total, ingame, ontablefish, result, random, i) {
         }
         // if the total of the current player is <= than the max bet on the table
     } else {
-        /* here my total fishes are below the max of the bets on the table.
+        /* here my total fichees are below the max of the bets on the table.
         if result is between 1 and 3*/
         if(result[i] >= 1 && result[i] <= 3) {
             // set a random number
@@ -59,12 +59,12 @@ return ingame[i].innerText;
 
 
 
-function cpuBet(ontablefish, addedNumber) {
+function cpuBet(ontablefiche, addedNumber) {
     // the ingame is = to the max of the current table bets + addedNumber
-    return Math.max(...ontablefish) + Math.round(addedNumber / 10) * 10;
+    return Math.max(...ontablefiche) + Math.round(addedNumber / 10) * 10;
 }
 
-// blufforNot(randomNumber, Math.max(ontablefish), total)
+// blufforNot(randomNumber, Math.max(ontablefiche), total)
 function blufforNot(randomMove, betPrev, total) {
     // random number among 0 and 10
     randomMove =  Math.floor(Math.random() * 11);
@@ -91,19 +91,19 @@ function riskyAnswer(max, random) {
 }
 
 
-function cpuSecondRound(difference, previous,ingame,total, ontablefish,result) {
+function cpuSecondRound(difference, previous,ingame,total, ontablefiche,result) {
         let riskValue;
     /*in the second round the players have already change their cards and they've to dedice to match another players
     higher bet or not*/
   
         if(result === 0) {
-                ingame = Math.max(...ontablefish);
+                ingame = Math.max(...ontablefiche);
                 difference = parseInt(ingame) - previous;
                 total = parseInt(total) - difference; 
         } else if(result >= 1 && result <= 3 ) {
             riskValue = total * 2/5;
-            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                ingame = Math.max(...ontablefish);
+            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefiche)) {
+                ingame = Math.max(...ontablefiche);
                 difference = parseInt(ingame) - previous;
                 total = parseInt(total) - difference; 
             } else {
@@ -113,8 +113,8 @@ function cpuSecondRound(difference, previous,ingame,total, ontablefish,result) {
             }
         } else if(result >= 4 && result <= 6 ) {
             riskValue = total * 3/5;
-            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefish)) {
-                ingame = Math.max(...ontablefish);
+            if((Math.round(riskValue/10)*10) >= Math.max(...ontablefiche)) {
+                ingame = Math.max(...ontablefiche);
                 difference = parseInt(ingame) - previous;
                 total = parseInt(total) - difference; 
             } else {
@@ -123,7 +123,7 @@ function cpuSecondRound(difference, previous,ingame,total, ontablefish,result) {
                 total = parseInt(total) - difference; 
             }
         } else if(result >= 7 ) {
-            ingame = Math.max(...ontablefish);    
+            ingame = Math.max(...ontablefiche);    
             difference = parseInt(ingame) - previous;
             total = parseInt(total) - difference;     
         }

@@ -4,7 +4,7 @@ import {playAndResponse} from "./cpuMoves.js";
 
 const generateBtn = document.querySelector(".start-game__btn");
 const btnOpen = document.querySelector(".player-active__btn");
-const btnPlay = document.querySelector(".input-fish");
+const btnPlay = document.querySelector(".input-fiche");
 const btnPlayAgain = document.querySelector(".modal-gameover__start-again");
 const selectNofPlayers = document.querySelector("#players");
 const selectNofPoints = document.querySelector("#points");
@@ -113,7 +113,7 @@ function generatePlayers(playerNumbers) {
     let cardContainer;
     let playerCard;
     let totalCash;
-    let fishBet;
+    let ficheBet;
     let profile;
     let enemyContainer;
     let enemyProfile;
@@ -126,13 +126,13 @@ function generatePlayers(playerNumbers) {
         for(let j=0; j <= playerNumbers-1; j++) {
             cardContainer = document.createElement("div");
             player = document.createElement("div");
-            fishBet = document.createElement("div");
+            ficheBet = document.createElement("div");
             profile = document.createElement("div");
             enemyContainer =document.createElement("div"); 
             enemyName = document.createElement("div");
             enemyProfile = document.createElement("div");
-            //here I call the function to assign the right ingame fish and total fish for each player
-            playerCash(player, fishBet,j, totalCash);
+            //here I call the function to assign the right ingame fiche and total fiche for each player
+            playerCash(player, ficheBet,j, totalCash);
             // to the user will be assigned the background image chose in the start board
                 if(j==0) {
                     player.classList.add(`player${j}`);
@@ -204,10 +204,10 @@ function generateCard(selectedCard, current) {
 }
 
 function playerCash(p, bet,player, cash) {
-    bet.classList.add("in-game-fish");
-    bet.classList.add(`fish${player}`)
+    bet.classList.add("in-game-fiche");
+    bet.classList.add(`fiche${player}`)
     cash = document.createElement("div");
-    cash.classList.add("total-fish");
+    cash.classList.add("total-fiches");
     cash.innerHTML = points;
     p.appendChild(bet);
     p.appendChild(cash);
@@ -266,8 +266,8 @@ btnOpen.addEventListener("click", function() {
     
     let totalObjectRanks = [];
     let totalObjectSuit = [];
-    let ingame = document.querySelectorAll(".in-game-fish");
-    let total = document.querySelectorAll(".total-fish");  
+    let ingame = document.querySelectorAll(".in-game-fiche");
+    let total = document.querySelectorAll(".total-fiches");  
     let playerRanksArray = [];
     let playerSuitsArray = [];
     let rank;
@@ -277,8 +277,8 @@ btnOpen.addEventListener("click", function() {
      rank = [];
      suit = [];
      result = [];  
-    // fishSelector is the function made to choose how much you want to bet
-     fishSelector(ingame, total);
+    // ficheSelector is the function made to choose how much you want to bet
+     ficheSelector(ingame, total);
 
    /*here function players is called passing empty arrays + playerNumber. 
     The goal of the function is to deal the cards and find the combination that set the score to open or not the game
@@ -298,7 +298,7 @@ btnOpen.addEventListener("click", function() {
     } else {
         btnOpen.style.display = "none";
     //if someone has scores, than the game'll open 
-    /*I call this function to check if the players've enough fishes to open the game */
+    /*I call this function to check if the players've enough fichees to open the game */
         loseOrOpen(total, ingame, result);
        
     // if there aren't cpu Players anymore the active player 'll win the game and the message'll appear
@@ -306,8 +306,8 @@ btnOpen.addEventListener("click", function() {
             gameOver();
             modalMessage.textContent = "You Win, the planet is saved!";
         } else {
-            ingame = document.querySelectorAll(".in-game-fish");
-            total = document.querySelectorAll(".total-fish"); 
+            ingame = document.querySelectorAll(".in-game-fiche");
+            total = document.querySelectorAll(".total-fiches"); 
             ingame.forEach(e => e.style.backgroundColor = "brown");
             playerNumbers = document.querySelector(".cpu-container").children.length+1;
             let message = document.createElement("span");
@@ -326,8 +326,8 @@ btnOpen.addEventListener("click", function() {
             rank = [];
             suit = [];
             result = [];
-            // here fishSelector is called to display the right fishes the player've to choose from based on his total
-            fishSelector(ingame, total);
+            // here ficheSelector is called to display the right fichees the player've to choose from based on his total
+            ficheSelector(ingame, total);
 
         /*here function players is called passing empty arrays + playerNumber. 
         The goal of the function is to deal the cards and find the combination that set the score to decide first and secondround
@@ -343,24 +343,24 @@ btnOpen.addEventListener("click", function() {
     
 }) 
 
-function fishSelector(ingame, total) {
+function ficheSelector(ingame, total) {
     
-    let selectorFish = document.querySelector(".input-fish__selector");
+    let selectorFish = document.querySelector(".input-fiche__selector");
     let optionFish;
-    // once fishSelector is called the previous one has to be deleted
+    // once ficheSelector is called the previous one has to be deleted
     if(selectorFish.children.length >0) {
         selectorFish.innerHTML = "";
     };
-    // here I assign a group of fish you can choose from. They are multiple of 10 until they reach the total of the player
+    // here I assign a group of fiche you can choose from. They are multiple of 10 until they reach the total of the player
     for(let i=0; i <= total[0].textContent; i+=10) {
         optionFish = document.createElement("option");
-        optionFish.classList.add("option-fish")
+        optionFish.classList.add("option-fiche")
         optionFish.value = i;
         optionFish.innerHTML = i;
         selectorFish.appendChild(optionFish);
     }
     selectorFish.addEventListener("change", function(e){
-    // once a selection is made your ingame fish take that number + 10
+    // once a selection is made your ingame fiche take that number + 10
         ingame[0].textContent = 10;
         ingame[0].textContent = parseInt(ingame[0].textContent) + parseInt(e.target.value);
     })
@@ -397,19 +397,19 @@ function loseOrOpen(total, ingame, result) {
     for(let i=0; i<initialNumber; i++) {
 
         if(total[i] !== undefined) {
-            // if they've enough fishes than the players pays 10 fishes to enter the game
+            // if they've enough fichees than the players pays 10 fichees to enter the game
             if(total[i].textContent > 0) { 
                 total[i].textContent = parseInt(total[i].textContent) - 10;
                 ingame[i].textContent = 10;
             } else {
-            // if the cpuPlayers doesn't even enough fishes they'll be deleted from the game
+            // if the cpuPlayers doesn't even enough fichees they'll be deleted from the game
                 if(i>0) {
                     if(document.querySelector(`.player${i}`) !== undefined) {
                         document.querySelector(`.player${i}`).remove();
                         delete result[i];
                     }
                 } else  {
-                // if the active player doesn't have enough fishes to open the game the messagge'll be shown and you can play again
+                // if the active player doesn't have enough fichees to open the game the messagge'll be shown and you can play again
                         gameOver();
                         modalMessage.textContent = "You lose, the planet is fucked!";
                 }
