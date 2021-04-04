@@ -321,7 +321,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         ]
         winner is 3
         */
-      
+        console.log(playersIn, ingameScores,total,ingame);
        winnerScore = Math.max(...compareScores);
     
     // FIND THE CORRESPONDING KEY (PLAYER NUMBER).
@@ -332,7 +332,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         */  
     
       winner = findtheWinner(winner, winnerScore, compareScores, ingameScores, playerRanksArray);
-
+        console.log(winner);
       ingame.forEach(e => {
         total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
         total[winner].classList.add("total-animation");

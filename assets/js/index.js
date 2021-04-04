@@ -296,12 +296,16 @@ btnOpen.addEventListener("click", function() {
             btnOpen.style.display = "inline-block";
         }, 4000);
     } else {
+        ingame = document.querySelectorAll(".in-game-fiche");
+        total = document.querySelectorAll(".total-fiches"); 
         btnOpen.style.display = "none";
     //if someone has scores, than the game'll open 
     /*I call this function to check if the players've enough fichees to open the game */
         loseOrOpen(total, ingame, result);
        
-    // if there aren't cpu Players anymore the active player 'll win the game and the message'll appear
+    // if there aren't a modalMessage, the active player hasn't lose and you can go ahead into the game
+    if(modalMessage.textContent == "") {
+// if there aren't cpu Players anymore the active player 'll win the game and the message'll appear
         if(document.querySelector(".cpu-container").querySelectorAll(".cpu").length === 0) {
             gameOver();
             modalMessage.textContent = "You Win, the planet is saved!";
@@ -337,7 +341,7 @@ btnOpen.addEventListener("click", function() {
             // here playAndResponse is called to pass all the variables needed to play the game
             playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
         }
-
+    }
         
     }
     
@@ -403,10 +407,12 @@ function loseOrOpen(total, ingame, result) {
                 ingame[i].textContent = 10;
             } else {
             // if the cpuPlayers doesn't even enough fichees they'll be deleted from the game
-                if(i>0) {
-                    if(document.querySelector(`.player${i}`) !== undefined) {
+                if(i>0 && modalMessage.textContent === "") {
+                    if(document.querySelector(`.player${i}`) !== undefined || document.querySelector(`.player${i}`) !== null) {
                         document.querySelector(`.player${i}`).remove();
                         delete result[i];
+                    } else {
+                        continue;
                     }
                 } else  {
                 // if the active player doesn't have enough fichees to open the game the messagge'll be shown and you can play again
@@ -427,6 +433,11 @@ function gameOver() {
         
     //click on play again to get back to the start board
     btnPlayAgain.addEventListener("click", function() {
+        selectNofPlayers.selectedIndex = 0;
+        selectNofPoints.selectedIndex = 0;
+        playerNumbers = undefined;
+        points = undefined;
+        modalMessage.textContent = "";
         modalEndGame.style.display = "none";
         modalStart.style.display = "block";
     })

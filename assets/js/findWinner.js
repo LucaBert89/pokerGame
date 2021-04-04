@@ -90,6 +90,7 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
             here I find the keys of object scoreIn to find the player number which
             score is higher
          */
+        
         scoreIn.forEach(function(e,index) {
             if(Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winnerScore) !== undefined) {
                 winner = Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winnerScore);
