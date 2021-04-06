@@ -51,7 +51,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);   
 
         ontablefiche = [...ingame].map(event => event.textContent);
-
+        console.log(result);
+        console.log(randomCard);
         for(let i=1; i<playerNumbers; i++) {
             setTimeout(function(){ 
                 ingame[i].innerText = firstBet(total, ingame, ontablefiche, result, randomNumber,i);

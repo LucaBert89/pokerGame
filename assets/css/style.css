@@ -74,6 +74,12 @@
       border: 8px solid #44231A;
   }
 
+  .player-table__no-open {
+      font-size:20px;
+      color:#fff;
+      margin-top:120px;
+  }
+
   .start-game__control {
       width:100%;
       text-align: center;
@@ -606,6 +612,7 @@
         left:37%;
     }
 
+   
 
     .player2 {
         left:85%;
@@ -665,6 +672,13 @@
 
     .players-table {
         border-radius:50%;
+    }
+
+    .player-table__no-open {
+        font-size:20px;
+        color:#fff;
+        margin-top:150px;
+        margin-left:200px;
     }
 
     .cards-container {
