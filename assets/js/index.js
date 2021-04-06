@@ -5,7 +5,7 @@ import {playAndResponse} from "./cpuMoves.js";
 const generateBtn = document.querySelector(".start-game__btn");
 const btnOpen = document.querySelector(".player-active__btn");
 const btnPlay = document.querySelector(".input-fiche");
-const btnPlayAgain = document.querySelector(".modal-gameover__start-again");
+
 const selectNofPlayers = document.querySelector("#players");
 const selectNofPoints = document.querySelector("#points");
 const selectProfile= document.querySelector(".start-game__input-profile");
@@ -13,7 +13,7 @@ const playersContainer = document.querySelector(".players-table");
 const modalStart = document.querySelector(".start-game__modal");
 const rulesBtn = document.querySelector(".game-rules__btn");
 const modalExit = document.querySelector(".modal-rules__exit-btn");
-const modalEndGame = document.querySelector(".modal-end");
+
 const modalMessage = document.querySelector(".modal-gameover__message");
 const modalRules = document.querySelector(".modal-rules");
 const cardSuit = ["C", "D", "H", "S"];  
@@ -265,7 +265,6 @@ btnOpen.addEventListener("click", function() {
     btnOpen.style.display = "none";
     // remove the dealing class set for the animation
     activeCard.forEach(e => e.classList.remove("dealing"));
-    console.log(playerNumbers);
     let totalObjectRanks = [];
     let totalObjectSuit = [];
     let ingame = document.querySelectorAll(".in-game-fiche");
@@ -275,6 +274,9 @@ btnOpen.addEventListener("click", function() {
     let rank;
     let suit;
     let result;
+    // change the playerNumbers based on the deleted players
+    playerNumbers = document.querySelector(".cpu-container").children.length+1;
+
      // here rank, suit and result'll empty and refill every time btnplay is clicked
      rank = [];
      suit = [];
@@ -286,7 +288,7 @@ btnOpen.addEventListener("click", function() {
     The goal of the function is to deal the cards and find the combination that set the score to open or not the game
    */
      players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
-
+    console.log(result, playerNumbers, ingame, total);
 // based on the players cards, if someone've scores or not, it's decided if open or not
     if(result.every(e => e === 0)) {
         // if we can't open than new cards we'll be generated emptying the existing rank, suit, result arrays
@@ -300,54 +302,47 @@ btnOpen.addEventListener("click", function() {
             btnOpen.style.display = "inline-block";
         }, 4000);
     } else {
-        ingame = document.querySelectorAll(".in-game-fiche");
-        total = document.querySelectorAll(".total-fiches"); 
         btnOpen.style.display = "none";
     //if someone has scores, than the game'll open 
-    /*I call this function to check if the players've enough fichees to open the game */
-        loseOrOpen(total, ingame, result);
-       
-    // if there aren't a modalMessage, the active player hasn't lose and you can go ahead into the game
-        if(modalMessage.textContent == "") {
-    // if there aren't cpu Players anymore the active player 'll win the game and the message'll appear
-            if(document.querySelector(".cpu-container").querySelectorAll(".cpu").length === 0) {
-                gameOver();
-                modalMessage.textContent = "You Win, the planet is saved!";
-            } else {
-                ingame = document.querySelectorAll(".in-game-fiche");
-                total = document.querySelectorAll(".total-fiches"); 
-                ingame.forEach(e => e.style.backgroundColor = "brown");
-                playerNumbers = document.querySelector(".cpu-container").children.length+1;
-                console.log(playerNumbers);
-                
-                message.classList.add("player__message");
-                message.innerText = "7 seconds to change the cards";
-                player.appendChild(message);
 
-                // CHANGE YOUR CARD IF YOU NEED TO. playerActiveMove function is called
-                playerActiveMove(activeCard);
-                // bet appear after 7 seconds, time allowed to change your cards
-                setTimeout(function(){ 
-                    document.querySelector(".player__message").remove();
-                    btnPlay.style.display = "inline-block";
-                }, 7000);
-            
-                rank = [];
-                suit = [];
-                result = [];
-                // here ficheSelector is called to display the right fichees the player've to choose from based on his total
-                ficheSelector(ingame, total);
+        ingame = document.querySelectorAll(".in-game-fiche");
+        total = document.querySelectorAll(".total-fiches"); 
+        
+        // give the background around ingame fiches
+        ingame.forEach(e => e.style.backgroundColor = "brown");
 
-            /*here function players is called passing empty arrays + playerNumber. 
-            The goal of the function is to deal the cards and find the combination that set the score to decide first and secondround
-            */
-                players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
-                
-                // here playAndResponse is called to pass all the variables needed to play the game
-                playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers);
-            }
+        for(let i=0;i<playerNumbers; i++) {
+            total[i].textContent = parseInt(total[i].textContent) - 10;
+            ingame[i].textContent = 10;
         }
-            
+        
+        message.classList.add("player__message");
+        message.innerText = "7 seconds to change the cards";
+        player.appendChild(message);
+
+        // CHANGE YOUR CARD IF YOU NEED TO. playerActiveMove function is called
+        playerActiveMove(activeCard);
+        // bet appear after 7 seconds, time allowed to change your cards
+        setTimeout(function(){ 
+            document.querySelector(".player__message").remove();
+            btnPlay.style.display = "inline-block";
+        }, 7000);
+    
+        rank = [];
+        suit = [];
+        result = [];
+        // here ficheSelector is called to display the right fichees the player've to choose from based on his total
+        ficheSelector(ingame, total);
+
+    /*here function players is called passing empty arrays + playerNumber. 
+    The goal of the function is to deal the cards and find the combination that set the score to decide first and secondround
+    */
+        players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
+        
+        // here playAndResponse is called to pass all the variables needed to play the game
+        playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, randomCard, playerNumbers, points);
+
+    
     }
     
 }) 
@@ -402,41 +397,6 @@ function playerActiveMove(activeCard) {
 
     
 }
-function loseOrOpen(total, ingame, result) {
-    let current;
-    console.log(current);
-    for(let i=0; i<initialNumber; i++) {
-        current = document.querySelector(`.player${i}`);
-        if(total[i] !== undefined) {
-            // if they've enough fichees than the players pays 10 fichees to enter the game
-            if(total[i].textContent > 0) { 
-                total[i].textContent = parseInt(total[i].textContent) - 10;
-                ingame[i].textContent = 10;
-            } else {
-            // if the cpuPlayers doesn't even enough fichees they'll be deleted from the game
-                if(i>0 && modalMessage.textContent === "") {
-                    if(current !== null && current !== undefined) {
-                        console.log(i);
-                        console.log(total[i]);
-                        document.querySelector(`.player${i}`).remove();
-                        delete result[i];
-                        //randomCard.splice(i*5, 5);
-                    } else {
-                        continue;
-                    }
-                } else  {
-                // if the active player doesn't have enough fichees to open the game the messagge'll be shown and you can play again
-                        gameOver();
-                        modalMessage.textContent = "You lose, the planet is fucked!";
-                }
-            }
-        }
-        
-    }
-
-   
-    console.log(randomCard);
-}
 
 function tryAgain() {
     let messageNoOpen = document.createElement("div");
@@ -449,24 +409,9 @@ function tryAgain() {
 }
 
 
-function gameOver() {
-    // game is over: you win or lose
-    document.querySelector(".players-table").innerHTML = "";
-    modalEndGame.style.display = "block";
-        
-    //click on play again to get back to the start board
-    btnPlayAgain.addEventListener("click", function() {
-        selectNofPlayers.selectedIndex = 0;
-        selectNofPoints.selectedIndex = 0;
-        playerNumbers = undefined;
-        points = undefined;
-        modalMessage.textContent = "";
-        modalEndGame.style.display = "none";
-        modalStart.style.display = "block";
-    })
-}
 
-export {replaceCard, generateBtn,btnOpen, cardGenerator, btnPlay}
+
+export {replaceCard, generateBtn,btnOpen, cardGenerator, btnPlay, modalMessage, initialNumber, selectNofPlayers, selectNofPoints, modalStart}
 
 
 
