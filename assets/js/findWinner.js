@@ -8,7 +8,7 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
         Here among the players with the same score, the one which sum of the rank of the
         cards is higher win.
       */
-
+    console.log(compareScores);
     if(compareScores.filter(e => e === winnerScore).length > 1) {
         scoreIn.forEach(function(e,index){
         /* look into ingameScores array to find the keys (players number) that have the same score 
@@ -25,7 +25,7 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
         let totalScore = [];
         let maxScore;
         /*
-        Among the players with the same
+        Among the players with the same score
         for each player still in the game(excluding undefined players that don't have the max score)
         loop and sum the rank of his cards
         */ 
@@ -40,7 +40,7 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
                     sum = sum + parseInt(element);
                 }) 
             /*
-                 Here I pushed them inside totalCardsum array as object with the relative
+                 Here I pushed them inside sumCardRanks array as object with the relative
                  player number    
                  ex.
                  [
@@ -52,10 +52,11 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
             totalScore.push(sum);
             // the maxScore is the higher sum of card ranks
             maxScore = Math.max(...totalScore);
-
+                
            
             }
         })
+        console.log(totalScore, sumcardRanks, maxScore);
         /*CASE: SUM OF CARDS HAVE EQUAL RANKS AMONG PLAYERS
         if there are two players with the same score and same cards rank sum*/
         let sameSum = [];
@@ -65,8 +66,8 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
                 sameSum.push(Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore));     
             })
             //Flip a coin..
-           
-            winner = sameSum[Math.round(Math.random() * sameSum.length)];
+           console.log(Math.round(Math.random() * (sameSum.length-1)), sameSum);
+            winner = sameSum[Math.round(Math.random() * (sameSum.length-1))];
 
         } else { 
 
@@ -96,7 +97,9 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
                 winner = Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winnerScore);
             }
         })
+        console.log(compareScores,scoreIn);
     }
+    console.log(compareScores,scoreIn);
     return winner;
 }
 

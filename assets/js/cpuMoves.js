@@ -270,6 +270,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             document.querySelectorAll(".ingame").forEach(function(event,index) {
                 if(e === index && e != 0) {
                     event.querySelectorAll(".player__card").forEach(e => {
+                        console.log(e.textContent);
                         e.classList.remove("card-cover");
                         e.style.backgroundImage = `url("./assets/images/cards/${e.textContent}.jpg")`;
                         e.textContent = "";
@@ -285,7 +286,6 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                 e.textContent = "";
             })
         })*/
-    //here i took out the undefined values that don't match the max
     
     //CHOOSING THE WINNER
         let winner;
@@ -324,22 +324,22 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         winner is 3
         */
         console.log(playersIn, ingameScores,total,ingame);
-       winnerScore = Math.max(...compareScores);
-    
-    // FIND THE CORRESPONDING KEY (PLAYER NUMBER).
-        /*we found the max score that won the game, but whose player is it?
-        TWO CASES:
-        1. more than a winner: 2 or more players with the same score;
-        2. one winner;
-        */  
-    
-      winner = findtheWinner(winner, winnerScore, compareScores, ingameScores, playerRanksArray);
-        console.log(winner);
-      ingame.forEach(e => {
-        total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
-        total[winner].classList.add("total-animation");
-        //e.innerHTML = "";
-    })
+        winnerScore = Math.max(...compareScores);
+        
+        // FIND THE CORRESPONDING KEY (PLAYER NUMBER).
+            /*we found the max score that won the game, but whose player is it?
+            TWO CASES:
+            1. more than a winner: 2 or more players with the same score;
+            2. one winner;
+            */  
+        
+        winner = findtheWinner(winner, winnerScore, compareScores, ingameScores, playerRanksArray);
+            console.log(winner);
+        ingame.forEach(e => {
+            total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
+            total[winner].classList.add("total-animation");
+            //e.innerHTML = "";
+        })
     nextTurn.style.display = "inline-block";
     }
     
@@ -361,7 +361,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             total = document.querySelectorAll(".total-fiches");
             ingame.forEach(e => e.textContent = "");
             /*I call this function to check if the players've enough fichees to open the game */
-            loseOrOpen(total,ingame,result);
+            loseOrOpen(total, result);
 
                 // if there aren't a modalMessage, the active player hasn't lose and you can go ahead into the game
             if(modalMessage.textContent === "") {
@@ -417,16 +417,23 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             })
         }
 
-        function loseOrOpen(total, ingame, result) {
+        function loseOrOpen(total, result) {
             let current;
+            
             for(let i=0; i<initialNumber; i++) {
+
                 current = document.querySelector(`.player${i}`);
                 if(total[i] !== undefined) {
+                    console.log(total[i].innerText);
                     if(total[i].innerText == 0) { 
+                        console.log(total[i].innerText);
+ 
                     // if they've enough fichees than the players pays 10 fichees to enter the game
                     // if the cpuPlayers doesn't even enough fichees they'll be deleted from the game
                         if(i>0 && modalMessage.textContent === "") {
+      
                             if(current !== null && current !== undefined) {
+           
                                 document.querySelector(`.player${i}`).remove();
                                 delete result[i];
                             } else {
