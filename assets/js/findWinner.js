@@ -13,7 +13,6 @@ function findPlayersIn(ontablefiche, ingameScores, compareScores, ingame,result)
         document.querySelectorAll(".ingame").forEach(function(event,index) {
             if(e === index && e != 0) {
                 event.querySelectorAll(".player__card").forEach(e => {
-                    console.log(e.textContent);
                     e.classList.remove("card-cover");
                     e.style.backgroundImage = `url("./assets/images/cards/${e.textContent}.jpg")`;
                     e.textContent = "";
@@ -61,7 +60,6 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
         Here among the players with the same score, the one which sum of the rank of the
         cards is higher win.
       */
-    console.log(compareScores);
     if(compareScores.filter(e => e === winnerScore).length > 1) {
         scoreIn.forEach(function(e,index){
         /* look into ingameScores array to find the keys (players number) that have the same score 
@@ -109,7 +107,6 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
            
             }
         })
-        console.log(totalScore, sumcardRanks, maxScore);
         /*CASE: SUM OF CARDS HAVE EQUAL RANKS AMONG PLAYERS
         if there are two players with the same score and same cards rank sum*/
         let sameSum = [];
@@ -119,7 +116,6 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
                 sameSum.push(Object.keys(sumcardRanks[index]).find(e => sumcardRanks[index][e] === maxScore));     
             })
             //Flip a coin..
-           console.log(Math.round(Math.random() * (sameSum.length-1)), sameSum);
             winner = sameSum[Math.round(Math.random() * (sameSum.length-1))];
 
         } else { 
@@ -150,9 +146,7 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
                 winner = Object.keys(scoreIn[index]).find(e => scoreIn[index][e] === winnerScore);
             }
         })
-        console.log(compareScores,scoreIn);
     }
-    console.log(compareScores,scoreIn);
     return winner;
 }
 

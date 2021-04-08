@@ -30,6 +30,16 @@
     font-size:20px;
   }
 
+  select {
+    -webkit-appearance:none;
+  }
+
+  .start-game__selectors {
+    width:40%;
+    display:flex;
+    flex-direction: row;
+  }
+
   .first-door {
       margin-bottom:0;
   }
@@ -69,7 +79,7 @@
       width:50%;
       height:80%;
       z-index:0;
-        margin:0 auto;
+      margin:0 auto;
       position: relative;
       border: 8px solid #44231A;
   }
@@ -298,6 +308,7 @@
 }
 
 .clickable {
+    -webkit-animation: pulse 1.5s infinite;
     animation: pulse 1.5s infinite;
 }
 
@@ -627,8 +638,77 @@
     }
   }
 
-
 @media all and (min-width: 768px) {
+    .player0 {
+        left:-1%;
+        bottom:-5%;
+    }
+
+    .player1 {  
+        left:5%;
+    }
+
+    .player2 {
+        left:75%;
+    }
+
+    .player3 {
+        right:75%
+    }
+
+    .in-game-fiche {
+        font-size:25px;
+    }
+
+    .total-fiches {
+        font-size:30px;
+    }
+
+    .player0 .player__card {
+        width:20px;
+        height:100px;
+        padding:20px 35px;
+    }
+
+    .cpu .player__card {
+        height:100px;
+        width: 20px;
+        padding:10px 30px;
+        background-repeat: no-repeat;
+        background-size:cover;
+        margin:0;
+    }
+
+    .player__profile0 {
+        height:14%;
+        width:5%;
+        right:-10%;
+        padding:40px 40px;
+    }
+
+    .fiche0 {
+        top:-70%;
+        left:45%;
+    }
+
+    .fiche1 {
+        top:120px;
+        left:45%;
+    }
+
+    .fiche2 {
+        top:-80px;
+    }
+
+    .fiche3 {
+        bottom:110px;
+        left:37%;
+    }
+
+
+}
+
+@media all and (min-width: 1024px) {
     .start-game__modal-content {
         height:45%;
         font-size:25px;
@@ -642,9 +722,14 @@
 
     .last-door .start-game__container {
         display: flex;
-        justify-content: center;
+        justify-content: space-evenly;
         align-items: center;
+        width:100%;
     }
+
+    .start-game__selectors {
+        flex-direction: column;
+      }
 
     .start-game__selector {
         font-size: 30px;
@@ -669,10 +754,6 @@
     .start-game__btn, .game-rules__btn{
         padding:20px 60px;
         margin-bottom:0;
-    }
-
-    .players-table {
-        border-radius:50%;
     }
 
     .player-table__no-open {
@@ -735,6 +816,7 @@
 
     .fiche0 {
         top:-100%;
+        left:35%;
     }
 
     .fiche1 {

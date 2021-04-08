@@ -6,14 +6,14 @@
         const btnPlayAgain = document.querySelector(".modal-gameover__start-again");
 
         nextTurn.addEventListener("click",next)
-        
+         // next turn button is clicked
         function next() {
-            
+            nextTurn.removeEventListener("click",next)
             // remove the total animation and the background around ingamefiche
             total.forEach(e => e.classList.remove("total-animation"));
             ingame.forEach(e => e.style.backgroundColor = "");
-            // next turn button is clicked
-            nextTurn.removeEventListener("click",next)
+           
+            
             nextTurn.style.display = "none";
            
             ingame = document.querySelectorAll(".in-game-fiche");
@@ -75,22 +75,16 @@
 
         function loseOrOpen(total, result) {
             let current;
-            
+            let j = 0;
             for(let i=0; i<initialNumber; i++) {
-
                 current = document.querySelector(`.player${i}`);
-                if(total[i] !== undefined) {
-                    if(total[i].innerText == 0) { 
+                if(current !== null && total[j] !== undefined) {
+                    if(total[j].innerText == 0) { 
                     // if they've enough fichees than the players pays 10 fichees to enter the game
                     // if the cpuPlayers doesn't even enough fichees they'll be deleted from the game
                         if(i>0 && modalMessage.textContent === "") {
-      
-                            if(current !== null && current !== undefined) {
                                 current.remove();
                                 delete result[i];
-                            } else {
-                                continue;
-                            }
                         } else  {
                         // if the active player doesn't have enough fichees to open the game the messagge'll be shown and you can play again
                                 gameOver();
@@ -98,9 +92,12 @@
                         }
                     }
                 } else {
-                    continue;
+                    /* i've to do that because after 1 player is removed, the total Node has less elements than the i counter
+                    loop. Current instead keep the same number (player1, 2,3 ecc) after one element is removed
+                    */
+                    j=j-1;
                 }
-                
+                    j++;
             }
         }
 
