@@ -165,7 +165,7 @@
 
 .player__profile0 {
     width:5%;
-    height:10%;
+    height:12%;
     padding:10px 30px;
     position:absolute;
     right:-30%;
@@ -656,6 +656,7 @@
     }
     
     .modal-rules__modal-content {
+        margin:2% auto;
         padding: 20px;
         width: 70%;
     }

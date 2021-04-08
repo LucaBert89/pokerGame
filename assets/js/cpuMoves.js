@@ -246,12 +246,12 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         ontablefiche = [...ingame].map(e => e.textContent);
     
        //CHOOSING THE WINNER
-            let winner;
-            let winnerScore;
-            let ingameScores = [];
-            let compareScores = [];
+        let winner;
+        let winnerScore;
+        let ingameScores = [];
+        let compareScores = [];
 
-            findPlayersIn(ontablefiche, ingameScores, compareScores,ingame, result)
+        findPlayersIn(ontablefiche, ingameScores, compareScores,ingame, result)
     
         
        
@@ -279,7 +279,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             total[winner].classList.add("total-animation");
             //e.innerHTML = "";
         })
-    nextTurn.style.display = "inline-block";
+        nextTurn.style.display = "inline-block";
     }
      
     nextPlaying(nextTurn,btnStay, btnLeave, playerNumbers,points, btnPlay, result, ingame, total, rank, suit)
