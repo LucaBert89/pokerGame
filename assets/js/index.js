@@ -64,6 +64,10 @@ let initialNumber;
 generateBtn.addEventListener("click", cardGenerator);
 
 function cardGenerator() {  
+    /* if the player leave the "number of players" field empty in the modal start reset the variables.
+    This avoid the possibility to leave the fields empty after the player want to play again*/
+    if(selectNofPlayers.selectedIndex == 0 && selectNofPoints.selectedIndex == 0) playerNumbers = undefined, points = undefined;
+
     // if I select the player number and points than the game can start
     if((playerNumbers != undefined && playerNumbers != "") && (points != undefined && points != "")) {
 
@@ -80,7 +84,7 @@ function cardGenerator() {
         }, 1200);
         //call generatePlayers function only the first time and not when the next button is pressed
         if(modalStart.style.display !== "none") generatePlayers(playerNumbers); 
-        let ingamePlayer = document.querySelectorAll(".ingame");
+
         setTimeout(function(){ 
             btnOpen.style.display = "block";
         }, 4000);

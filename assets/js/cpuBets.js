@@ -2,10 +2,8 @@ function firstBet(total, ingame, ontablefiche, result, random, i) {
     let riskValue;
     let addedNumber;
 // if the total of the current player is >= than the max bet on the table
-console.log(result);
     if(total[i].innerText >= Math.max(...ontablefiche)) {
         if(result[i] === 0) {
-            console.log(result);
             //here result = 0 and the cpu'll decide if bluffing or not
             ingame[i].innerText = blufforNot(random, Math.max(...ontablefiche), total[i].innerText);
             // if result is between 1 and 3
@@ -71,12 +69,10 @@ function blufforNot(randomMove, betPrev, total) {
     // random number among 0 and 10
     randomMove =  Math.floor(Math.random() * 11);
     // based on randomnumber
-    console.log(randomMove);
     if(randomMove > 3) {
         let bluff;
         // bluff is equal the max of the card on the table + 1/10 of the total rouded to 10.
         bluff = parseInt(betPrev) + Math.round(parseInt(total * 1/10));
-        console.log(bluff);
         return Math.round(bluff / 10) * 10;
     } else {
         return 10;

@@ -1,3 +1,56 @@
+function findPlayersIn(ontablefiche, ingameScores, compareScores, ingame,result) {
+    /*
+        here playersIn are the players that match the max bet of fiche on the table
+        here is returned the index of the players that play the max and accept the bet 
+        ex.[0, undefined, 2, undefined] the players in the game are the number 0 and 2
+    */
+    let playersIn = [...ingame].map((e,index) =>{
+        if(e.textContent == Math.max(...ontablefiche) || e.id == "stayIn") return index;
+    }).filter(e => e != undefined);
+
+    // show the hidden cards removing the class card-cover and giving the card text to the path image
+    playersIn.forEach(e => {
+        document.querySelectorAll(".ingame").forEach(function(event,index) {
+            if(e === index && e != 0) {
+                event.querySelectorAll(".player__card").forEach(e => {
+                    console.log(e.textContent);
+                    e.classList.remove("card-cover");
+                    e.style.backgroundImage = `url("./assets/images/cards/${e.textContent}.jpg")`;
+                    e.textContent = "";
+                })
+            }
+        })
+    })
+
+     //Loop through every playersIn (players that accept the bet), 
+    playersIn.forEach(function(e) {
+    /*push every player inside the ingameScores function with the score as value.
+      ex. below only the player1 and the third bet, the player1 has a score of 
+      two (double pair) the player3 has a couple (score 1)
+      {
+          1:2
+      }
+      {
+          3:1
+      }
+    */
+            ingameScores.push({[e]:result[e]});
+    })
+
+     // compare the scores of the players in the game looping through the ingameScores array
+
+
+    ingameScores.forEach(function(e,index) {
+        //push the scores inside the compareScores array
+        /*
+            ex. e = {0:1}
+            playersIn = [0,1,2]
+            e[playersIn[index]] = e[0] = 1 (score)
+        */ 
+        compareScores.push(e[playersIn[index]]);
+    })
+}
+
 function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksArray) {
     
     let playerNumber = [];
@@ -103,4 +156,4 @@ function findtheWinner(winner, winnerScore, compareScores, scoreIn, playerRanksA
     return winner;
 }
 
-export {findtheWinner}
+export {findtheWinner, findPlayersIn}

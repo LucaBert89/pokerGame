@@ -1,28 +1,28 @@
-import {players} from "./firstRound.js";
-import {replaceCard, cardGenerator, btnOpen, modalMessage, initialNumber, selectNofPlayers, selectNofPoints, modalStart} from "./index.js"
-import {findtheWinner} from "./findWinner.js"
+import {players} from "./cardDealing.js";
+import {replaceCard} from "./index.js"
+import {findtheWinner, findPlayersIn} from "./findWinner.js"
+import {nextPlaying} from "./nextTurn.js"
 import {firstBet, cpuSecondRound} from "./cpuBets.js"
 
 
-const btnBet = document.querySelector(".input-fiche__btn")
-const modalEndGame = document.querySelector(".modal-end");
-const btnPlayAgain = document.querySelector(".modal-gameover__start-again");
+
 function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanksArray, playerSuitsArray,totalObjectRanks, totalObjectSuit,randomCard, playerNumbers, points) {
     const nextTurn = document.querySelector(".next-turn");
     const btnStay = document.querySelector(".stay");
     const btnLeave = document.querySelector(".leave");
     const btnShow = document.querySelector(".show");
-    
+    const btnBet = document.querySelector(".input-fiche__btn")
+
     let ontablefiche;
     let randomNumber;
 
     // HERE THE ACTIVE PLAYER HAS CHOSEN HOW MANY FISHES HE WANTS TO PLAY AND CLICK ON BET
     btnBet.addEventListener("click", insertFish);
 
+
     // HERE IS THE FIRST MOVE: the player select the fiche he wants to play
     function insertFish(e){
-        e.stopPropagation();
-        e.preventDefault();
+
         // when the player click on bet the eventListener has to be removed or it'll be seamlessly added
         btnBet.removeEventListener('click', insertFish);
 
@@ -52,8 +52,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);   
 
         ontablefiche = [...ingame].map(event => event.textContent);
-        console.log(result);
-        console.log(randomCard);
+
         for(let i=1; i<playerNumbers; i++) {
             setTimeout(function(){ 
                 ingame[i].innerText = firstBet(total, ingame, ontablefiche, result, randomNumber,i);
@@ -83,6 +82,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
            //     }
     }
     
+
     function replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks, playerNumbers, randomCard) {
         let cpuCurrent = [];
         let discardedCard= [];
@@ -156,8 +156,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                 }   
             })
 
-        // with this regular expression I'll check for numbers inside strings 
-            //let findNumber = /\d+/;
+
             // I check inside all the cpu cards
             cpuP[index].querySelectorAll(".player__card").forEach(function(e) {
                     dCard.forEach(function(event,index) {
@@ -170,16 +169,6 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                             if(newIndex >= 5) replaceCard(newIndex, e);
                         } 
                     }) 
-               
-
-
-                    //check inside the string backgroundImage a number equal to dCard numbers
-                    
-                    //if(e.style.backgroundImage.match(findNumber)[0] === dCard[j]){
-                    
-                  
-                    
-                
             })
         }
          
@@ -201,8 +190,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         let previous;
         let difference; 
         //ACTIVE PLAYER 
-        /*if the button clicked is "stay" than the player has to match the max bet after first round*/
-        if(e.target.className === "stay") {
+        /*if the button clicked is "stay" or the active player has 0 fiches left than the player has to match the max bet after first round*/
+        if(e.target.className === "stay" || total[0].innerText == 0) {
             ingame[0].removeAttribute("id");
             // previous is the current ingame bet
             previous = ingame[0].textContent;
@@ -256,74 +245,24 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         }
         ontablefiche = [...ingame].map(e => e.textContent);
     
-        /*
-            here playersIn are the players that match the max bet of fiche on the table
-            here is returned the index of the players that play the max and accept the bet 
-            ex.[0, undefined, 2, undefined] the players in the game are the number 0 and 2
-        */
-        let playersIn = [...ingame].map((e,index) =>{
-            if(e.textContent == Math.max(...ontablefiche) || e.id == "stayIn") return index;
-        }).filter(e => e != undefined);
+       //CHOOSING THE WINNER
+            let winner;
+            let winnerScore;
+            let ingameScores = [];
+            let compareScores = [];
 
-        // show the hidden cards removing the class card-cover and giving the card text to the path image
-        playersIn.forEach(e => {
-            document.querySelectorAll(".ingame").forEach(function(event,index) {
-                if(e === index && e != 0) {
-                    event.querySelectorAll(".player__card").forEach(e => {
-                        console.log(e.textContent);
-                        e.classList.remove("card-cover");
-                        e.style.backgroundImage = `url("./assets/images/cards/${e.textContent}.jpg")`;
-                        e.textContent = "";
-                    })
-                }
-            })
-        })
-       /* document.querySelectorAll(".ingame").forEach(function(e,index) {
-            if(index )
-            e.querySelectorAll(".player__card").forEach(function(e) {
-                e.classList.remove("card-cover");
-                e.style.backgroundImage = `url("./assets/images/cards/${e.textContent}.jpg")`;
-                e.textContent = "";
-            })
-        })*/
+            findPlayersIn(ontablefiche, ingameScores, compareScores,ingame, result)
     
-    //CHOOSING THE WINNER
-        let winner;
-        let winnerScore;
-        let ingameScores = [];
-        //Loop through every playersIn (players that accept the bet), 
-        playersIn.forEach(function(e) {
-        /*push every player inside the ingameScores function with the score as value.
-          ex. below only the player1 and the third bet, the player1 has a score of 
-          two (double pair) the player3 has a couple (score 1)
-          {
-              1:2
-          }
-          {
-              3:1
-          }
-        */
-                ingameScores.push({[e]:result[e]});
-        })
-    // compare the scores of the players in the game looping through the ingameScores array
-        let compareScores = [];
-    
-        ingameScores.forEach(function(e,index) {
-            //push the scores inside the compareScores array
-            /*
-                ex. e = {0:1}
-                playersIn = [0,1,2]
-                e[playersIn[index]] = e[0] = 1 (score)
-            */ 
-            compareScores.push(e[playersIn[index]]);
-        })
+        
+       
+   
         /*the winner is max value you found into compareScores array
         ex. [
             {0, 2, 3}
         ]
         winner is 3
         */
-        console.log(playersIn, ingameScores,total,ingame);
+
         winnerScore = Math.max(...compareScores);
         
         // FIND THE CORRESPONDING KEY (PLAYER NUMBER).
@@ -334,7 +273,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             */  
         
         winner = findtheWinner(winner, winnerScore, compareScores, ingameScores, playerRanksArray);
-            console.log(winner);
+
         ingame.forEach(e => {
             total[winner].textContent = parseInt(total[winner].textContent) + parseInt(e.textContent);
             total[winner].classList.add("total-animation");
@@ -342,113 +281,8 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         })
     nextTurn.style.display = "inline-block";
     }
-    
-    
      
-    
-        nextTurn.addEventListener("click",next)
-        
-        
-        function next() {
-            // remove the total animation and the background around ingamefiche
-            total.forEach(e => e.classList.remove("total-animation"));
-            ingame.forEach(e => e.style.backgroundColor = "");
-            // next turn button is clicked
-            nextTurn.removeEventListener("click",next)
-            nextTurn.style.display = "none";
-           
-            ingame = document.querySelectorAll(".in-game-fiche");
-            total = document.querySelectorAll(".total-fiches");
-            ingame.forEach(e => e.textContent = "");
-            /*I call this function to check if the players've enough fichees to open the game */
-            loseOrOpen(total, result);
-
-                // if there aren't a modalMessage, the active player hasn't lose and you can go ahead into the game
-            if(modalMessage.textContent === "") {
-                // if there aren't cpu Players anymore the active player 'll win the game and the message'll appear
-                if(document.querySelector(".cpu-container").querySelectorAll(".cpu").length === 0) {
-                    gameOver();
-                    modalMessage.textContent = "You Win, the planet is saved!";
-                } else {
-                // if there are cpu Players:
-                        // empty all the arrays
-                    rank = [];
-                    suit = [];
-                    result = [];
-                    // remove the images and add the card-cover
-                    document.querySelectorAll(".cpu").forEach(function(e) {
-                        e.querySelectorAll(".player__card").forEach(function(e) {
-                            e.classList.add("card-cover");
-                            e.style.backgroundImage = ``;
-                            e.innerHTML = "";
-                        })
-                    })
-                    // generate the cards again
-                    cardGenerator();
-        
-                    
-                    btnPlay.style.display = "none";
-                    btnStay.style.display = "none";
-                    btnLeave.style.display = "none";
-                    setTimeout(function(){ 
-                        btnOpen.style.display = "inline-block";
-                    }, 4000);    
-    
-                }
-            }
-        
-        }
-
-
-        function gameOver() {
-            // game is over: you win or lose
-            document.querySelector(".players-table").innerHTML = "";
-            modalEndGame.style.display = "block";
-                
-            //click on play again to get back to the start board
-            btnPlayAgain.addEventListener("click", function() {
-                selectNofPlayers.selectedIndex = 0;
-                selectNofPoints.selectedIndex = 0;
-                playerNumbers = undefined;
-                points = undefined;
-                modalMessage.textContent = "";
-                modalEndGame.style.display = "none";
-                modalStart.style.display = "block";
-            })
-        }
-
-        function loseOrOpen(total, result) {
-            let current;
-            
-            for(let i=0; i<initialNumber; i++) {
-
-                current = document.querySelector(`.player${i}`);
-                if(total[i] !== undefined) {
-                    console.log(total[i].innerText);
-                    if(total[i].innerText == 0) { 
-                        console.log(total[i].innerText);
- 
-                    // if they've enough fichees than the players pays 10 fichees to enter the game
-                    // if the cpuPlayers doesn't even enough fichees they'll be deleted from the game
-                        if(i>0 && modalMessage.textContent === "") {
-      
-                            if(current !== null && current !== undefined) {
-           
-                                document.querySelector(`.player${i}`).remove();
-                                delete result[i];
-                            } else {
-                                continue;
-                            }
-                        } else  {
-                        // if the active player doesn't have enough fichees to open the game the messagge'll be shown and you can play again
-                                gameOver();
-                                modalMessage.textContent = "You lose, the planet is fucked!";
-                        }
-                    }
-                }
-                
-            }
-        }
+    nextPlaying(nextTurn,btnStay, btnLeave, playerNumbers,points, btnPlay, result, ingame, total, rank, suit)
 
 }
 

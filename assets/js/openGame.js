@@ -1,4 +1,4 @@
-import {players} from "./firstRound.js";
+import {players} from "./cardDealing.js";
 import {btnOpen,cardGenerator, replaceCard} from "./index.js";
 import {playAndResponse} from "./cpuMoves.js";
 // OPEN BTN
@@ -8,7 +8,6 @@ function openTheGame(playerNumbers, randomCard, playersContainer) {
     btnOpen.addEventListener("click", open)
     
     function open() {
-        console.log(randomCard)
         btnOpen.removeEventListener("click", open);
 
         const player = document.querySelector(".player0");
@@ -40,7 +39,6 @@ function openTheGame(playerNumbers, randomCard, playersContainer) {
         The goal of the function is to deal the cards and find the combination that set the score to open or not the game
     */
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);
-        console.log(result, playerNumbers, ingame, total, randomCard);
     // based on the players cards, if someone've scores or not, it's decided if open or not
         if(result.every(e => e === 0)) {
             // if we can't open than new cards we'll be generated emptying the existing rank, suit, result arrays
