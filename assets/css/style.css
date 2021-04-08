@@ -35,7 +35,7 @@
   }
 
   .start-game__selectors {
-    width:40%;
+    width:100%;
     display:flex;
     flex-direction: row;
   }
@@ -588,6 +588,10 @@
         padding:0;
     }
 
+    .start-game__selectors {
+        width:40%;
+      }
+
     .player0 {
         left:10%;
         bottom:-10%;
@@ -639,6 +643,30 @@
   }
 
 @media all and (min-width: 768px) {
+    .start-game__control {
+        margin-top:50px;
+        font-size:30px;
+    }
+
+    .start-game__input-profile-click {
+        height:200px;
+        width:30%;
+        margin-top:20px;
+    }
+
+    .start-game__modal-content{
+        font-size:25px;
+    }
+
+    .start-game__selector {
+        width:100px;
+    }
+
+    .start-game__selectors {
+        width:40%;
+        margin-top:100px;
+      }
+
     .player0 {
         left:-1%;
         bottom:-5%;
@@ -715,7 +743,6 @@
     }
 
     .start-game__input-profile-click {
-        height:200px;
         width:15%;
         margin-top:0;
     }
@@ -728,15 +755,18 @@
     }
 
     .start-game__selectors {
+        margin-top:10px;
         flex-direction: column;
       }
 
     .start-game__selector {
+        width:80px;
         font-size: 30px;
         height: 50px;
     }
 
     .start-game__control {
+        margin-top:0;
         font-size: 30px;
     }
     
