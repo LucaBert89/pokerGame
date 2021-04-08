@@ -32,6 +32,10 @@
 
   select {
     -webkit-appearance:none;
+    background-image: url("/assets/images/angle-down-solid.svg");
+    background-position: 80% 50%;
+    background-size: 25%;
+    background-repeat: no-repeat;
   }
 
   .start-game__selectors {
@@ -101,7 +105,7 @@
       height: 20px;
       margin:20px;
       font-size:10px;
-      background-color:black;
+      background-color:#227A86;
       border-radius: 20px;
       border-color: #fff;
       color:#fff;
@@ -136,7 +140,8 @@
   }
 
   .start-game__btn, .game-rules__btn {
-    background-color: #000;
+    background-color: #227A86;
+    border:1px solid;
     border-radius: 20px;
     padding:10px 30px;
     display:inline-block;
@@ -146,6 +151,12 @@
 }
 
 .start-game__btn:hover {
+    border: 3px solid #000;
+    background-color:#fff;
+    color:#000;
+}
+
+.game-rules__btn:hover {
     border: 3px solid #000;
     background-color:#fff;
     color:#000;
@@ -390,10 +401,11 @@
     width:60px;
     height: 30px;
     font-size:20px;
-    background-color:#000;
+    background-color:#227A86;
     border-radius: 20px;
     border-color: #fff;
     color:#fff;
+    padding:0px 10px;
 }
 
 .input-fiche__btn{
@@ -749,12 +761,13 @@
 
     .last-door .start-game__container {
         display: flex;
-        justify-content: space-evenly;
+        justify-content: space-between;
         align-items: center;
         width:100%;
     }
 
     .start-game__selectors {
+        width:30%;
         margin-top:10px;
         flex-direction: column;
       }
