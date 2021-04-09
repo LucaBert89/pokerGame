@@ -325,10 +325,12 @@
 
   @keyframes pulse {
     0% {
-      border:1px solid #000;
+        -webkit-border:1px solid #000;
+        border:1px solid #000;
     }
     100% {
-        border:2px solid yellow;
+        -webkit-border:3px solid yellow;
+        border:3px solid yellow;
         
     }
   }

@@ -120,7 +120,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
                 // I push the ranks of every Cpu player inside ranking
             ranking.push(cpuCurrent[i].map(e => e.slice(0,-1)));
         }
-        console.log(cardNumber)
+
         for(let i=1; i<playerNumbers; i++) {
  // if the result is 1(pair) or 2(two pair) or 0 (nothing) the cpuMove function'll be called
             if(result[i] === 1 || result[i] === 2 || result[i] === 0) {
