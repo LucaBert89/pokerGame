@@ -249,13 +249,6 @@ function replaceCard(current, e) {
                 e.innerHTML = cardImage;
             }, 1000);
         }
-       
-        
-       
-        // if the randomCard is unique than replace the card clicked with the new card
-        // the new card image will take the new generated random card
-        
-        
     }
 }
 

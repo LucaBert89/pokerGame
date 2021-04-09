@@ -16,12 +16,12 @@ function players(random, rank, suit, result, playerRanksArray, playerSuitsArray,
     let cardSplit = Math.ceil(random.length / playerNumbers);
     
     /*here I Call dealingCards function passing: playerRanksArray and Suits, the empty arrays
-    , cardSplit, rank and suit arrays. 
+    , cardSplit, rank and suit arrays and playerNumbers. 
     The goal is to divide the cards among the players, 5 per player with their rank and suit*/
         dealingCards(playerRanksArray,playerSuitsArray,cardSplit,rank,suit, playerNumbers);
 
     /*after the cards are dealt I can find the combination that set the score.
-        the playerRanksArray and Suits filled with the array of cards can be passed
+        the playerRanksArray and Suits filled with the array of cards can be passed and empty totalObjectRanks
     */
         handCombination(playerRanksArray,playerSuitsArray, result, totalObjectRanks,totalObjectSuit, playerNumbers); 
 }

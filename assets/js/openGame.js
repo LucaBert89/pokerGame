@@ -10,9 +10,11 @@ function openTheGame(playerNumbers, randomCard, playersContainer) {
     function open() {
         btnOpen.removeEventListener("click", open);
 
-        const player = document.querySelector(".player0");
-        const activeCard = player.querySelectorAll(".player__card");
         let message = document.createElement("span");
+        const player = document.querySelector(".player0");
+        // passing only the player active cards
+        const activeCard = player.querySelectorAll(".player__card");
+       
         btnOpen.style.display = "none";
         // remove the dealing class set for the animation
         activeCard.forEach(e => e.classList.remove("dealing"));
@@ -46,7 +48,7 @@ function openTheGame(playerNumbers, randomCard, playersContainer) {
             suit = [];
             result = [];
             cardGenerator();
-    
+            //no one can open function
             tryAgain();
             setTimeout(function(){ 
                 btnOpen.style.display = "inline-block";
@@ -61,16 +63,18 @@ function openTheGame(playerNumbers, randomCard, playersContainer) {
             // give the background around ingame fiches
             ingame.forEach(e => e.style.backgroundColor = "brown");
 
+            //all the players pay 10 fiches
             for(let i=0;i<playerNumbers; i++) {
                 total[i].textContent = parseInt(total[i].textContent) - 10;
                 ingame[i].textContent = 10;
             }
             
+            //seven seconds to change card message
             message.classList.add("player__message");
             message.innerText = "7 seconds to change the cards";
             player.appendChild(message);
 
-            // CHANGE YOUR CARD IF YOU NEED TO. playerActiveMove function is called
+            // CHANGE YOUR CARD IF YOU NEED TO. playerActiveMove function is called passing the human player cards
             playerActiveMove(activeCard);
             // bet appear after 7 seconds, time allowed to change your cards
             setTimeout(function(){ 

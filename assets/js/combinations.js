@@ -15,7 +15,7 @@ let score = {
 
 
 
-/* HAND COMBINATION: rank array and suit array*/
+/* HAND COMBINATION: playerRanksArray,playerSuitsArray (the dealt arrays), result, totalObjectRanks,totalObjectSuit, playerNumbers*/
 function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectSuit, playerNumbers) {
     //variables for counting the elements: useful for pair or threes or others
     let suitValues;
@@ -35,7 +35,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
         
         //I called two functions to count: 1^rank of cards; 2^suit of cards 
         /*here I pass to the function the rank array ex. ["2","3","4","5", "6"]; the currentRankCount obj,
-        i need to create an array of objects of the player's ranks; the i(players); totalObjectRanks that
+        (i need to create an array of objects of the player's ranks); the i(players); totalObjectRanks that
         is empty but it's going to be the new array of objects with the count divided among players*/
         countValues(playerR,currentRankCount,i, totalObjectRanks);
 
@@ -45,7 +45,8 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
         //take the values of rank and suit: the values of the objects
         values = Object.values(totalObjectRanks[i]);
         suitValues = Object.values(totalObjectSuit[i]);
-  
+
+  //functions to set the score passing the values and empty result
         pairComb = findPair(values, result);
         threefullComb = threeOrFull(values, result);
         straightComb = straigth(playerR[i], suitValues, result);
@@ -60,7 +61,7 @@ function handCombination(playerR, playerS, result, totalObjectRanks,totalObjectS
     
 }
 
-// COUNTVALUES: array=rank or suit array, c=count or countSuit, index=i, total suit or count array empty
+// COUNTVALUES: array=rank or suit array, c=count or countSuit, index=i, total= totalObjectsuit or rank array empty
 function countValues (array,c,index,total) {
     /*example letter and number count
     [

@@ -41,6 +41,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
 
         // here I call replaceCpuCards: it's a function that let the cpu to change the useless cards if needed
         // totalObjectRanks is the object that keep ranks and count ex. [3:1; 2:1;4:3]
+        /* passing the cpuplayers, empty cardNumber, totalObjectRanks (count), playerNumbers, randomCard(all the cards) */
         replaceCpuCards(cpuPlayers, cardNumber, totalObjectRanks, playerNumbers, randomCard);
         
         rank = [];
@@ -48,9 +49,10 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         result = [];
         totalObjectRanks = [];
         totalObjectSuit = [];
-      
+        
         players(randomCard, rank, suit, result, playerRanksArray, playerSuitsArray, totalObjectRanks, totalObjectSuit, playerNumbers);   
 
+        //array of all the fiches in the game
         ontablefiche = [...ingame].map(event => event.textContent);
 
         for(let i=1; i<playerNumbers; i++) {
@@ -63,7 +65,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             
         }
 
-
+        //re-set the array of all the fiches in the game based on the first bet
         ontablefiche = [...ingame].map(event => event.textContent);
         setTimeout(function(){ 
             if(ingame[0].textContent < Math.max(...ontablefiche)) {
@@ -91,8 +93,9 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         let replaceIndex;  
 // REPLACING USELESS CARDS
     /* Here after the click I want that the cpu players change their useless cards
-        where card rank is = to 1.
+        where card rank count is = to 1.
     */
+   // I need x=5 to find the corresponding index inside randomCard
         let x=5;
         /* I put every card divided among the cpu players into cpuCurrent array ex
             0: ["14H", "10H", "6D", "12H", "4S"]
@@ -110,23 +113,27 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
             ["7", 1]
             ["10", 1]
             ["12", 2]
-            each iteration is for a single player
+            each iteration is for a single player. TotalObjectRanks +1 because I excluded the first player
         */
             cardNumber.push(Object.entries(totalObjectRanks[i+1]));
             discardedCard = [];
                 // I push the ranks of every Cpu player inside ranking
             ranking.push(cpuCurrent[i].map(e => e.slice(0,-1)));
         }
-
+        console.log(cardNumber)
         for(let i=1; i<playerNumbers; i++) {
  // if the result is 1(pair) or 2(two pair) or 0 (nothing) the cpuMove function'll be called
             if(result[i] === 1 || result[i] === 2 || result[i] === 0) {
                 
                 // this function is used to let the cpu player change the useless cards
+        /* passing cardNumber (i-1 because here I've to take the first element); discardedCard empty,
+        replaceIndex undefined, i count 0, ranking (array of the rank of the cpu players start from 0, x = 5,cpuPlayers*/
+               
                 cpuMove(cardNumber[i-1], discardedCard, replaceIndex,i-1, ranking[i-1],x, cpuPlayers);
             } else {
                 continue;
             }
+            //based on the player to check I've to sum 5 to check the correct group of cards inside random
             x+=5;
         }
            
@@ -251,6 +258,7 @@ function playAndResponse(btnPlay, result, ingame, total, rank, suit, playerRanks
         let ingameScores = [];
         let compareScores = [];
 
+        //here I want to find the players which bet I've to take into account to set the winner
         findPlayersIn(ontablefiche, ingameScores, compareScores,ingame, result)
     
         
