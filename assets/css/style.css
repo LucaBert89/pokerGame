@@ -1,9 +1,18 @@
+
+@font-face {
+    font-family: 'Fantasque Sans Mono';
+    src: url("/assets/fonts/fantasquesansmono-regular-webfont.woff") format("woff");
+    src: url("/assets/fonts/fantasquesansmono-regular-webfont.woff2") format("woff2");
+}
+
 * {
     padding:0;
     margin:auto;
     box-sizing: border-box;
     max-width: 1624px;
+    font-family: 'Fantasque Sans Mono';
 }
+
 
 /* The Modal (background) */
 .start-game__modal {
