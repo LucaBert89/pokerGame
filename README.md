@@ -2,14 +2,21 @@
 
 
 DEPLOY LINK: https://classicpokergame.netlify.app/
-
-**WORK IN PROGRESS** - 
+ 
 
 ## DESCRIPTION
 
 This is a Javascript space poker game! It's a classic poker game, not texas holden, where the user can play with a max of others 4 players.
 
-## RULES OF THE GAME AND HOW IT WORKS
+## TECHNOLOGY
+
+To realize this game I used **HTML,CSS and JAVASCRIPT**. I used **mocha and chai** for testing some functions inside the game and **babel** to use ES6 with mocha. I used **trello** to create the tasks and **toggle** to time my activity. 
+
+## HOW IT WORKS
+I build up an **algorithm** to choose the CPU answers that works based on a **risk analysis**. Based on his cards and the highest bet that is on the table, the cpu current player makes a risk analysis and select to bet or not to bet.
+I added a **"random" behaviour** where the player can bet even if the risk analysis suggested him to not bet or if he wants to bluff.
+
+## RULES OF THE GAME
 
 You choose the number of players and points in the first Start board. After you click on play than **your card'll be displayed** and you can press the **"OPEN"** button. 
 This button is to **open the game**, you can do that if there's at least one player with some points (a pair, two pair etc) in his hand. If no one have point than other cards'll be dealt until someone have points. The **"cost" to play is 10 fishes** that every player has to pay.
@@ -43,10 +50,6 @@ Pair	🂪🂺🂨🂷🃔	Two cards of the same rank
 
 High Card	🃎🃍🂧🂤🂳	No other hand applies
 
-
-## TECHNOLOGY
-
-To realize this game I used **HTML,CSS and JAVASCRIPT**. I used **mocha and chai** for testing some functions inside the game and **babel** to use ES6 with mocha. I used **trello** to create the tasks and **toggle** to time my activity. 
 
 
 
