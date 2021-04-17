@@ -30,7 +30,7 @@ describe('function', function() {
     /*TEST SIX: return a straigth if there are 5 cards in rank order*/
     it('should return 4 score for straight', function(){
       // straigth(arrayRank, arraySuit, result)
-      assert.equal(straigth(["3", "2", "4", "5", "6"], [1,1,1,1,1], []), 4);
+      assert.equal(straigth(["14", "2", "3", "4", "5"], [1,1,1,1,1], []), 4);
     });
       /*TEST SEVEN: return a straightFlush if there are 5 cards in rank order of the same suit*/
       it('should return 8 score for straightFlush', function(){

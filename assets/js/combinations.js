@@ -131,8 +131,9 @@ function straigth(arrayRank, arraySuit, result) {
     });
     //if there is only one suit
     if(arraySuit.length === 1) {
-        //if the number are all consecutive
-        if(consecutiveArray.length == 4) {
+        //if the number are all consecutive (and a special case to give to the ACE the value of 2 in a straight)
+        
+        if(consecutiveArray.length == 4 || (consecutiveArray.length == 4 && Math.max.apply(Math, consecutiveArray) == 4 && arrayRank.some(e => e == "14"))) {
             // if the lowest number is 10 than it is royalFlush
             if(Math.min.apply(Math, consecutiveArray) === 10) {
                 result.push(score["royalFlush"]);
@@ -149,7 +150,7 @@ function straigth(arrayRank, arraySuit, result) {
            return result.find(e => e === score["flush"]);
         }
         //if there isn't only one suit value than it is only a normal straight
-    } else if(consecutiveArray.length == 4) {
+    } else if(consecutiveArray.length == 4 || (consecutiveArray.length == 3 && Math.max.apply(Math, consecutiveArray) == 4 && arrayRank.some(e => e == "14"))) {
         result.push(score["straight"]);
         return result.find(e => e === score["straight"]);
     }
